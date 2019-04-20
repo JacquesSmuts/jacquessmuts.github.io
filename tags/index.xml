@@ -6,9 +6,28 @@
     <description>Recent content in Tags on My New Hugo Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Sat, 20 Apr 2019 10:43:30 +0200</lastBuildDate>
     
 	<atom:link href="http://example.org/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Hugo</title>
+      <link>http://example.org/tags/hugo/</link>
+      <pubDate>Sat, 20 Apr 2019 10:43:30 +0200</pubDate>
+      
+      <guid>http://example.org/tags/hugo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Jacques Smuts</title>
+      <link>http://example.org/tags/jacques-smuts/</link>
+      <pubDate>Sat, 20 Apr 2019 10:43:30 +0200</pubDate>
+      
+      <guid>http://example.org/tags/jacques-smuts/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>

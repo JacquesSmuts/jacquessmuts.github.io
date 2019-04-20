@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
 
   
-  <title>My New Hugo Site</title>
+  <title>How I made this</title>
 
   
   
@@ -23,22 +23,27 @@
   
 
   
+  <meta name="author" content="Jacques Smuts">
+  <meta name="description" content="This details how I made this static github page.
+">
+
   
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@jacquessmuts">
+    <meta name="twitter:title" content="How I made this">
+    <meta name="twitter:description" content="This details how I made this static github page.
+">
+    <meta name="twitter:image" content="http://example.org/images/how_i_made_this1.png">
   
 
   
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:site" content="@jacquessmuts">
-  <meta name="twitter:title" content="My New Hugo Site">
-  
-  <meta name="twitter:image" content="/images/avatar.png">
-
-  
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="My New Hugo Site">
-  
-  <meta property="og:url" content="http://example.org/">
-  <meta property="og:image" content="/images/avatar.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="How I made this">
+  <meta property="og:description" content="This details how I made this static github page.
+">
+  <meta property="og:url" content="http://example.org/post/how_i_made_this/">
+  <meta property="og:image" content="http://example.org/images/how_i_made_this1.png">
 
 
 
@@ -46,8 +51,7 @@
 <meta name="generator" content="Hugo 0.54.0">
 
 
-<link rel="canonical" href="http://example.org/">
-<link rel="alternate" type="application/rss+xml" href="http://example.org/index.xml" title="My New Hugo Site">
+<link rel="canonical" href="http://example.org/post/how_i_made_this/">
 
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -98,8 +102,12 @@
 
 
 
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
 
 
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
 
 
 
@@ -122,12 +130,15 @@
     <div class="suspension">
       <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
       
+        
+      
     </div>
     
-     <header class="site-header">
+    
+  <header class="site-header">
   <img class="avatar" src="/images/avatar.png" alt="Avatar">
   
-  <h1 class="title">My New Hugo Site</h1>
+  <h2 class="title">My New Hugo Site</h2>
   
   <p class="subtitle"></p>
   <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
@@ -142,9 +153,9 @@
       
       
         <li class="menu-item
-           is-active
           
-          ">
+          
+           is-active">
           <a href="/">Home</a>
         </li>
       
@@ -175,30 +186,42 @@
   </nav>
 </header>
 
-<section class="main post-list">
-  <header class="list-header offscreen">
-    <h2 class="list-label">All Posts</h2>
-  </header>
-  
-  
-   <article class="post-entry">
-  <header class="post-header">
-    <h3 class="post-title"><a href="http://example.org/post/how_i_made_this/" class="post-link">How I made this</a></h3>
-    <p class="post-meta">@Jacques Smuts · Apr 20, 2019 · 1 min read</p>
-  </header>
-  
-    <img class="post-cover" src="/images/how_i_made_this1.png" alt="How I made this" lazyload="on">
-  
-  <p class="post-summary">This details how I made this static github page.
-</p>
-  <footer class="post-footer">
-    <a class="read-more" href="http://example.org/post/how_i_made_this/">Read More →</a>
-  </footer>
-</article>
- 
-   
-</section>
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">How I made this</h1>
+      <p class="post-meta">@Jacques Smuts · Apr 20, 2019 · 1 min read</p>
+    </header>
+    <article class="post-content"><p>This details how I made this static github page.</p>
 
+<p>First, I installed <a href="https://gohugo.io/">Hugo</a> on my local machine and created a site.
+I chose the theme <a href="https://themes.gohugo.io/hugo-nuo/">Hugo-Nuo</a> because it looked nice and because the author has a github page with regular updates and decent documentation.</p>
+
+<p>It was not crashing, so I deployed it to a Github static page using the official <a href="https://gohugo.io/hosting-and-deployment/hosting-on-github/">Hugo Guide</a> for hosting on Github.</p>
+
+<p>Then I wrote this blog post using the standard template by running hugo new post/how_i_made_this.png and writing the rest in the resulting .md file. I ran deploy.sh (from the Hugo Guide&rsquo;s instructions) and did not see this post.</p>
+
+<p>So I removed the &ldquo;draft:true&rdquo; property from this post, felt like an idiot for taking 30min to figure that out, then deployed again.</p>
+
+<p>Next I&rsquo;m configuring my site&rsquo;s theme but this MVP is working so I&rsquo;m deploying and adding a section below later.</p></article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="/tags/hugo"><span class="tag">Hugo</span></a></li>
+        
+          <li><a href="/tags/jacques-smuts"><span class="tag">Jacques Smuts</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  
 <footer class="site-footer">
   <p>© 2017-2019 My New Hugo Site</p>
   <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
@@ -210,8 +233,33 @@
 
 
 
+<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
 
 
+
+
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    },
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
 
 
 
@@ -230,6 +278,7 @@
 
 
 
- 
+
+
   </body>
 </html>
