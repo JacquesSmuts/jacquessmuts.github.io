@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Sat, 20 Apr 2019 10:43:30 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 20 Apr 2019 21:15:17 +0200</lastBuildDate>
     
 	<atom:link href="https://jacquessmuts.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Android</title>
+      <link>https://jacquessmuts.github.io/tags/android/</link>
+      <pubDate>Sat, 20 Apr 2019 21:15:17 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/tags/android/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Hugo</title>
@@ -27,6 +36,24 @@
       <pubDate>Sat, 20 Apr 2019 10:43:30 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/tags/jacques-smuts/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Kotlin</title>
+      <link>https://jacquessmuts.github.io/tags/kotlin/</link>
+      <pubDate>Sat, 20 Apr 2019 21:15:17 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/tags/kotlin/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Modularization</title>
+      <link>https://jacquessmuts.github.io/tags/modularization/</link>
+      <pubDate>Sat, 20 Apr 2019 21:15:17 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/tags/modularization/</guid>
       <description></description>
     </item>
     

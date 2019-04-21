@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Is your modularization making any progress?</title>
+
+  
+  
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  
+  
+  
+  
+  
+
+  
+
+  
+  <meta name="author" content="Jacques Smuts">
+  <meta name="description" content="You should modularize your Kotlin Android app, but you will run into some issues. Here&amp;rsquo;s some tips to help.
+">
+
+  
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@jacquessmuts">
+    <meta name="twitter:title" content="Is your modularization making any progress?">
+    <meta name="twitter:description" content="You should modularize your Kotlin Android app, but you will run into some issues. Here&amp;rsquo;s some tips to help.
+">
+    <meta name="twitter:image" content="https://jacquessmuts.github.io/images/modularization1.png">
+  
+
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Is your modularization making any progress?">
+  <meta property="og:description" content="You should modularize your Kotlin Android app, but you will run into some issues. Here&amp;rsquo;s some tips to help.
+">
+  <meta property="og:url" content="https://jacquessmuts.github.io/post/modularization/">
+  <meta property="og:image" content="https://jacquessmuts.github.io/images/modularization1.png">
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0">
+
+
+<link rel="canonical" href="https://jacquessmuts.github.io/post/modularization/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
+
+
+
+
+
+
+
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Jacques Smuts">
+<meta name="msapplication-tooltip" content="Jacques Smuts">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
+<link rel="manifest" href="/manifest.json">
+
+
+<link rel="preload" href="/styles/main.min.css" as="style">
+
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="/images/avatar.png" as="image">
+<link rel="preload" href="/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="/styles/main.min.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
+
+
+  
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
+
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="/images/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Jacques Smuts</h2>
+  
+  <p class="subtitle">~ Android Developer~</p>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
+  </button>
+
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+          
+          
+           is-active">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://github.com/jacquessmuts">Works</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list"><li class="social-item">
+          <a href="mailto:githubpage@jacquessmuts.com" title="Email" aria-label="Email">
+            <span class="icon icon-email" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//github.com/jacquessmuts" title="GitHub" aria-label="GitHub">
+            <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//twitter.com/jacquessmuts" title="Twitter" aria-label="Twitter">
+            <span class="icon icon-twitter" aria-hidden="true"></span>
+          </a>
+        </li></ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Is your modularization making any progress?</h1>
+      <p class="post-meta">@Jacques Smuts · Apr 20, 2019 · 3 min read</p>
+    </header>
+    <article class="post-content"><p>You should modularize your Kotlin Android app, but you will run into some issues. Here&rsquo;s some tips to help.</p>
+
+<h2 id="am-i-doing-it-right">Am I doing it right?</h2>
+
+<p>You&rsquo;re probably doing it mostly right, but how do you know? Here&rsquo;s a good way to check. Generate a dependency graph for your app. I used <a href="https://github.com/alexzaitsev/apk-dependency-graph">APK Dependency Graph Generator</a>. All you need to do is compile the apk-dependency project, point it to an apk, and it will generate an interactive graph like the one below.</p>
+
+<figure class="zoomable">
+    <img src="/images/modularization2.png"
+         alt="a dependency graph" height="400"/> <figcaption>
+            <h4>If you click the link above, you should see something like this.</h4>
+        </figcaption>
+</figure>
+
+
+<p><a href="https://jacquessmuts.github.io/sites/dependency_positivitea_011/">Click here to see PositiviTea&rsquo;s dependency graph</a> It&rsquo;s interactive and fun, <a href="https://jacquessmuts.github.io/sites/dependency_positivitea_011/">go ahead.</a></p>
+
+<p>This graph demonstrates a way to look for ease of refactoring with two nice examples:</p>
+
+<ul>
+<li>The ServerClient in the bottom right provides a complete separation between the api and the rest of the app. The api calls can therefore be refactored easily.</li>
+<li>Lots of classes are reliant on the TeaBag class in the middle. A single change there is likely to cascade outward, making refactoring difficult.</li>
+</ul>
+
+<p>Below, an example of a project which is not easy to refactor, update or even debug:</p>
+
+<figure class="zoomable">
+    <img src="/images/modularization3.png"
+         alt="a dependency graph" height="400"/> <figcaption>
+            <h4>An unnamed legacy project.</h4>
+        </figcaption>
+</figure>
+
+
+<p>There is no separation of concerns here. This project is in dire need of modularization, but where do you even begin?</p>
+
+<h2 id="where-to-begin">Where to begin?</h2>
+
+<p>I usually follow these steps:</p>
+
+<ol>
+<li><a href="https://developer.android.com/studio/projects/android-library">Create a module</a></li>
+<li>Identify one or more classes that should not be accessible outside of a specific context</li>
+<li>Move those classes into the module</li>
+<li>add the <code>internal</code> <a href="https://kotlinlang.org/docs/reference/visibility-modifiers.html">visibility modifier</a></li>
+<li>Try to compile and get an error</li>
+<li>Fix this error without removing the internal keyword. This may involve creating a little bit of boilerplate.</li>
+</ol>
+
+<figure class="zoomable">
+    <img src="/images/modularization4.png"
+         alt="compiler error" height="150"/> <figcaption>
+            <h4>If you see this warning, you&#39;re headed in the right direction.</h4>
+        </figcaption>
+</figure>
+
+
+<p>A specific example of this would be the database module. I moved my <code>database</code> class, <code>data model</code> classes, <code>DAO</code> classes, and <code>repository</code> class into the database module. I made everything <code>internal</code> except for <code>repository</code>, which provides the API to the database for the rest of the app. After some restructuring and cleanup, I ended up with a nicer class structure.</p>
+
+<figure class="zoomable">
+    <img src="/images/modularization5.png"
+         alt="a dependency graph" height="400"/> <figcaption>
+            <h4>Dependency graph, but after internalizing the database module</h4><p>It seems similar to the one above, but with some subtle differences.</p>
+        </figcaption>
+</figure>
+
+
+<p>Okay, I have to admit, it doesn&rsquo;t seem like we made that much of a difference. But here&rsquo;s the real benefit:</p>
+
+<h2 id="the-real-benefit">The real benefit</h2>
+
+<h4 id="when-a-new-developer-works-in-a-non-database-module-and-tries-to-access-the-database-directly-the-compiler-will-stop-them">When a new developer works in a non-database module and tries to access the database directly, the compiler will stop them.</h4>
+
+<p>The two dependency graphs are similar, except that a moment&rsquo;s thoughtlessness can pull everything into spaghetti in the first instance. I have used the <code>internal</code> modifier in my database module, which means that a developer would be stopped from breaking a delicate separation of concerns with a single function.</p>
+
+<figure class="zoomable">
+    <img src="/images/modularization6.png"
+         alt="compiler error 2" height="100"/> <figcaption>
+            <h4>Trying to access the database directly from MainActivity.kt.</h4>
+        </figcaption>
+</figure>
+
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>We have looked at two ways in which to analyze the state of your modularization:</p>
+
+<ol>
+<li>APK-Dependency-Analyzer; and</li>
+<li>The prevalance of the &ldquo;internal&rdquo; modifier</li>
+</ol>
+
+<p>I&rsquo;ll probably write some more blogs later, when I run into more issues or noteworthy tips. Modularization can be tricky, but it&rsquo;s worth it.</p></article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="/tags/android"><span class="tag">Android</span></a></li>
+        
+          <li><a href="/tags/modularization"><span class="tag">Modularization</span></a></li>
+        
+          <li><a href="/tags/kotlin"><span class="tag">Kotlin</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  
+<footer class="site-footer">
+  <p>© 2017-2019 Jacques Smuts</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+  
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
+
+
+
+
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    },
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+
+
+<script src="/scripts/index.min.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('\/service-worker.js').then(function() {
+      console.log('[ServiceWorker] Registered');
+    });
+  }
+</script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

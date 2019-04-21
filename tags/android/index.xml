@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Jacques Smuts</title>
-    <link>https://jacquessmuts.github.io/post/</link>
-    <description>Recent content in Posts on Jacques Smuts</description>
+    <title>Android on Jacques Smuts</title>
+    <link>https://jacquessmuts.github.io/tags/android/</link>
+    <description>Recent content in Android on Jacques Smuts</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
     <lastBuildDate>Sat, 20 Apr 2019 21:15:17 +0200</lastBuildDate>
     
-	<atom:link href="https://jacquessmuts.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://jacquessmuts.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,15 +19,6 @@
       
       <guid>https://jacquessmuts.github.io/post/modularization/</guid>
       <description>&lt;p&gt;You should modularize your Kotlin Android app, but you will run into some issues. Here&amp;rsquo;s some tips to help.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>How I made this</title>
-      <link>https://jacquessmuts.github.io/post/how_i_made_this/</link>
-      <pubDate>Sat, 20 Apr 2019 10:43:30 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/how_i_made_this/</guid>
-      <description>&lt;p&gt;This details how I made this static github page.&lt;/p&gt;</description>
     </item>
     
   </channel>
