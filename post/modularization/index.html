@@ -24,7 +24,7 @@
 
   
   <meta name="author" content="Jacques Smuts">
-  <meta name="description" content="You should modularize your Kotlin Android app, but you will run into some issues. Here&amp;rsquo;s some tips to help.
+  <meta name="description" content="You should modularize your Kotlin Android app, since it&amp;rsquo;s the best way to enforce separation of concerns, but how do you know if you&amp;rsquo;re doing it right? Here&amp;rsquo;s some tips to help.
 ">
 
   
@@ -32,7 +32,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@jacquessmuts">
     <meta name="twitter:title" content="Is your modularization making any progress?">
-    <meta name="twitter:description" content="You should modularize your Kotlin Android app, but you will run into some issues. Here&amp;rsquo;s some tips to help.
+    <meta name="twitter:description" content="You should modularize your Kotlin Android app, since it&amp;rsquo;s the best way to enforce separation of concerns, but how do you know if you&amp;rsquo;re doing it right? Here&amp;rsquo;s some tips to help.
 ">
     <meta name="twitter:image" content="https://jacquessmuts.github.io/images/modularization1.png">
   
@@ -40,7 +40,7 @@
   
   <meta property="og:type" content="article">
   <meta property="og:title" content="Is your modularization making any progress?">
-  <meta property="og:description" content="You should modularize your Kotlin Android app, but you will run into some issues. Here&amp;rsquo;s some tips to help.
+  <meta property="og:description" content="You should modularize your Kotlin Android app, since it&amp;rsquo;s the best way to enforce separation of concerns, but how do you know if you&amp;rsquo;re doing it right? Here&amp;rsquo;s some tips to help.
 ">
   <meta property="og:url" content="https://jacquessmuts.github.io/post/modularization/">
   <meta property="og:image" content="https://jacquessmuts.github.io/images/modularization1.png">
@@ -198,34 +198,34 @@
       <h1 class="post-title">Is your modularization making any progress?</h1>
       <p class="post-meta">@Jacques Smuts · Apr 20, 2019 · 3 min read</p>
     </header>
-    <article class="post-content"><p>You should modularize your Kotlin Android app, but you will run into some issues. Here&rsquo;s some tips to help.</p>
+    <article class="post-content"><p>You should modularize your Kotlin Android app, since it&rsquo;s the best way to enforce <a href="https://developer.android.com/jetpack/docs/guide#common-principles">separation of concerns</a>, but how do you know if you&rsquo;re doing it right? Here&rsquo;s some tips to help.</p>
 
 <h2 id="am-i-doing-it-right">Am I doing it right?</h2>
 
-<p>You&rsquo;re probably doing it mostly right, but how do you know? Here&rsquo;s a good way to check. Generate a dependency graph for your app. I used <a href="https://github.com/alexzaitsev/apk-dependency-graph">APK Dependency Graph Generator</a>. All you need to do is compile the apk-dependency project, point it to an apk, and it will generate an interactive graph like the one below.</p>
+<p>If you&rsquo;re following one of the <a href="https://medium.com/androiddevelopers/a-patchwork-plaid-monolith-to-modularized-app-60235d9f212e">great guides</a> out there, you&rsquo;re probably doing it mostly right, but how do you know? Can you measure a difference? Here&rsquo;s a good way to check. Generate a dependency graph for your app. I used <a href="https://github.com/alexzaitsev/apk-dependency-graph">APK Dependency Graph Generator</a>. All you need to do is compile the apk-dependency project, point it to an apk, and it will generate an interactive graph like the one below.</p>
 
 <figure class="zoomable">
     <img src="/images/modularization2.png"
-         alt="a dependency graph" height="400"/> <figcaption>
-            <h4>If you click the link above, you should see something like this.</h4>
+         alt="a dependency graph" width="60%"/> <figcaption>
+            <h4>If you click the link below, you should see something like this.</h4>
         </figcaption>
 </figure>
 
 
-<p><a href="https://jacquessmuts.github.io/sites/dependency_positivitea_011/">Click here to see PositiviTea&rsquo;s dependency graph</a> It&rsquo;s interactive and fun, <a href="https://jacquessmuts.github.io/sites/dependency_positivitea_011/">go ahead.</a></p>
+<p><a href="https://jacquessmuts.github.io/sites/dependency_positivitea_011/">Click here to see PositiviTea&rsquo;s dependency graph</a> It&rsquo;s interactive and fun.</p>
 
 <p>This graph demonstrates a way to look for ease of refactoring with two nice examples:</p>
 
 <ul>
-<li>The ServerClient in the bottom right provides a complete separation between the api and the rest of the app. The api calls can therefore be refactored easily.</li>
-<li>Lots of classes are reliant on the TeaBag class in the middle. A single change there is likely to cascade outward, making refactoring difficult.</li>
+<li>The <code>ServerClient</code> in the bottom right provides a complete separation between the api and the rest of the app. The api calls can therefore be refactored easily.</li>
+<li>Lots of classes are reliant on the <code>TeaBag</code> class in the middle. A single change there is likely to cascade outward, making refactoring difficult.</li>
 </ul>
 
 <p>Below, an example of a project which is not easy to refactor, update or even debug:</p>
 
 <figure class="zoomable">
     <img src="/images/modularization3.png"
-         alt="a dependency graph" height="400"/> <figcaption>
+         alt="a dependency graph" width="60%"/> <figcaption>
             <h4>An unnamed legacy project.</h4>
         </figcaption>
 </figure>
@@ -241,14 +241,14 @@
 <li><a href="https://developer.android.com/studio/projects/android-library">Create a module</a></li>
 <li>Identify one or more classes that should not be accessible outside of a specific context</li>
 <li>Move those classes into the module</li>
-<li>add the <code>internal</code> <a href="https://kotlinlang.org/docs/reference/visibility-modifiers.html">visibility modifier</a></li>
+<li>Add the <code>internal</code> <a href="https://kotlinlang.org/docs/reference/visibility-modifiers.html">visibility modifier</a> (or making the class <code>package-private</code> if you&rsquo;re using Java)</li>
 <li>Try to compile and get an error</li>
-<li>Fix this error without removing the internal keyword. This may involve creating a little bit of boilerplate.</li>
+<li>Fix this error without removing the <code>internal</code> keyword. This may involve creating a little bit of boilerplate.</li>
 </ol>
 
 <figure class="zoomable">
     <img src="/images/modularization4.png"
-         alt="compiler error" height="150"/> <figcaption>
+         alt="compiler error" width="80%"/> <figcaption>
             <h4>If you see this warning, you&#39;re headed in the right direction.</h4>
         </figcaption>
 </figure>
@@ -258,7 +258,7 @@
 
 <figure class="zoomable">
     <img src="/images/modularization5.png"
-         alt="a dependency graph" height="400"/> <figcaption>
+         alt="a dependency graph" width="60%"/> <figcaption>
             <h4>Dependency graph, but after internalizing the database module</h4><p>It seems similar to the one above, but with some subtle differences.</p>
         </figcaption>
 </figure>
@@ -268,7 +268,9 @@
 
 <h2 id="the-real-benefit">The real benefit</h2>
 
-<h4 id="when-a-new-developer-works-in-a-non-database-module-and-tries-to-access-the-database-directly-the-compiler-will-stop-them">When a new developer works in a non-database module and tries to access the database directly, the compiler will stop them.</h4>
+<blockquote>
+<p>When a new developer works in a non-database module and tries to access the database directly, the compiler will stop them.</p>
+</blockquote>
 
 <p>The two dependency graphs are similar, except that a moment&rsquo;s thoughtlessness can pull everything into spaghetti in the first instance. I have used the <code>internal</code> modifier in my database module, which means that a developer would be stopped from breaking a delicate separation of concerns with a single function.</p>
 
@@ -280,16 +282,18 @@
 </figure>
 
 
+<p>If you run into these errors in a project, you know the project is well modularized.</p>
+
 <h2 id="conclusion">Conclusion</h2>
 
 <p>We have looked at two ways in which to analyze the state of your modularization:</p>
 
 <ol>
-<li>APK-Dependency-Analyzer; and</li>
-<li>The prevalance of the &ldquo;internal&rdquo; modifier</li>
+<li><a href="https://github.com/alexzaitsev/apk-dependency-graph">APK Dependency Graph Generator</a>; and</li>
+<li>The prevalance of the <code>internal</code> modifier (or lack of <code>public</code> in Java)</li>
 </ol>
 
-<p>I&rsquo;ll probably write some more blogs later, when I run into more issues or noteworthy tips. Modularization can be tricky, but it&rsquo;s worth it.</p></article>
+<p>Look forward to more updates on modularization, coming soon.</p></article>
     <footer class="post-footer">
       
       <ul class="post-tags">

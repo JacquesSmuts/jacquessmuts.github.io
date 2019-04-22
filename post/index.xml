@@ -18,7 +18,7 @@
       <pubDate>Sat, 20 Apr 2019 21:15:17 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/post/modularization/</guid>
-      <description>&lt;p&gt;You should modularize your Kotlin Android app, but you will run into some issues. Here&amp;rsquo;s some tips to help.&lt;/p&gt;</description>
+      <description>&lt;p&gt;You should modularize your Kotlin Android app, since it&amp;rsquo;s the best way to enforce &lt;a href=&#34;https://developer.android.com/jetpack/docs/guide#common-principles&#34;&gt;separation of concerns&lt;/a&gt;, but how do you know if you&amp;rsquo;re doing it right? Here&amp;rsquo;s some tips to help.&lt;/p&gt;</description>
     </item>
     
     <item>
