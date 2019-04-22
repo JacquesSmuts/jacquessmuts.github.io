@@ -215,6 +215,8 @@ I chose the theme <a href="https://themes.gohugo.io/hugo-nuo/">Hugo-Nuo</a> beca
 
 <p>Nick Rout noticed that the <code>quote</code> styling didn&rsquo;t come out right, so I changed that. It also screwed up my normal code highlighting, but I think it&rsquo;s better to use GitHub gists anyway, and I&rsquo;m too lazy to create my own custom code styling template and shortcode in hugo. I&rsquo;ve had some issues with the code highlighting&rsquo;s limited support for Kotlin so I&rsquo;m basically just pretending it doesn&rsquo;t exist.</p>
 
+<p>Nick also noticed that the images stretch badly on mobile. This was because I was setting a constant height to my images, and the width expanded only up until it hit the edge. So I changed all my images to use width=percentage% and now the scaling is right.</p>
+
 <p>I&rsquo;m putting further tests in here. For example:</p>
 
 <h3 id="code-highlighting">Code Highlighting</h3>
@@ -256,7 +258,7 @@ I chose the theme <a href="https://themes.gohugo.io/hugo-nuo/">Hugo-Nuo</a> beca
 
 <figure class="zoomable">
     <img src="/images/how_i_made_this2.png"
-         alt="This is my face" height="400"/> <figcaption>
+         alt="This is my face" width="40%"/> <figcaption>
             <h4>Obviously, this is my face. Click to zoom.</h4>
         </figcaption>
 </figure>

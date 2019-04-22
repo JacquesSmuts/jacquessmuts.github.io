@@ -21,5 +21,14 @@
       <description>&lt;p&gt;You should modularize your Kotlin Android app, since it&amp;rsquo;s the best way to enforce &lt;a href=&#34;https://developer.android.com/jetpack/docs/guide#common-principles&#34;&gt;separation of concerns&lt;/a&gt;, but how do you know if you&amp;rsquo;re doing it right? Here&amp;rsquo;s some tips to help.&lt;/p&gt;</description>
     </item>
     
+    <item>
+      <title>Original Site</title>
+      <link>https://jacquessmuts.github.io/post/original-site/</link>
+      <pubDate>Thu, 18 Apr 2019 17:03:47 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/post/original-site/</guid>
+      <description>&lt;p&gt;My original site is at &lt;a href=&#34;https://jacquessmuts.com&#34;&gt;JacquesSmuts.com&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
   </channel>
 </rss>

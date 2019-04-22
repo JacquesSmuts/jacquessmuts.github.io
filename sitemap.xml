@@ -13,6 +13,11 @@
   </url>
   
   <url>
+    <loc>https://jacquessmuts.github.io/post/original-site/</loc>
+    <lastmod>2019-04-18T17:03:47+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://jacquessmuts.github.io/sites/dependency_positivitea_011/</loc>
   </url>
   
@@ -42,6 +47,12 @@
   <url>
     <loc>https://jacquessmuts.github.io/tags/jacques-smuts/</loc>
     <lastmod>2019-04-20T10:43:30+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/jacquessmuts/</loc>
+    <lastmod>2019-04-18T17:03:47+02:00</lastmod>
     <priority>0</priority>
   </url>
   
