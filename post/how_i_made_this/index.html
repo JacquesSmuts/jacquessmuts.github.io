@@ -17,7 +17,7 @@
   
   
   
-  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
   
 
   
@@ -237,7 +237,7 @@ text-align: center;
   <section class="main post-detail">
     <header class="post-header">
       <h1 class="post-title">How I made this</h1>
-      <p class="post-meta">@Jacques Smuts · Apr 20, 2019 · 2 min read</p>
+      <p class="post-meta">@Jacques Smuts · Apr 20, 2019 · 3 min read</p>
     </header>
     <article class="post-content"><p>This details how I made this static github page.</p>
 
@@ -257,6 +257,10 @@ I chose the theme <a href="https://themes.gohugo.io/hugo-nuo/">Hugo-Nuo</a> beca
 <p>Nick Rout noticed that the <code>quote</code> styling didn&rsquo;t come out right, so I changed that. It also screwed up my normal code highlighting, but I think it&rsquo;s better to use GitHub gists anyway, and I&rsquo;m too lazy to create my own custom code styling template and shortcode in hugo. I&rsquo;ve had some issues with the code highlighting&rsquo;s limited support for Kotlin so I&rsquo;m basically just pretending it doesn&rsquo;t exist.</p>
 
 <p>Nick also noticed that the images stretch badly on mobile. This was because I was setting a constant height to my images, and the width expanded only up until it hit the edge. So I changed all my images to use width=percentage% and now the scaling is right.</p>
+
+<hr />
+
+<p>For SEO purposes, I also added my site to GoogleAnalytics Console, and registered my site with Google Search Console to claim ownership of the domain according to google. I should now get pushed up on Google Search results a bit, and also get analytics on how many people visit my site or click through based on search terms, if I understand correctly.</p>
 
 <p>I&rsquo;m putting further tests in here. For example:</p>
 
@@ -397,6 +401,19 @@ I chose the theme <a href="https://themes.gohugo.io/hugo-nuo/">Hugo-Nuo</a> beca
   }
 </script>
 
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-139178159-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
 
 
 
