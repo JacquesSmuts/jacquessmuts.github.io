@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Sat, 20 Apr 2019 21:15:17 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 25 Apr 2019 10:35:54 +0200</lastBuildDate>
     
 	<atom:link href="https://jacquessmuts.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Don&#39;t Pass Around Your Room/Database Entity</title>
+      <link>https://jacquessmuts.github.io/post/modularization_room/</link>
+      <pubDate>Thu, 25 Apr 2019 10:35:54 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/post/modularization_room/</guid>
+      <description>&lt;p&gt;If you&amp;rsquo;re thinking of modularizing your Android App and you use Android Room, you should not pass around your Room Entity.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Is your modularization making any progress?</title>
