@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ksuspendfunction on Jacques Smuts</title>
+    <link>https://jacquessmuts.github.io/tags/ksuspendfunction/</link>
+    <description>Recent content in Ksuspendfunction on Jacques Smuts</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+    <lastBuildDate>Wed, 01 May 2019 08:30:00 +0200</lastBuildDate>
+    
+	<atom:link href="https://jacquessmuts.github.io/tags/ksuspendfunction/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Generics &#43; Reflection &#43; Type Inference &#43; Reified Type = Kotlin Magic</title>
+      <link>https://jacquessmuts.github.io/post/generic_interface_and_methods/</link>
+      <pubDate>Wed, 01 May 2019 08:30:00 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/post/generic_interface_and_methods/</guid>
+      <description>&lt;p&gt;With Kotlin, it&amp;rsquo;s easier than ever to code with reflection and generics. This post attempts to give one example.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
