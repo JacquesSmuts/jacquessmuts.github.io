@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Wed, 01 May 2019 08:30:00 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 07 May 2019 22:19:00 +0200</lastBuildDate>
     
 	<atom:link href="https://jacquessmuts.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,9 +15,18 @@
     <item>
       <title>Android</title>
       <link>https://jacquessmuts.github.io/tags/android/</link>
-      <pubDate>Wed, 01 May 2019 08:30:00 +0200</pubDate>
+      <pubDate>Tue, 07 May 2019 22:19:00 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Circleci</title>
+      <link>https://jacquessmuts.github.io/tags/circleci/</link>
+      <pubDate>Tue, 07 May 2019 22:19:00 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/tags/circleci/</guid>
       <description></description>
     </item>
     
@@ -69,7 +78,7 @@
     <item>
       <title>Kotlin</title>
       <link>https://jacquessmuts.github.io/tags/kotlin/</link>
-      <pubDate>Wed, 01 May 2019 08:30:00 +0200</pubDate>
+      <pubDate>Tue, 07 May 2019 22:19:00 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/tags/kotlin/</guid>
       <description></description>
@@ -90,6 +99,15 @@
       <pubDate>Wed, 01 May 2019 08:30:00 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/tags/ksuspendfunction1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Library</title>
+      <link>https://jacquessmuts.github.io/tags/library/</link>
+      <pubDate>Tue, 07 May 2019 22:19:00 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/tags/library/</guid>
       <description></description>
     </item>
     

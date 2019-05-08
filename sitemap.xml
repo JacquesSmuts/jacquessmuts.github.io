@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://jacquessmuts.github.io/post/library_template/</loc>
+    <lastmod>2019-05-07T22:19:00+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://jacquessmuts.github.io/post/generic_interface_and_methods/</loc>
     <lastmod>2019-05-01T08:30:00+02:00</lastmod>
   </url>
@@ -28,6 +33,11 @@
   </url>
   
   <url>
+    <loc>https://jacquessmuts.github.io/post/references/</loc>
+    <lastmod>2019-01-10T19:53:22+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://jacquessmuts.github.io/google6c0f7879e1b35ea7/</loc>
   </url>
   
@@ -37,12 +47,18 @@
   
   <url>
     <loc>https://jacquessmuts.github.io/tags/android/</loc>
-    <lastmod>2019-05-01T08:30:00+02:00</lastmod>
+    <lastmod>2019-05-07T22:19:00+02:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jacquessmuts.github.io/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/circleci/</loc>
+    <lastmod>2019-05-07T22:19:00+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -54,7 +70,7 @@
   
   <url>
     <loc>https://jacquessmuts.github.io/</loc>
-    <lastmod>2019-05-01T08:30:00+02:00</lastmod>
+    <lastmod>2019-05-07T22:19:00+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -84,7 +100,7 @@
   
   <url>
     <loc>https://jacquessmuts.github.io/tags/kotlin/</loc>
-    <lastmod>2019-05-01T08:30:00+02:00</lastmod>
+    <lastmod>2019-05-07T22:19:00+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -101,6 +117,12 @@
   </url>
   
   <url>
+    <loc>https://jacquessmuts.github.io/tags/library/</loc>
+    <lastmod>2019-05-07T22:19:00+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://jacquessmuts.github.io/tags/modularization/</loc>
     <lastmod>2019-04-25T10:35:54+02:00</lastmod>
     <priority>0</priority>
@@ -108,7 +130,7 @@
   
   <url>
     <loc>https://jacquessmuts.github.io/post/</loc>
-    <lastmod>2019-05-01T08:30:00+02:00</lastmod>
+    <lastmod>2019-05-07T22:19:00+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -125,7 +147,7 @@
   
   <url>
     <loc>https://jacquessmuts.github.io/tags/</loc>
-    <lastmod>2019-05-01T08:30:00+02:00</lastmod>
+    <lastmod>2019-05-07T22:19:00+02:00</lastmod>
     <priority>0</priority>
   </url>
   
