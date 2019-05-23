@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Wed, 08 May 2019 17:54:58 +0200</lastBuildDate>
+    <lastBuildDate>Mon, 20 May 2019 23:12:36 +0200</lastBuildDate>
     
 	<atom:link href="https://jacquessmuts.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Escaping Callback Hell with Generic SuspendCoroutine Infix Extension Functions</title>
+      <link>https://jacquessmuts.github.io/post/callback_hell/</link>
+      <pubDate>Mon, 20 May 2019 23:12:36 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/post/callback_hell/</guid>
+      <description>&lt;p&gt;Callback hell happens all the time in Android. Luckily, with coroutines, there&amp;rsquo;s an easy way out.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>The Problem with Kotlin Kfunction Receiver Functions</title>
@@ -81,7 +90,8 @@
       <pubDate>Thu, 10 Jan 2019 19:53:22 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/post/references/</guid>
-      <description>List of appearances and refences, from new to old 2019-05-05: Room Article featured in Android Weekly #360
+      <description>List of appearances and refences, from new to old 2019-05-14: Generics Article featured in Android Weekly #361
+2019-05-05: Room Article featured in Android Weekly #360
 2019-05-05: Generics Article featured in Kotlin Weekly #144
 2019-12-09: RxJava Presentation featured in Android Weekly #339
 2019-12-07: Presented RxJava: As Simple and Powerful As I Can Make It at GDG DevFest Johannesburg 2018</description>
