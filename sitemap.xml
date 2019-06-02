@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://jacquessmuts.github.io/post/coroutine_sync_mutex/</loc>
+    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://jacquessmuts.github.io/post/callback_hell/</loc>
     <lastmod>2019-05-20T23:12:36+02:00</lastmod>
   </url>
@@ -80,7 +85,13 @@
   
   <url>
     <loc>https://jacquessmuts.github.io/tags/coroutines/</loc>
-    <lastmod>2019-05-20T23:12:36+02:00</lastmod>
+    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/critical-section/</loc>
+    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -98,7 +109,7 @@
   
   <url>
     <loc>https://jacquessmuts.github.io/</loc>
-    <lastmod>2019-05-20T23:12:36+02:00</lastmod>
+    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -128,7 +139,7 @@
   
   <url>
     <loc>https://jacquessmuts.github.io/tags/kotlin/</loc>
-    <lastmod>2019-05-20T23:12:36+02:00</lastmod>
+    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -157,8 +168,14 @@
   </url>
   
   <url>
+    <loc>https://jacquessmuts.github.io/tags/mutex/</loc>
+    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://jacquessmuts.github.io/post/</loc>
-    <lastmod>2019-05-20T23:12:36+02:00</lastmod>
+    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -180,8 +197,20 @@
   </url>
   
   <url>
+    <loc>https://jacquessmuts.github.io/tags/suspend/</loc>
+    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://jacquessmuts.github.io/tags/suspendcoroutine/</loc>
     <lastmod>2019-05-20T23:12:36+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/synchronized/</loc>
+    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
     <priority>0</priority>
   </url>
   
