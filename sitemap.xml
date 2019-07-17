@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://jacquessmuts.github.io/post/coroutines_presentation/</loc>
+    <lastmod>2019-07-17T21:53:05+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://jacquessmuts.github.io/post/coroutine_sync_mutex/</loc>
     <lastmod>2019-06-02T09:08:10+02:00</lastmod>
   </url>
@@ -62,7 +67,7 @@
   
   <url>
     <loc>https://jacquessmuts.github.io/tags/android/</loc>
-    <lastmod>2019-05-20T23:12:36+02:00</lastmod>
+    <lastmod>2019-07-17T21:53:05+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -109,7 +114,7 @@
   
   <url>
     <loc>https://jacquessmuts.github.io/</loc>
-    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
+    <lastmod>2019-07-17T21:53:05+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -139,7 +144,7 @@
   
   <url>
     <loc>https://jacquessmuts.github.io/tags/kotlin/</loc>
-    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
+    <lastmod>2019-07-17T21:53:05+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -175,7 +180,7 @@
   
   <url>
     <loc>https://jacquessmuts.github.io/post/</loc>
-    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
+    <lastmod>2019-07-17T21:53:05+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -216,7 +221,7 @@
   
   <url>
     <loc>https://jacquessmuts.github.io/tags/</loc>
-    <lastmod>2019-05-20T23:12:36+02:00</lastmod>
+    <lastmod>2019-07-17T21:53:05+02:00</lastmod>
     <priority>0</priority>
   </url>
   
