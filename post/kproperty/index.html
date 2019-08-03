@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Getting arbitrary properties from unknown classes with KProperty</title>
+
+  
+  
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  <link href="///disqus.com" rel="dns-prefetch">
+  <link href="//c.disquscdn.com" rel="dns-prefetch">
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
+
+  
+
+  
+  <meta name="author" content="Jacques Smuts">
+  <meta name="description" content="The Kproperty class is powerful and useful.
+">
+
+  
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@jacquessmuts">
+    <meta name="twitter:title" content="Getting arbitrary properties from unknown classes with KProperty">
+    <meta name="twitter:description" content="The Kproperty class is powerful and useful.
+">
+    <meta name="twitter:image" content="https://jacquessmuts.github.io/images/generic_interfaces3.png">
+  
+
+  
+  <script src="https://unpkg.com/kotlin-playground@1" data-selector=".kotlin-code"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Getting arbitrary properties from unknown classes with KProperty">
+  <meta property="og:description" content="The Kproperty class is powerful and useful.
+">
+  <meta property="og:url" content="https://jacquessmuts.github.io/post/kproperty/">
+  <meta property="og:image" content="https://jacquessmuts.github.io/images/generic_interfaces3.png">
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0">
+
+
+<link rel="canonical" href="https://jacquessmuts.github.io/post/kproperty/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
+
+
+
+
+
+
+
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Jacques Smuts">
+<meta name="msapplication-tooltip" content="Jacques Smuts">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
+<link rel="manifest" href="/manifest.json">
+
+
+<link rel="preload" href="/styles/main.min.css" as="style">
+
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="/images/avatar.png" as="image">
+<link rel="preload" href="/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="/styles/main.min.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
+
+
+  
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
+
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
+      
+        
+        <a role="button" aria-label="Go to comments" title="Go to comments" class="to-comment" href="#disqus_thread"><span class="icon icon-comment" aria-hidden="true"></span></a>
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="/images/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Jacques Smuts</h2>
+  
+  <p class="subtitle">~ Android Developer~</p>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
+  </button>
+
+  
+
+
+
+<style>
+#share-buttons {display: inline-block; vertical-align: middle; }
+#share-buttons:after {content: ""; display: block; clear: both;}
+#share-buttons > div {
+position: relative;
+text-align: left; 
+height: 36px; 
+width: 32px; 
+float: left; 
+text-align: center;
+}
+#share-buttons > div > svg {height: 16px; fill: #d5d5d5; margin-top: 10px;}
+#share-buttons > div:hover {cursor: pointer;}
+#share-buttons > div.facebook:hover > svg {fill: #3B5998;}
+#share-buttons > div.twitter:hover > svg {fill: #55ACEE;}
+#share-buttons > div.linkedin:hover > svg {fill: #0077b5;}
+#share-buttons > div.pinterest:hover > svg {fill: #CB2027;}
+#share-buttons > div.mail:hover > svg {fill: #7D7D7D;}
+#share-buttons > div.instagram:hover > svg {fill: #C73B92;}
+#share-buttons > div.facebook > svg {height: 18px; margin-top: 9px;}
+#share-buttons > div.twitter > svg {height: 20px; margin-top: 8px;}
+#share-buttons > div.linkedin > svg {height: 19px; margin-top: 7px;}
+#share-buttons > div.pinterest > svg {height: 20px; margin-top: 9px;}
+#share-buttons > div.mail > svg {height: 14px; margin-top: 11px;}
+</style>
+
+<span style="color: silver;">Share on: </span><div id="share-buttons">
+<div class="facebook" title="Share this on Facebook" onclick="window.open('http://www.facebook.com/share.php?u=https:\/\/jacquessmuts.github.io\/\/post\/kproperty\/');"><svg viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1343 12v264h-157q-86 0-116 36t-30 108v189h293l-39 296h-254v759h-306v-759h-255v-296h255v-218q0-186 104-288.5t277-102.5q147 0 228 12z"/></svg></div>
+<div class="twitter" title="Share this on Twitter" onclick="window.open('http://twitter.com/home?status=https:\/\/jacquessmuts.github.io\/\/post\/kproperty\/');"><svg viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1684 408q-67 98-162 167 1 14 1 42 0 130-38 259.5t-115.5 248.5-184.5 210.5-258 146-323 54.5q-271 0-496-145 35 4 78 4 225 0 401-138-105-2-188-64.5t-114-159.5q33 5 61 5 43 0 85-11-112-23-185.5-111.5t-73.5-205.5v-4q68 38 146 41-66-44-105-115t-39-154q0-88 44-163 121 149 294.5 238.5t371.5 99.5q-8-38-8-74 0-134 94.5-228.5t228.5-94.5q140 0 236 102 109-21 205-78-37 115-142 178 93-10 186-50z"/></svg></div>
+<div class="linkedin" title="Share this on Linkedin" onclick="window.open('https://www.linkedin.com/shareArticle?mini=true&url=https:\/\/jacquessmuts.github.io\/\/post\/kproperty\/&title=&summary=&source=');"><svg viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M477 625v991h-330v-991h330zm21-306q1 73-50.5 122t-135.5 49h-2q-82 0-132-49t-50-122q0-74 51.5-122.5t134.5-48.5 133 48.5 51 122.5zm1166 729v568h-329v-530q0-105-40.5-164.5t-126.5-59.5q-63 0-105.5 34.5t-63.5 85.5q-11 30-11 81v553h-329q2-399 2-647t-1-296l-1-48h329v144h-2q20-32 41-56t56.5-52 87-43.5 114.5-15.5q171 0 275 113.5t104 332.5z"/></svg></div>
+
+<div class="mail" title="Share this through Email" onclick="window.open('mailto:?&body=https:\/\/jacquessmuts.github.io\/\/post\/kproperty\/');"><svg viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1792 710v794q0 66-47 113t-113 47h-1472q-66 0-113-47t-47-113v-794q44 49 101 87 362 246 497 345 57 42 92.5 65.5t94.5 48 110 24.5h2q51 0 110-24.5t94.5-48 92.5-65.5q170-123 498-345 57-39 100-87zm0-294q0 79-49 151t-122 123q-376 261-468 325-10 7-42.5 30.5t-54 38-52 32.5-57.5 27-50 9h-2q-23 0-50-9t-57.5-27-52-32.5-54-38-42.5-30.5q-91-64-262-182.5t-205-142.5q-62-42-117-115.5t-55-136.5q0-78 41.5-130t118.5-52h1472q65 0 112.5 47t47.5 113z"/></svg></div>
+</div>
+
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+          
+          
+           is-active">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://github.com/jacquessmuts">Works</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/post/references/">I&#39;m Famous, Mom</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list"><li class="social-item">
+          <a href="mailto:githubpage@jacquessmuts.com" title="Email" aria-label="Email">
+            <span class="icon icon-email" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//github.com/jacquessmuts" title="GitHub" aria-label="GitHub">
+            <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//twitter.com/jacquessmuts" title="Twitter" aria-label="Twitter">
+            <span class="icon icon-twitter" aria-hidden="true"></span>
+          </a>
+        </li></ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Getting arbitrary properties from unknown classes with KProperty</h1>
+      <p class="post-meta">@Jacques Smuts · Jul 20, 2019 · 7 min read</p>
+    </header>
+    <article class="post-content"><p>The Kproperty class is powerful and useful.</p>
+
+<h3 id="accessing-a-property-normally">Accessing a property, normally</h3>
+
+<p>You have a class, maybe a <code>data class</code>, to retain info about films. Our class might look like this:</p>
+
+<div class="kotlin-code" 
+     
+    data-target-platform="java"
+    
+     >
+    <pre>
+        <code class="hljs language-kotlin">
+        
+
+fun main (args: Array&lt;String&gt;) {
+//sampleStart
+	[mark]data class Film(val name: String, val releaseDate: Long, val runtime: Int)[/mark]
+    val hereditary = Film(&#34;Hereditary&#34;, 1528401600, 127)
+    println(hereditary.name)
+//sampleEnd
+
+	println(&#34;is the best horror film since The Thing&#34;)
+}
+
+        </code>
+    </pre>
+</div>
+
+<p>Which is fine for a basic class. However there are a massive amount of different films. And different film types, with different attributes. Horror films have some sort of monster or threat, but drama films don&rsquo;t. Animated films have an animation style, and documentary films have an educational subject matter. A simple solution would be to extend your <code>Film</code> class to have multiple <code>null</code>able fields to reflect all of the potential properties of a film. That solution would reflect a database table more accurately and can be a perfectly fine solution.</p>
+
+<h2 id="dynamic-typing-via-interfaces">Dynamic Typing via Interfaces</h2>
+
+<p>But perhaps you have a constraint where a better approach would be to follow the SOLID principles and create some sort of <a href="https://medium.com/@severinperez/avoiding-interface-pollution-with-the-interface-segregation-principle-5d3859c21013">Clean Code implementation of interfaces</a> that a data class can extend. A bunch of little interfaces, like so:</p>
+
+<div class="kotlin-code" 
+     
+    data-target-platform="java"
+    
+     >
+    <pre>
+        <code class="hljs language-kotlin">
+        
+
+//sampleStart
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+//sampleEnd
+
+fun main (args: Array&lt;String&gt;) {
+    val divergent = YoungAdultFilm(&#34;Divergent&#34;, 1395172800, 127, 50, &#34;fascism&#34;, 1, true)
+    println(divergent.name)
+   	println(&#34;is not.&#34;)
+}
+
+        </code>
+    </pre>
+</div>
+
+<p>Yes, this is a fairly unusual way of doing it, but sometimes it is required due to circumstances outside of your control. Luckily it still has some advantages in type safety. For example, now we are able to do checks to determine whether or not a given class is a certain type and return the property of our choosing. With the magic of Kotlin&rsquo;s aggressive type inference, this code compiles and is typesafe:</p>
+
+<div class="kotlin-code" 
+     
+    data-target-platform="java"
+    
+     >
+    <pre>
+        <code class="hljs language-kotlin">
+        
+
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+
+
+fun main (args: Array&lt;String&gt;) {
+    val midsommar = YoungAdultFilm(&#34;Midsommar&#34;, 1395172800, 127, 0, &#34;Society&#34;, 1, true)
+    val hasLoveTriangles = hasLoveTriangles(midsommar)
+    println(&#34;${midsommar.name} has love triangles? $hasLoveTriangles&#34;)
+}
+//sampleStart
+fun hasLoveTriangles(film: Film): Boolean {
+    
+    return if (film is Romance) {
+        film.loveTriangles &gt; 0
+    } else {
+        false
+    }
+}
+//sampleEnd
+
+
+        </code>
+    </pre>
+</div>
+
+<p>The film might or might not be a Romance. But the moment we have done a check for <code>film is Romance</code> then the compiler can infer that the film has the <code>loveTriangles</code> property.</p>
+
+<p>Pretty convenient right?</p>
+
+<p>But now for every single property we have to write this out manually. If film is <code>PostApocalyptic</code>, then get the <code>causeOfSocietalCollapse</code> property. If the film is <code>Romance</code>, then get the <code>happyEnding</code> property. And so forth for every single property of every interface which extends <code>Film</code>.</p>
+
+<p>This all becomes rather tedious. So maybe we should rather write out something Generic, which allows us to check for any arbitrary property. Is this even possible?</p>
+
+<h2 id="generics-saves-the-day-again">Generics Saves the Day Again</h2>
+
+<p>Yes. We can iterate through the properties and find the one which matches a name we specify. This is not an ideal solution because we have to pass in a string. Not very typesafe. And if any variable name changes, that string will no longer match.</p>
+
+<p>However, with Kotlin&rsquo;s <code>inline</code> and <code>reified</code> keywords, we can do amazing generic work. First you have to have the Kotlin Reflection Library, (as described in my <a href="https://jacquessmuts.github.io/post/generic_interface_and_methods/">previous article on Reflection</a>).</p>
+
+<p>Then you have to read about <a href="https://kotlinlang.org/docs/tutorials/kotlin-for-py/member-references-and-reflection.html">Reflection and KProperty&lt;&gt;</a> and that if you can get access to a property, you can obtain the value of that property by using <code>kproperty.get(instance)</code>.</p>
+
+<p>Then putting all that together then we can write out a fairly simple generic function, like so:</p>
+
+<div class="kotlin-code" 
+     
+    data-target-platform="java"
+    
+     >
+    <pre>
+        <code class="hljs language-kotlin">
+        
+import kotlin.reflect.KProperty1
+
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+
+
+//sampleStart
+fun main (args: Array&lt;String&gt;) {
+
+    val film = YoungAdultFilm(&#34;The End of Evangelion&#34;, 869342400, 85, 20, &#34;Instrumentality&#34;, 1, true)
+
+    [mark]val hasHappyEnding: Boolean? = getAttribute(film, Romance::happyEnding)[/mark]
+    println(&#34;${film.name} has a happy ending? $hasHappyEnding&#34;)
+}
+
+inline fun &lt;T, reified Interface&gt; getAttribute(input: Film, property: KProperty1&lt;Interface, *&gt;): T? {
+    if (input is Interface) {
+        return property.get(input) as? T
+    }
+    return null
+}
+//sampleEnd
+
+        </code>
+    </pre>
+</div>
+
+<p>Now you can just pass in your <code>Interface::Property</code> reference and you&rsquo;ll know that the right property type will be accessed, that the property is definitely linked to the right interface, and that any future name changes will not result in breaking changes without the IDE telling you.</p>
+
+<p>This looks pretty great so far. If you want to keep going you can turn the getAttribute into an Extension Function or infix function on the Film class. Maybe you find this to be a bit more readable:</p>
+
+<div class="kotlin-code" 
+     
+    data-target-platform="java"
+    
+     >
+    <pre>
+        <code class="hljs language-kotlin">
+        
+import kotlin.reflect.KProperty1
+
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+
+fun main (args: Array&lt;String&gt;) {
+
+    val film = YoungAdultFilm(&#34;The End of Evangelion&#34;, 869342400, 85, 20, &#34;Instrumentality&#34;, 1, true)
+
+//sampleStart
+    val hasHappyEnding = film.getAttribute(Romance::happyEnding) ?: false
+//sampleEnd
+    
+    println(&#34;${film.name} has a happy ending? $hasHappyEnding&#34;)
+}
+
+inline fun &lt;T, reified Interface&gt;Film.getAttribute(property: KProperty1&lt;Interface, *&gt;): T? {
+    return getFilmAttribute(this, property)
+}
+
+inline fun &lt;T, reified Interface&gt; getFilmAttribute(input: Film, property: KProperty1&lt;Interface, *&gt;): T? {
+    if (input is Interface) {
+        return property.get(input) as? T
+    }
+    return null
+}
+
+
+        </code>
+    </pre>
+</div>
+
+<h3 id="win-win">Win win?</h3>
+
+<p>Well mostly. The disadvantage is that you can&rsquo;t know whether or not any given property is nullable or not. Via this method, everything becomes nullable. To obtain only non-nullable values you have to either do the type-casting manually, or use a default value. You can see me passing <code>false</code> into the elvis operator above as a default value.</p>
+
+<p>Furthermore, there&rsquo;s a performance cost.</p>
+
+<h3 id="reflection-is-slower-but-by-how-much">Reflection is Slower, But By How Much?</h3>
+
+<p>Luckily this one is fairly simple to test. I just access the property several times, and log how long it takes to do that directly or via reflection. The code is here, and you can run it to see the result for yourself:</p>
+
+<div class="kotlin-code" 
+     
+    data-target-platform="java"
+    
+     >
+    <pre>
+        <code class="hljs language-kotlin">
+        
+import kotlin.reflect.KProperty1
+import kotlin.system.measureTimeMillis
+
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+
+//sampleStart
+val iterations = 1000000000
+fun main (args: Array&lt;String&gt;) {
+
+    val normalTime = measureTimeMillis(::normalDirectAccessTime)
+    println(&#34;It takes $normalTime milliseconds to do $iterations direct property access operations&#34;)
+    
+    val reflectionTime = measureTimeMillis(::reflectionAccessTime)
+    println(&#34;It takes $reflectionTime milliseconds to do $iterations reflected property access operations&#34;)
+   
+}
+//sampleEnd
+
+fun normalDirectAccessTime() {
+   
+    val film = YoungAdultFilm(&#34;The End of Evangelion&#34;, 869342400, 85, 20, &#34;Instrumentality&#34;, 1, true)
+
+    repeat(iterations) {
+        film.happyEnding
+    }
+}
+
+
+fun reflectionAccessTime() {
+   
+    val film = YoungAdultFilm(&#34;The End of Evangelion&#34;, 869342400, 85, 20, &#34;Instrumentality&#34;, 1, true)
+
+    repeat(iterations) {
+        getAttribute(film, Romance::happyEnding) ?: false
+    }
+}
+
+inline fun &lt;T, reified Interface&gt; getAttribute(input: Film, property: KProperty1&lt;Interface, *&gt;): T? {
+    if (input is Interface) {
+        return property.get(input) as? T
+    }
+    return null
+}
+
+
+        </code>
+    </pre>
+</div>
+
+<p>In my case, the reflected property access operation takes on average about 2.5 times longer than the direct access.</p>
+
+<p>That&rsquo;s actually pretty impressive. I was expecting more than 90% decrease in performance, instead it&rsquo;s only about 60%. Not ideal if you care about optimizing for billions of operations per second, but acceptable for less intense usecases.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<ul>
+<li>Reflection is great</li>
+<li>Generics are amazing</li>
+<li>Kotlin Generics + Reflection + Type Inference is mindblowing</li>
+</ul>
+
+<p>If you can get your mind around higher-order functions, generics, and reflection, you will become way more efficient as a developer. I hope this shows an example why.</p></article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="/tags/android"><span class="tag">Android</span></a></li>
+        
+          <li><a href="/tags/kotlin"><span class="tag">Kotlin</span></a></li>
+        
+          <li><a href="/tags/kproperty"><span class="tag">Kproperty</span></a></li>
+        
+          <li><a href="/tags/reflection"><span class="tag">Reflection</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.
+      </p>
+    </footer>
+    
+      <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jacquessmuts" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      
+    
+  </section>
+  
+<footer class="site-footer">
+  <p>© 2017-2019 Jacques Smuts</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+  
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
+
+
+
+
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    },
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+
+
+<script src="/scripts/index.min.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('\/service-worker.js').then(function() {
+      console.log('[ServiceWorker] Registered');
+    });
+  }
+</script>
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-139178159-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+  </body>
+</html>

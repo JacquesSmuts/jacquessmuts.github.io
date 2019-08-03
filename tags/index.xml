@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Wed, 17 Jul 2019 21:53:05 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 20 Jul 2019 20:29:26 +0200</lastBuildDate>
     
 	<atom:link href="https://jacquessmuts.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,7 +15,7 @@
     <item>
       <title>Android</title>
       <link>https://jacquessmuts.github.io/tags/android/</link>
-      <pubDate>Wed, 17 Jul 2019 21:53:05 +0200</pubDate>
+      <pubDate>Sat, 20 Jul 2019 20:29:26 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/tags/android/</guid>
       <description></description>
@@ -114,9 +114,18 @@
     <item>
       <title>Kotlin</title>
       <link>https://jacquessmuts.github.io/tags/kotlin/</link>
-      <pubDate>Wed, 17 Jul 2019 21:53:05 +0200</pubDate>
+      <pubDate>Sat, 20 Jul 2019 20:29:26 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/tags/kotlin/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Kproperty</title>
+      <link>https://jacquessmuts.github.io/tags/kproperty/</link>
+      <pubDate>Sat, 20 Jul 2019 20:29:26 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/tags/kproperty/</guid>
       <description></description>
     </item>
     
@@ -171,6 +180,15 @@
       <pubDate>Wed, 08 May 2019 17:54:58 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/tags/receiver-function/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Reflection</title>
+      <link>https://jacquessmuts.github.io/tags/reflection/</link>
+      <pubDate>Sat, 20 Jul 2019 20:29:26 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/tags/reflection/</guid>
       <description></description>
     </item>
     
