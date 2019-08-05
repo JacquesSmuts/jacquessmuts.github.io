@@ -250,7 +250,7 @@ text-align: center;
   <section class="main post-detail">
     <header class="post-header">
       <h1 class="post-title">Getting arbitrary properties from unknown classes with KProperty</h1>
-      <p class="post-meta">@Jacques Smuts · Aug 1, 2019 · 7 min read</p>
+      <p class="post-meta">@Jacques Smuts · Aug 1, 2019 · 8 min read</p>
     </header>
     <article class="post-content"><p>The Kproperty class is powerful and useful.</p>
 
@@ -468,6 +468,10 @@ inline fun &lt;T, reified Interface&gt; getAttribute(input: Film, property: KPro
 
 <p>Now you can just pass in your <code>Interface::Property</code> reference and you&rsquo;ll know that the right property type will be accessed, that the property is definitely linked to the right interface, and that any future name changes will not result in breaking changes without the IDE telling you.</p>
 
+<h4 id="to-explain-the-function">To explain the function:</h4>
+
+<p>KProperty1 takes as Generic input the interface or class to which it belongs, as well as the required output. In our case we allow any output (<code>&lt;*&gt;</code>), but it must be a property of the given <code>&lt;Interface&gt;</code>. In short, we can theoretically get <em>any attribute</em> from a given class with casting, but that isn&rsquo;t safe. Instead we use this function, and with the <code>&lt;Interface&gt;</code> we pass in, it is still (mostly) typesafe and reliable.</p>
+
 <p>This looks pretty great so far. If you want to keep going you can turn the getAttribute into an Extension Function or infix function on the Film class. Maybe you find this to be a bit more readable:</p>
 
 <div class="kotlin-code" 
@@ -536,7 +540,9 @@ inline fun &lt;T, reified Interface&gt; getFilmAttribute(input: Film, property: 
 
 <p>Well mostly. The disadvantage is that you can&rsquo;t know whether or not any given property is nullable or not. Via this method, everything becomes nullable. To obtain only non-nullable values you have to either do the type-casting manually, or use a default value. You can see me passing <code>false</code> into the elvis operator above as a default value.</p>
 
-<p>Furthermore, there&rsquo;s a performance cost.</p>
+<p>Furthermore it is possible to attempt to get the wrong Type (String instead of Boolean), in which case you&rsquo;ll get a null back instead of the right Type.</p>
+
+<p>Finally, there&rsquo;s a performance cost.</p>
 
 <h3 id="reflection-is-slower-but-by-how-much">Reflection is Slower, But By How Much?</h3>
 
@@ -584,6 +590,9 @@ fun main (args: Array&lt;String&gt;) {
 
     val normalTime = measureTimeMillis(::normalDirectAccessTime)
     println(&#34;It takes $normalTime milliseconds to do $iterations direct property access operations&#34;)
+
+    val manualCastingTime = measureTimeMillis(::manualCastingAccessTime)
+    println(&#34;It takes $manualCastingTime milliseconds to do $iterations manual casting property access operations&#34;)
     
     val reflectionTime = measureTimeMillis(::reflectionAccessTime)
     println(&#34;It takes $reflectionTime milliseconds to do $iterations reflected property access operations&#34;)
@@ -598,6 +607,22 @@ fun normalDirectAccessTime() {
     repeat(iterations) {
         film.happyEnding
     }
+}
+
+fun manualCastingAccessTime() {
+	val film = YoungAdultFilm(&#34;The End of Evangelion&#34;, 869342400, 85, 20, &#34;Instrumentality&#34;, 1, true)
+
+    repeat(iterations) {
+        getHappyEnding(film)
+    }
+}
+
+fun getHappyEnding(film: Film): Boolean {
+	return if (film is Romance) {
+		film.happyEnding
+	} else {
+		false
+	}
 }
 
 
@@ -622,19 +647,13 @@ inline fun &lt;T, reified Interface&gt; getAttribute(input: Film, property: KPro
     </pre>
 </div>
 
-<p>In my case, the reflected property access operation takes on average about 2.5 times longer than the direct access.</p>
+<p>In my case, the reflected property access operation takes on average about 2.5 times longer than the direct access. And the manual casting takes just a smidgeon longer than the normal direct access.</p>
 
-<p>That&rsquo;s actually pretty impressive. I was expecting more than 90% decrease in performance, instead it&rsquo;s only about 60%. Not ideal if you care about optimizing for billions of operations per second, but acceptable for less intense usecases.</p>
+<p>That&rsquo;s actually pretty impressive. I was expecting more than 90% decrease in performance for reflection; instead it&rsquo;s only about 60%. This is not ideal if you care about optimizing for billions of operations per second, but acceptable for less intense usecases, such as in user(Android) applications that cater for a single user at a time.</p>
 
 <h3 id="conclusion">Conclusion</h3>
 
-<ul>
-<li>Reflection is great</li>
-<li>Generics are amazing</li>
-<li>Kotlin Generics + Reflection + Type Inference is mindblowing</li>
-</ul>
-
-<p>If you can get your mind around higher-order functions, generics, and reflection, you will become way more efficient as a developer. I hope this shows an example why.</p></article>
+<p>KProperty is an essential class for doing higher-order programming in Kotlin. You can use it to get further information about any given property, or you can use it to obtain properties that you don&rsquo;t normally have access to, as demonstrated above.</p></article>
     <footer class="post-footer">
       
       <ul class="post-tags">
@@ -644,6 +663,8 @@ inline fun &lt;T, reified Interface&gt; getAttribute(input: Film, property: KPro
           <li><a href="/tags/kotlin"><span class="tag">Kotlin</span></a></li>
         
           <li><a href="/tags/kproperty"><span class="tag">Kproperty</span></a></li>
+        
+          <li><a href="/tags/kproperty1"><span class="tag">Kproperty1</span></a></li>
         
           <li><a href="/tags/reflection"><span class="tag">Reflection</span></a></li>
         
