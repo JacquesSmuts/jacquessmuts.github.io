@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Kfunction on Jacques Smuts</title>
+    <title>KFunction on Jacques Smuts</title>
     <link>https://jacquessmuts.github.io/tags/kfunction/</link>
-    <description>Recent content in Kfunction on Jacques Smuts</description>
+    <description>Recent content in KFunction on Jacques Smuts</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
@@ -18,7 +18,7 @@
       <pubDate>Wed, 08 May 2019 17:54:58 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/post/kfunction_analogues/</guid>
-      <description>&lt;p&gt;KFunction can be written in more than one way. Here&amp;rsquo;s a list of analogues, plus some criticism of the Receiver Function.&lt;/p&gt;</description>
+      <description>&lt;p&gt;KFunction can be written in more than one way. Here&#39;s a list of analogues, plus some criticism of the Receiver Function.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -27,7 +27,7 @@
       <pubDate>Wed, 01 May 2019 08:30:00 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/post/generic_interface_and_methods/</guid>
-      <description>&lt;p&gt;With Kotlin, it&amp;rsquo;s easier than ever to code with reflection and generics. This post attempts to give one example.&lt;/p&gt;</description>
+      <description>&lt;p&gt;With Kotlin, it&#39;s easier than ever to code with reflection and generics. This post attempts to give one example.&lt;/p&gt;</description>
     </item>
     
   </channel>

@@ -24,7 +24,7 @@
 
   
   <meta name="author" content="Jacques Smuts">
-  <meta name="description" content="Callback hell happens all the time in Android. Luckily, with coroutines, there&amp;rsquo;s an easy way out.
+  <meta name="description" content="Callback hell happens all the time in Android. Luckily, with coroutines, there&#39;s an easy way out.
 ">
 
   
@@ -32,7 +32,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@jacquessmuts">
     <meta name="twitter:title" content="Escaping Callback Hell with Generic SuspendCoroutine Infix Extension Functions">
-    <meta name="twitter:description" content="Callback hell happens all the time in Android. Luckily, with coroutines, there&amp;rsquo;s an easy way out.
+    <meta name="twitter:description" content="Callback hell happens all the time in Android. Luckily, with coroutines, there&#39;s an easy way out.
 ">
     <meta name="twitter:image" content="https://jacquessmuts.github.io/images/callback_hell4.png">
   
@@ -47,7 +47,7 @@
   
   <meta property="og:type" content="article">
   <meta property="og:title" content="Escaping Callback Hell with Generic SuspendCoroutine Infix Extension Functions">
-  <meta property="og:description" content="Callback hell happens all the time in Android. Luckily, with coroutines, there&amp;rsquo;s an easy way out.
+  <meta property="og:description" content="Callback hell happens all the time in Android. Luckily, with coroutines, there&#39;s an easy way out.
 ">
   <meta property="og:url" content="https://jacquessmuts.github.io/post/callback_hell/">
   <meta property="og:image" content="https://jacquessmuts.github.io/images/callback_hell4.png">
@@ -55,7 +55,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.54.0">
+<meta name="generator" content="Hugo 0.62.2">
 
 
 <link rel="canonical" href="https://jacquessmuts.github.io/post/callback_hell/">
@@ -83,19 +83,19 @@
 <meta name='msapplication-navbutton-color' content="#02b875">
 <meta name="msapplication-TileColor" content="#02b875">
 <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
-<link rel="icon" href="/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
-<link rel="icon" sizes="192x192" href="/icons/icon-192x192.png">
-<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
-<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="https://jacquessmuts.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://jacquessmuts.github.io/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://jacquessmuts.github.io/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="https://jacquessmuts.github.io/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="https://jacquessmuts.github.io/icons/icon-152x152.png">
+<link rel="manifest" href="https://jacquessmuts.github.io/manifest.json">
 
 
-<link rel="preload" href="/styles/main.min.css" as="style">
+<link rel="preload" href="https://jacquessmuts.github.io/styles/main.min.css" as="style">
 
 <link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
-<link rel="preload" href="/images/avatar.png" as="image">
-<link rel="preload" href="/images/grey-prism.svg" as="image">
+<link rel="preload" href="https://jacquessmuts.github.io/images/avatar.png" as="image">
+<link rel="preload" href="https://jacquessmuts.github.io/images/grey-prism.svg" as="image">
 
 
 <style>
@@ -103,7 +103,7 @@
     background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
   }
 </style>
-<link rel="stylesheet" href="/styles/main.min.css">
+<link rel="stylesheet" href="https://jacquessmuts.github.io/styles/main.min.css">
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
 
@@ -133,64 +133,25 @@
 
 </head>
   <body>
-    
     <div class="suspension">
       <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
       
         
-        <a role="button" aria-label="Go to comments" title="Go to comments" class="to-comment" href="#disqus_thread"><span class="icon icon-comment" aria-hidden="true"></span></a>
+	<a role="button" aria-label="Go to comments" title="Go to comments" class="to-comment" href="#disqus_thread"><span class="icon icon-comment" aria-hidden="true"></span></a>
         
       
     </div>
     
     
   <header class="site-header">
-  <img class="avatar" src="/images/avatar.png" alt="Avatar">
+  <a href="https://jacquessmuts.github.io/"><img class="avatar" src="https://jacquessmuts.github.io/images/avatar.png" alt="Avatar"></a>
   
-  <h2 class="title">Jacques Smuts</h2>
+  <h2 class="title"><a href="https://jacquessmuts.github.io/">Jacques Smuts</a></h2>
   
   <p class="subtitle">~ Android Developer~</p>
   <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
     <span class="icon icon-menu" aria-hidden="true"></span>
   </button>
-
-  
-
-
-
-<style>
-#share-buttons {display: inline-block; vertical-align: middle; }
-#share-buttons:after {content: ""; display: block; clear: both;}
-#share-buttons > div {
-position: relative;
-text-align: left; 
-height: 36px; 
-width: 32px; 
-float: left; 
-text-align: center;
-}
-#share-buttons > div > svg {height: 16px; fill: #d5d5d5; margin-top: 10px;}
-#share-buttons > div:hover {cursor: pointer;}
-#share-buttons > div.facebook:hover > svg {fill: #3B5998;}
-#share-buttons > div.twitter:hover > svg {fill: #55ACEE;}
-#share-buttons > div.linkedin:hover > svg {fill: #0077b5;}
-#share-buttons > div.pinterest:hover > svg {fill: #CB2027;}
-#share-buttons > div.mail:hover > svg {fill: #7D7D7D;}
-#share-buttons > div.instagram:hover > svg {fill: #C73B92;}
-#share-buttons > div.facebook > svg {height: 18px; margin-top: 9px;}
-#share-buttons > div.twitter > svg {height: 20px; margin-top: 8px;}
-#share-buttons > div.linkedin > svg {height: 19px; margin-top: 7px;}
-#share-buttons > div.pinterest > svg {height: 20px; margin-top: 9px;}
-#share-buttons > div.mail > svg {height: 14px; margin-top: 11px;}
-</style>
-
-<span style="color: silver;">Share on: </span><div id="share-buttons">
-<div class="facebook" title="Share this on Facebook" onclick="window.open('http://www.facebook.com/share.php?u=https:\/\/jacquessmuts.github.io\/\/post\/callback_hell\/');"><svg viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1343 12v264h-157q-86 0-116 36t-30 108v189h293l-39 296h-254v759h-306v-759h-255v-296h255v-218q0-186 104-288.5t277-102.5q147 0 228 12z"/></svg></div>
-<div class="twitter" title="Share this on Twitter" onclick="window.open('http://twitter.com/home?status=https:\/\/jacquessmuts.github.io\/\/post\/callback_hell\/');"><svg viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1684 408q-67 98-162 167 1 14 1 42 0 130-38 259.5t-115.5 248.5-184.5 210.5-258 146-323 54.5q-271 0-496-145 35 4 78 4 225 0 401-138-105-2-188-64.5t-114-159.5q33 5 61 5 43 0 85-11-112-23-185.5-111.5t-73.5-205.5v-4q68 38 146 41-66-44-105-115t-39-154q0-88 44-163 121 149 294.5 238.5t371.5 99.5q-8-38-8-74 0-134 94.5-228.5t228.5-94.5q140 0 236 102 109-21 205-78-37 115-142 178 93-10 186-50z"/></svg></div>
-<div class="linkedin" title="Share this on Linkedin" onclick="window.open('https://www.linkedin.com/shareArticle?mini=true&url=https:\/\/jacquessmuts.github.io\/\/post\/callback_hell\/&title=&summary=&source=');"><svg viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M477 625v991h-330v-991h330zm21-306q1 73-50.5 122t-135.5 49h-2q-82 0-132-49t-50-122q0-74 51.5-122.5t134.5-48.5 133 48.5 51 122.5zm1166 729v568h-329v-530q0-105-40.5-164.5t-126.5-59.5q-63 0-105.5 34.5t-63.5 85.5q-11 30-11 81v553h-329q2-399 2-647t-1-296l-1-48h329v144h-2q20-32 41-56t56.5-52 87-43.5 114.5-15.5q171 0 275 113.5t104 332.5z"/></svg></div>
-
-<div class="mail" title="Share this through Email" onclick="window.open('mailto:?&body=https:\/\/jacquessmuts.github.io\/\/post\/callback_hell\/');"><svg viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1792 710v794q0 66-47 113t-113 47h-1472q-66 0-113-47t-47-113v-794q44 49 101 87 362 246 497 345 57 42 92.5 65.5t94.5 48 110 24.5h2q51 0 110-24.5t94.5-48 92.5-65.5q170-123 498-345 57-39 100-87zm0-294q0 79-49 151t-122 123q-376 261-468 325-10 7-42.5 30.5t-54 38-52 32.5-57.5 27-50 9h-2q-23 0-50-9t-57.5-27-52-32.5-54-38-42.5-30.5q-91-64-262-182.5t-205-142.5q-62-42-117-115.5t-55-136.5q0-78 41.5-130t118.5-52h1472q65 0 112.5 47t47.5 113z"/></svg></div>
-</div>
 
   <nav class="site-menu collapsed">
     <h2 class="offscreen">Main Menu</h2>
@@ -203,7 +164,7 @@ text-align: center;
           
           
            is-active">
-          <a href="/">Home</a>
+          <a href="https://jacquessmuts.github.io/">Home</a>
         </li>
       
         <li class="menu-item
@@ -217,14 +178,14 @@ text-align: center;
           
           
           ">
-          <a href="/post/references/">I&#39;m Famous, Mom</a>
+          <a href="https://jacquessmuts.github.io/post/references/">I&#39;m Famous, Mom</a>
         </li>
       
         <li class="menu-item
           
           
           ">
-          <a href="/tags/">Tags</a>
+          <a href="https://jacquessmuts.github.io/tags/">Tags</a>
         </li>
       
     </ul>
@@ -236,11 +197,11 @@ text-align: center;
             <span class="icon icon-email" aria-hidden="true"></span>
           </a>
         </li><li class="social-item">
-          <a href="//github.com/jacquessmuts" title="GitHub" aria-label="GitHub">
-            <span class="icon icon-github" aria-hidden="true"></span>
+          <a href="//github.com/jacquessmuts" rel="me" title="GitHub" aria-label="GitHub">
+	    <span class="icon icon-github" aria-hidden="true"></span>
           </a>
         </li><li class="social-item">
-          <a href="//twitter.com/jacquessmuts" title="Twitter" aria-label="Twitter">
+          <a href="//twitter.com/jacquessmuts" rel="me" title="Twitter" aria-label="Twitter">
             <span class="icon icon-twitter" aria-hidden="true"></span>
           </a>
         </li></ul>
@@ -252,115 +213,62 @@ text-align: center;
       <h1 class="post-title">Escaping Callback Hell with Generic SuspendCoroutine Infix Extension Functions</h1>
       <p class="post-meta">@Jacques Smuts · May 20, 2019 · 5 min read</p>
     </header>
-    <article class="post-content"><p>Callback hell happens all the time in Android. Luckily, with coroutines, there&rsquo;s an easy way out.</p>
-
-<p>So you&rsquo;re hopefully aware of <a href="http://callbackhell.com/">callback hell</a>, which makes your code difficult to read, and also makes the sequence of events difficult to understand. This is something we want to avoid, but it&rsquo;s not always easy. If you&rsquo;re using any sort of third-party library, (like Firebase) you&rsquo;re probably forced into this pattern regularly. A simple callback would look like this:</p>
-
-<script type="application/javascript" src="//gist.github.com/JacquesSmuts/6cdad47d20e6c4f2a92ebee4f1ff8640.js"></script>
-
-<p>As you can see, we&rsquo;re one level into callbacks. At a glance, it would seem like the result would be handled immediately after sending out the <code>saveUsername</code> function. But it in fact creates an asynchronous task (most likely on the IO thread). Which means the order of events quickly becomes unclear, especially to a new developer climbing on the project. An experienced dev would know that the order of events isn&rsquo;t clear, but it&rsquo;ll take a few minutes to fully comprehend what the actual order is.</p>
-
+    <article class="post-content"><p>Callback hell happens all the time in Android. Luckily, with coroutines, there's an easy way out.</p>
+<p>So you're hopefully aware of <a href="http://callbackhell.com/">callback hell</a>, which makes your code difficult to read, and also makes the sequence of events difficult to understand. This is something we want to avoid, but it's not always easy. If you're using any sort of third-party library, (like Firebase) you're probably forced into this pattern regularly. A simple callback would look like this:</p>
+<!-- raw HTML omitted -->
+<p>As you can see, we're one level into callbacks. At a glance, it would seem like the result would be handled immediately after sending out the <code>saveUsername</code> function. But it in fact creates an asynchronous task (most likely on the IO thread). Which means the order of events quickly becomes unclear, especially to a new developer climbing on the project. An experienced dev would know that the order of events isn't clear, but it'll take a few minutes to fully comprehend what the actual order is.</p>
 <p>However, if your operation is suitable for coroutines (such as API calls, disk writes or background processes) we can &ldquo;flatten&rdquo; the callback hell fairly easily.</p>
-
 <h3 id="suspendcoroutine">SuspendCoroutine</h3>
-
-<p>I&rsquo;m assuming you&rsquo;re aware of coroutines and suspendFunctions already. If not, it&rsquo;s time to <a href="https://kotlinlang.org/docs/reference/coroutines-overview.html">start using them</a>. First, I need to introduce suspendCoroutine. The <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines.experimental/suspend-coroutine.html">official documentation on suspendCoroutine</a> doesn&rsquo;t make it particularly clear. But <a href="https://stackoverflow.com/questions/50315802/correct-way-to-suspend-coroutine-until-taskt-is-complete">this StackOverflow answer</a> provides a good idea of how to use it. So if we were to write a suspendCoroutine version of our function, it would look like this:</p>
-
-<script type="application/javascript" src="//gist.github.com/JacquesSmuts/40462adab3f657da91d25dfdba84ef99.js"></script>
-
+<p>I'm assuming you're aware of coroutines and suspendFunctions already. If not, it's time to <a href="https://kotlinlang.org/docs/reference/coroutines-overview.html">start using them</a>. First, I need to introduce suspendCoroutine. The <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines.experimental/suspend-coroutine.html">official documentation on suspendCoroutine</a> doesn't make it particularly clear. But <a href="https://stackoverflow.com/questions/50315802/correct-way-to-suspend-coroutine-until-taskt-is-complete">this StackOverflow answer</a> provides a good idea of how to use it. So if we were to write a suspendCoroutine version of our function, it would look like this:</p>
+<!-- raw HTML omitted -->
 <p>As you can see, the saveUsername function has turned into a function which returns the result in the same line, but can only be called from a coroutineContext/suspendFunction. This is perfect for making your code look cleaner and run in sequence with more confidence.</p>
-
 <p>However, it requires you to write a suspendCoroutine function for each function you want to flatten in this way. This adds a lot of boilerplate. So is there some way we can use generics to avoid this boilerplate? Of course!</p>
-
 <h3 id="generic-suspendcoroutine">Generic SuspendCoroutine</h3>
-
-<p>If you read my <a href="https://jacquessmuts.github.io/post/generic_interface_and_methods/">first article on kotlin generics</a> you&rsquo;ll know that the IntelliJ IDE is smarter than us, so we&rsquo;ll use it to generate our function. We&rsquo;ll call our function <code>suspendAsync()</code> and pass in our method, along with the input, and see what happens. Remember you can pass a method reference with <code>instance::method</code></p>
-
-<figure class="zoomable">
-    <img src="/images/callback_hell1.png"
-         alt="compiler error" width="80%"/> <figcaption>
-            <h4>If you see this warning, you&#39;re headed in the right direction. </h4>
-        </figcaption>
-</figure>
-
-
+<p>If you read my <a href="https://jacquessmuts.github.io/post/generic_interface_and_methods/">first article on kotlin generics</a> you'll know that the IntelliJ IDE is smarter than us, so we'll use it to generate our function. We'll call our function <code>suspendAsync()</code> and pass in our method, along with the input, and see what happens. Remember you can pass a method reference with <code>instance::method</code></p>
+<!-- raw HTML omitted -->
 <p>Then IntelliJ creates a function which looks like this:</p>
-
-<figure class="zoomable">
-    <img src="/images/callback_hell2.png"
-         alt="compiler result" width="80%"/> <figcaption>
-            <h4>Not generic yet. </h4>
-        </figcaption>
-</figure>
-
-
+<!-- raw HTML omitted -->
 <p>And through a little bit of Generic reworking, as well as <a href="https://jacquessmuts.github.io/post/kfunction_analogues/">my knowledge of KFunction analogues</a>, I replaced the <code>&lt;String&gt;</code> input and output types with generic types, resulting in this function:</p>
-
-<script type="application/javascript" src="//gist.github.com/JacquesSmuts/8ae63a3da81d38708c0c35a300280a86.js"></script>
-
-<p>As you can see, it&rsquo;s about the same as our previous function. The difference is, you can pass in any function which takes a single input and a function callback, and it becomes a one-liner instead of a callback.</p>
-
-<p>If you want to pass in two inputs, it&rsquo;s slightly trickier, but still very doable:</p>
-
-<script type="application/javascript" src="//gist.github.com/JacquesSmuts/9d1c10544e72c4d88e978ca65c5f07ff.js"></script>
-
-<p>And there you have it. You can reduce any qualifying callback with these functions. Other variations can be covered with a few more generic functions. However, it doesn&rsquo;t feel very nice calling a function in this way. First you write <code>suspendAsync</code>, then you pass in the function you actually want to call? Not the best, because we&rsquo;re used to referencing the function we want to call first.</p>
-
+<!-- raw HTML omitted -->
+<p>As you can see, it's about the same as our previous function. The difference is, you can pass in any function which takes a single input and a function callback, and it becomes a one-liner instead of a callback.</p>
+<p>If you want to pass in two inputs, it's slightly trickier, but still very doable:</p>
+<!-- raw HTML omitted -->
+<p>And there you have it. You can reduce any qualifying callback with these functions. Other variations can be covered with a few more generic functions. However, it doesn't feel very nice calling a function in this way. First you write <code>suspendAsync</code>, then you pass in the function you actually want to call? Not the best, because we're used to referencing the function we want to call first.</p>
 <p>So maybe we can do better?</p>
-
 <h3 id="generic-infix-suspendcoroutine-extension-function">Generic Infix SuspendCoroutine Extension Function</h3>
-
-<p>I like the <a href="https://kotlinlang.org/docs/reference/functions.html#infix-notation">infix notation in Kotlin</a>, though I usually avoid it because it&rsquo;s a little dangerous and it&rsquo;s not easy for new developers to discover it&rsquo;s usage in any given codebase. In this case the increased readability and ease of use may be worth it.</p>
-
+<p>I like the <a href="https://kotlinlang.org/docs/reference/functions.html#infix-notation">infix notation in Kotlin</a>, though I usually avoid it because it's a little dangerous and it's not easy for new developers to discover it's usage in any given codebase. In this case the increased readability and ease of use may be worth it.</p>
 <p>So using the same method of letting the IDE generate our function for us, we write out the infix function we want. I call it <code>suspendAndInvokeWith</code>, because we are invoking a function, turning it into a suspend function, and passing in arguments.</p>
-
-<figure class="zoomable">
-    <img src="/images/callback_hell3.png"
-         alt="compiler result" width="80%"/> <figcaption>
-            <h4>If it wasn&#39;t for compiler suggestions I&#39;d be useless. </h4>
-        </figcaption>
-</figure>
-
-
+<!-- raw HTML omitted -->
 <p>Which we clean up and genericify a little bit into our result:</p>
-
-<script type="application/javascript" src="//gist.github.com/JacquesSmuts/d099eff5e66aa6b1d5de924f87c9e967.js"></script>
-
+<!-- raw HTML omitted -->
 <p>This feels a lot more natural. You start out by writing the function you would normally write, using the infix notation and passing in your input.</p>
-
 <p>Infix functions require only a single input, so if you want to pass in more than one argument into a function, you need to do it by using Pairs or Triples, like so:</p>
-
-<script type="application/javascript" src="//gist.github.com/JacquesSmuts/b6b45f506d001005bc8914e0925986cc.js"></script>
-
-<p>And there you have it. This won&rsquo;t work on everything, but it&rsquo;s a start to reducing boilerplate.</p>
-
+<!-- raw HTML omitted -->
+<p>And there you have it. This won't work on everything, but it's a start to reducing boilerplate.</p>
 <h3 id="source">Source</h3>
-
-<p>At <a href="https://flatcircle.io/">Flat Circle</a>, we&rsquo;re trying to make our code as readable as possible, and found that using coroutines and avoiding callback hell is a good way to go about doing this. So we built these infix notations (and a few other utility functions) into a little <a href="https://github.com/flatcircle/coroutinehelper">CoroutineHelper Library</a> to make our lives easier. Please go ahead and use that library or copy the code to help make your code as readable as possible.</p>
-
+<p>At <a href="https://flatcircle.io/">Flat Circle</a>, we're trying to make our code as readable as possible, and found that using coroutines and avoiding callback hell is a good way to go about doing this. So we built these infix notations (and a few other utility functions) into a little <a href="https://github.com/flatcircle/coroutinehelper">CoroutineHelper Library</a> to make our lives easier. Please go ahead and use that library or copy the code to help make your code as readable as possible.</p>
 <h3 id="conclusion">Conclusion</h3>
-
-<p>Callback hell isn&rsquo;t the end of the world, but sometimes it can add just a little bit too much confusion to an already complex lifecycle. Hopefully with Coroutines, coupled with the techniques and Generic Utility functions above, you can reduce callback hell a little bit in your code.</p></article>
+<p>Callback hell isn't the end of the world, but sometimes it can add just a little bit too much confusion to an already complex lifecycle. Hopefully with Coroutines, coupled with the techniques and Generic Utility functions above, you can reduce callback hell a little bit in your code.</p></article>
     <footer class="post-footer">
       
       <ul class="post-tags">
         
-          <li><a href="/tags/android"><span class="tag">Android</span></a></li>
+          <li><a href="https://jacquessmuts.github.io/tags/android"><span class="tag">Android</span></a></li>
         
-          <li><a href="/tags/kotlin"><span class="tag">Kotlin</span></a></li>
+          <li><a href="https://jacquessmuts.github.io/tags/kotlin"><span class="tag">Kotlin</span></a></li>
         
-          <li><a href="/tags/suspendcoroutine"><span class="tag">SuspendCoroutine</span></a></li>
+          <li><a href="https://jacquessmuts.github.io/tags/suspendcoroutine"><span class="tag">SuspendCoroutine</span></a></li>
         
-          <li><a href="/tags/coroutines"><span class="tag">Coroutines</span></a></li>
+          <li><a href="https://jacquessmuts.github.io/tags/coroutines"><span class="tag">Coroutines</span></a></li>
         
-          <li><a href="/tags/callback-hell"><span class="tag">Callback Hell</span></a></li>
+          <li><a href="https://jacquessmuts.github.io/tags/callback-hell"><span class="tag">Callback Hell</span></a></li>
         
-          <li><a href="/tags/infix-notation"><span class="tag">Infix Notation</span></a></li>
+          <li><a href="https://jacquessmuts.github.io/tags/infix-notation"><span class="tag">Infix Notation</span></a></li>
         
       </ul>
       
       <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>170</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>271</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     
@@ -389,7 +297,7 @@ text-align: center;
   </section>
   
 <footer class="site-footer">
-  <p>© 2017-2019 Jacques Smuts</p>
+  <p>© 2017-2020 Jacques Smuts</p>
   <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
   
 </footer>
@@ -429,7 +337,7 @@ text-align: center;
 
 
 
-<script src="/scripts/index.min.js"></script>
+<script src="https://jacquessmuts.github.io/scripts/index.min.js"></script>
 
 <script>
   if ('serviceWorker' in navigator) {

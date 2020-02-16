@@ -1,9 +1,49 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://jacquessmuts.github.io/tags/android/</loc>
+    <lastmod>2019-08-01T20:29:26+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://jacquessmuts.github.io/post/kproperty/</loc>
+    <lastmod>2019-08-01T20:29:26+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/</loc>
+    <lastmod>2019-08-01T20:29:26+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/kotlin/</loc>
+    <lastmod>2019-08-01T20:29:26+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/kproperty/</loc>
+    <lastmod>2019-08-01T20:29:26+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/kproperty1/</loc>
+    <lastmod>2019-08-01T20:29:26+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/post/</loc>
+    <lastmod>2019-08-01T20:29:26+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/reflection/</loc>
+    <lastmod>2019-08-01T20:29:26+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/</loc>
     <lastmod>2019-08-01T20:29:26+02:00</lastmod>
   </url>
   
@@ -13,8 +53,38 @@
   </url>
   
   <url>
+    <loc>https://jacquessmuts.github.io/tags/coroutines/</loc>
+    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/critical-section/</loc>
+    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/mutex/</loc>
+    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/suspend/</loc>
+    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/synchronized/</loc>
+    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://jacquessmuts.github.io/post/coroutine_sync_mutex/</loc>
     <lastmod>2019-06-02T09:08:10+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/callback-hell/</loc>
+    <lastmod>2019-05-20T23:12:36+02:00</lastmod>
   </url>
   
   <url>
@@ -23,12 +93,57 @@
   </url>
   
   <url>
+    <loc>https://jacquessmuts.github.io/tags/infix-notation/</loc>
+    <lastmod>2019-05-20T23:12:36+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/suspendcoroutine/</loc>
+    <lastmod>2019-05-20T23:12:36+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/kfunction/</loc>
+    <lastmod>2019-05-08T17:54:58+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/kfunction1/</loc>
+    <lastmod>2019-05-08T17:54:58+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/ksuspendfunction/</loc>
+    <lastmod>2019-05-08T17:54:58+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/ksuspendfunction1/</loc>
+    <lastmod>2019-05-08T17:54:58+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/receiver-function/</loc>
+    <lastmod>2019-05-08T17:54:58+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://jacquessmuts.github.io/post/kfunction_analogues/</loc>
     <lastmod>2019-05-08T17:54:58+02:00</lastmod>
   </url>
   
   <url>
+    <loc>https://jacquessmuts.github.io/tags/circleci/</loc>
+    <lastmod>2019-05-07T22:19:00+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://jacquessmuts.github.io/post/library_template/</loc>
+    <lastmod>2019-05-07T22:19:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/library/</loc>
     <lastmod>2019-05-07T22:19:00+02:00</lastmod>
   </url>
   
@@ -43,6 +158,16 @@
   </url>
   
   <url>
+    <loc>https://jacquessmuts.github.io/tags/modularization/</loc>
+    <lastmod>2019-04-25T10:35:54+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/room/</loc>
+    <lastmod>2019-04-25T10:35:54+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://jacquessmuts.github.io/post/modularization/</loc>
     <lastmod>2019-04-20T21:15:17+02:00</lastmod>
   </url>
@@ -50,6 +175,21 @@
   <url>
     <loc>https://jacquessmuts.github.io/post/how_i_made_this/</loc>
     <lastmod>2019-04-20T10:43:30+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/hugo/</loc>
+    <lastmod>2019-04-20T10:43:30+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/jacques-smuts/</loc>
+    <lastmod>2019-04-20T10:43:30+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacquessmuts.github.io/tags/jacquessmuts/</loc>
+    <lastmod>2019-04-18T17:03:47+02:00</lastmod>
   </url>
   
   <url>
@@ -64,188 +204,20 @@
   
   <url>
     <loc>https://jacquessmuts.github.io/google6c0f7879e1b35ea7/</loc>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/sites/dependency_positivitea_011/</loc>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/android/</loc>
-    <lastmod>2019-08-01T20:29:26+02:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://jacquessmuts.github.io/tags/callback-hell/</loc>
-    <lastmod>2019-05-20T23:12:36+02:00</lastmod>
+    <loc>https://jacquessmuts.github.io/sites/dependency_positivitea_011/</loc>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jacquessmuts.github.io/categories/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/circleci/</loc>
-    <lastmod>2019-05-07T22:19:00+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/coroutines/</loc>
-    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/critical-section/</loc>
-    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/hugo/</loc>
-    <lastmod>2019-04-20T10:43:30+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/infix-notation/</loc>
-    <lastmod>2019-05-20T23:12:36+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/</loc>
-    <lastmod>2019-08-01T20:29:26+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/jacques-smuts/</loc>
-    <lastmod>2019-04-20T10:43:30+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/jacquessmuts/</loc>
-    <lastmod>2019-04-18T17:03:47+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/kfunction/</loc>
-    <lastmod>2019-05-08T17:54:58+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/kfunction1/</loc>
-    <lastmod>2019-05-08T17:54:58+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/kotlin/</loc>
-    <lastmod>2019-08-01T20:29:26+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/kproperty/</loc>
-    <lastmod>2019-08-01T20:29:26+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/kproperty1/</loc>
-    <lastmod>2019-08-01T20:29:26+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/ksuspendfunction/</loc>
-    <lastmod>2019-05-08T17:54:58+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/ksuspendfunction1/</loc>
-    <lastmod>2019-05-08T17:54:58+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/library/</loc>
-    <lastmod>2019-05-07T22:19:00+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/modularization/</loc>
-    <lastmod>2019-04-25T10:35:54+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/mutex/</loc>
-    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/post/</loc>
-    <lastmod>2019-08-01T20:29:26+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/receiver-function/</loc>
-    <lastmod>2019-05-08T17:54:58+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/reflection/</loc>
-    <lastmod>2019-08-01T20:29:26+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/room/</loc>
-    <lastmod>2019-04-25T10:35:54+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jacquessmuts.github.io/sites/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/suspend/</loc>
-    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/suspendcoroutine/</loc>
-    <lastmod>2019-05-20T23:12:36+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/synchronized/</loc>
-    <lastmod>2019-06-02T09:08:10+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jacquessmuts.github.io/tags/</loc>
-    <lastmod>2019-08-01T20:29:26+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
 </urlset>

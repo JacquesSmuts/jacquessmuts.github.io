@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Jacques Smuts</title>
@@ -45,7 +45,7 @@
       <pubDate>Mon, 20 May 2019 23:12:36 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/post/callback_hell/</guid>
-      <description>&lt;p&gt;Callback hell happens all the time in Android. Luckily, with coroutines, there&amp;rsquo;s an easy way out.&lt;/p&gt;</description>
+      <description>&lt;p&gt;Callback hell happens all the time in Android. Luckily, with coroutines, there&#39;s an easy way out.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -54,7 +54,7 @@
       <pubDate>Wed, 08 May 2019 17:54:58 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/post/kfunction_analogues/</guid>
-      <description>&lt;p&gt;KFunction can be written in more than one way. Here&amp;rsquo;s a list of analogues, plus some criticism of the Receiver Function.&lt;/p&gt;</description>
+      <description>&lt;p&gt;KFunction can be written in more than one way. Here&#39;s a list of analogues, plus some criticism of the Receiver Function.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -72,7 +72,7 @@
       <pubDate>Wed, 01 May 2019 08:30:00 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/post/generic_interface_and_methods/</guid>
-      <description>&lt;p&gt;With Kotlin, it&amp;rsquo;s easier than ever to code with reflection and generics. This post attempts to give one example.&lt;/p&gt;</description>
+      <description>&lt;p&gt;With Kotlin, it&#39;s easier than ever to code with reflection and generics. This post attempts to give one example.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -81,7 +81,7 @@
       <pubDate>Thu, 25 Apr 2019 10:35:54 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/post/modularization_room/</guid>
-      <description>&lt;p&gt;If you&amp;rsquo;re thinking of modularizing your Android App and you use Android Room, you should not pass around your Room Entity.&lt;/p&gt;</description>
+      <description>&lt;p&gt;If you&#39;re thinking of modularizing your Android App and you use Android Room, you should not pass around your Room Entity.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -90,7 +90,7 @@
       <pubDate>Sat, 20 Apr 2019 21:15:17 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/post/modularization/</guid>
-      <description>&lt;p&gt;You should modularize your Kotlin Android app, since it&amp;rsquo;s the best way to enforce &lt;a href=&#34;https://developer.android.com/jetpack/docs/guide#common-principles&#34;&gt;separation of concerns&lt;/a&gt;, but how do you know if you&amp;rsquo;re doing it right? Here&amp;rsquo;s some tips to help.&lt;/p&gt;</description>
+      <description>&lt;p&gt;You should modularize your Kotlin Android app, since it&#39;s the best way to enforce &lt;a href=&#34;https://developer.android.com/jetpack/docs/guide#common-principles&#34;&gt;separation of concerns&lt;/a&gt;, but how do you know if you&#39;re doing it right? Here&#39;s some tips to help.&lt;/p&gt;</description>
     </item>
     
     <item>

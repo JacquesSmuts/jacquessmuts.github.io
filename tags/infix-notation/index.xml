@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Infix Notation on Jacques Smuts</title>
+    <title>infix notation on Jacques Smuts</title>
     <link>https://jacquessmuts.github.io/tags/infix-notation/</link>
-    <description>Recent content in Infix Notation on Jacques Smuts</description>
+    <description>Recent content in infix notation on Jacques Smuts</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
@@ -18,7 +18,7 @@
       <pubDate>Mon, 20 May 2019 23:12:36 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/post/callback_hell/</guid>
-      <description>&lt;p&gt;Callback hell happens all the time in Android. Luckily, with coroutines, there&amp;rsquo;s an easy way out.&lt;/p&gt;</description>
+      <description>&lt;p&gt;Callback hell happens all the time in Android. Luckily, with coroutines, there&#39;s an easy way out.&lt;/p&gt;</description>
     </item>
     
   </channel>
