@@ -214,6 +214,7 @@
       <p class="post-meta">@Jacques · Feb 16, 2020 · 2 min read</p>
     </header>
     <article class="post-content"><p>You can use a <!-- raw HTML omitted --> drawable to easily differentiate between flavors and variants. This will show you how.</p>
+<h2 id="why">Why?</h2>
 <p>Ever wanted to have different icons for each flavor and variant in your Android app? Something like a little bug to indicate the debug version of your app, like so:</p>
 <figure>
     <img src="https://jacquessmuts.github.io/images/layerlist4.png"
@@ -221,6 +222,7 @@
 </figure>
 
 <p>Sure, but it's effort. And you have to ask a designer to make a bunch of different icons. Or, even worse, you have to create a bunch of different icons yourself. That's wasteful, so instead you should use a layer-list. To automatically generate icons you do the following. Assuming you have <code>mipmap/ic_launcher</code> icon already, you should</p>
+<h2 id="how">How?</h2>
 <p>1.) Create an <code>ic_launcher_overlaid.xml</code> file in your <code>main/drawable</code> folder, with the following content:</p>
 <script type="application/javascript" src="https://gist.github.com/JacquesSmuts/3541b17741c40e3c24453830d0ee102a.js"></script>
 
@@ -251,7 +253,9 @@
          alt="An inordinate fondness for beetles" width="10%"/> 
 </figure>
 
-<p>If you're wondering about Adaptive Icons, all you have to know is that the adaptive icon references a foreground drawable. In the same way that you can replace the <code>ic_launcher</code> with a layer-list, you can also replace <code>ic_launcher_foreground</code> with a layer-list.</p></article>
+<p>If you're wondering about Adaptive Icons, all you have to know is that the adaptive icon references a foreground drawable. In the same way that you can replace the <code>ic_launcher</code> with a layer-list, you can also replace <code>ic_launcher_foreground</code> with a layer-list.</p>
+<hr>
+<p>I'd like to thank my colleague, Laurie Scheepers, for suggesting we try xml drawables as app icons.</p></article>
     <footer class="post-footer">
       
       <ul class="post-tags">
