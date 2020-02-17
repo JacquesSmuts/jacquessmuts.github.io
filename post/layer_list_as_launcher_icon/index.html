@@ -221,8 +221,9 @@
          alt="An inordinate fondness for beetles" width="40%"/> 
 </figure>
 
-<p>Sure, but it's effort. And you have to ask a designer to make a bunch of different icons. Or, even worse, you have to create a bunch of different icons yourself. That's wasteful, so instead you should use a layer-list. To automatically generate icons you do the following. Assuming you have <code>mipmap/ic_launcher</code> icon already, you should</p>
+<p>Sure, but it's effort. And you have to ask a designer to make a bunch of different icons. Or, even worse, you have to create a bunch of different icons yourself. That's wasteful, so instead you should use a layer-list. It has a default icon, and then it can dynamically insert an overlay image on top of your launcher icon, based upon your flavor or build variant. That way, you don't need a bunch of different icons.</p>
 <h2 id="how">How?</h2>
+<p>Assuming you have <code>mipmap/ic_launcher</code> icon already, you should</p>
 <p>1.) Create an <code>ic_launcher_overlaid.xml</code> file in your <code>main/drawable</code> folder, with the following content:</p>
 <script type="application/javascript" src="https://gist.github.com/JacquesSmuts/3541b17741c40e3c24453830d0ee102a.js"></script>
 
