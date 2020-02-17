@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Thu, 01 Aug 2019 20:29:26 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 16 Feb 2020 14:54:38 +0200</lastBuildDate>
     
 	<atom:link href="https://jacquessmuts.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,9 +15,36 @@
     <item>
       <title>android</title>
       <link>https://jacquessmuts.github.io/tags/android/</link>
-      <pubDate>Thu, 01 Aug 2019 20:29:26 +0200</pubDate>
+      <pubDate>Sun, 16 Feb 2020 14:54:38 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ic_launcher.png</title>
+      <link>https://jacquessmuts.github.io/tags/ic_launcher.png/</link>
+      <pubDate>Sun, 16 Feb 2020 14:54:38 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/tags/ic_launcher.png/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Launcher Icon</title>
+      <link>https://jacquessmuts.github.io/tags/launcher-icon/</link>
+      <pubDate>Sun, 16 Feb 2020 14:54:38 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/tags/launcher-icon/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Layer-List as launcher</title>
+      <link>https://jacquessmuts.github.io/tags/layer-list-as-launcher/</link>
+      <pubDate>Sun, 16 Feb 2020 14:54:38 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/tags/layer-list-as-launcher/</guid>
       <description></description>
     </item>
     

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ic_launcher.png on Jacques Smuts</title>
+    <link>https://jacquessmuts.github.io/tags/ic_launcher.png/</link>
+    <description>Recent content in ic_launcher.png on Jacques Smuts</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+    <lastBuildDate>Sun, 16 Feb 2020 14:54:38 +0200</lastBuildDate>
+    
+	<atom:link href="https://jacquessmuts.github.io/tags/ic_launcher.png/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Add Overlays to Your Launcher Icon Using Layer-List</title>
+      <link>https://jacquessmuts.github.io/post/layer_list_as_launcher_icon/</link>
+      <pubDate>Sun, 16 Feb 2020 14:54:38 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/post/layer_list_as_launcher_icon/</guid>
+      <description>&lt;p&gt;You can use a &lt;!-- raw HTML omitted --&gt; drawable to easily differentiate between flavors and variants. This will show you how.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

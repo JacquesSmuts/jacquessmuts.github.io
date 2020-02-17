@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
 
   
-  <title>Creating and Deploying an Android Library via CircleCI</title>
+  <title>Add Overlays to Your Launcher Icon Using Layer-List</title>
 
   
   
@@ -23,18 +23,18 @@
   
 
   
-  <meta name="author" content="Jacques Smuts">
-  <meta name="description" content="This is the template I use to create new Android libraries with CircleCI support for Continuous Deployment.
+  <meta name="author" content="Author Name">
+  <meta name="description" content="You can use a drawable to easily differentiate between flavors and variants. This will show you how.
 ">
 
   
   
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@jacquessmuts">
-    <meta name="twitter:title" content="Creating and Deploying an Android Library via CircleCI">
-    <meta name="twitter:description" content="This is the template I use to create new Android libraries with CircleCI support for Continuous Deployment.
+    <meta name="twitter:title" content="Add Overlays to Your Launcher Icon Using Layer-List">
+    <meta name="twitter:description" content="You can use a drawable to easily differentiate between flavors and variants. This will show you how.
 ">
-    <meta name="twitter:image" content="https://jacquessmuts.github.io/images/library_template3.png">
+    <meta name="twitter:image" content="https://jacquessmuts.github.io/images/layerlist3.png">
   
 
   
@@ -46,11 +46,11 @@
 
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Creating and Deploying an Android Library via CircleCI">
-  <meta property="og:description" content="This is the template I use to create new Android libraries with CircleCI support for Continuous Deployment.
+  <meta property="og:title" content="Add Overlays to Your Launcher Icon Using Layer-List">
+  <meta property="og:description" content="You can use a drawable to easily differentiate between flavors and variants. This will show you how.
 ">
-  <meta property="og:url" content="https://jacquessmuts.github.io/post/library_template/">
-  <meta property="og:image" content="https://jacquessmuts.github.io/images/library_template3.png">
+  <meta property="og:url" content="https://jacquessmuts.github.io/post/layer_list_as_launcher_icon/">
+  <meta property="og:image" content="https://jacquessmuts.github.io/images/layerlist3.png">
 
 
 
@@ -58,7 +58,7 @@
 <meta name="generator" content="Hugo 0.62.2">
 
 
-<link rel="canonical" href="https://jacquessmuts.github.io/post/library_template/">
+<link rel="canonical" href="https://jacquessmuts.github.io/post/layer_list_as_launcher_icon/">
 
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -210,82 +210,64 @@
 
   <section class="main post-detail">
     <header class="post-header">
-      <h1 class="post-title">Creating and Deploying an Android Library via CircleCI</h1>
-      <p class="post-meta">@Jacques Smuts · May 7, 2019 · 3 min read</p>
+      <h1 class="post-title">Add Overlays to Your Launcher Icon Using Layer-List</h1>
+      <p class="post-meta">@Author Name · Feb 16, 2020 · 2 min read</p>
     </header>
-    <article class="post-content"><p>This is the template I use to create new Android libraries with CircleCI support for Continuous Deployment.</p>
-<h2 id="libraries-better-than-util-classes">Libraries: Better Than Util Classes</h2>
-<p>I often find myself copying code from other projects. After some discussion with my colleagues we decided to put everything that we re-use into libraries. Even those tiny util functions you usually just copy-paste when you need it. Libraries are better than copy-pasting for several reasons:</p>
-<ol>
-<li>It makes future work easier</li>
-<li>Writing a library teaches you to think more abstractly about any problem you're trying to solve.</li>
-<li>Future work can benefit everyone, rather than just the project you're on</li>
-<li>It forces separation of concerns</li>
-</ol>
-<p>Plus many more reasons, but you probably know this already. So here's the steps I follow to create a library:</p>
-<h2 id="how-to-make-a-library">How to Make a Library</h2>
-<h4 id="1-create-a-librarynameexample-project-in-android-studio-and-add-a-libraryname-module">1. Create a <code>LibraryNameExample</code> project in Android Studio and add a <code>LibraryName</code> module.</h4>
-<p>I followed <a href="https://medium.com/@anujguptawork/how-to-create-your-own-android-library-and-publish-it-750e0f7481bf">this guide</a> for the first part, but I don't deploy on JitPack. I prefer Bintray for having easier deployment to JCenter(). Being on JCenter gives your library a false sense of official status, which you want.</p>
-<h4 id="2-add-the-project-to-githubhttpsgithubcomnew-under-libraryname">2. Add the project to <a href="https://github.com/new">GitHub</a> under <code>LibraryName</code></h4>
-<h4 id="3-create-the-repo-on-bintrayhttpsbintraycom-under-libraryname">3. Create the repo on <a href="https://bintray.com">Bintray</a> under <code>LibraryName</code></h4>
-<h4 id="4-add-the-bintray-release-dependency-and-settings">4. Add the bintray-release dependency and settings</h4>
-<p>I followed <a href="https://medium.com/@anitaa_1990/6-easy-steps-to-upload-your-android-library-to-bintray-jcenter-59e6030c8890">this guide</a>, and created my account on bintray as instructed there. However I save my BINTRAY_KEY api key in my CircleCI setup, and access it from the gradle setup for bintray-release, like so:</p>
-<script type="application/javascript" src="https://gist.github.com/JacquesSmuts/a004eec630f299bfa01bb63aabf00474.js"></script>
+    <article class="post-content"><p>You can use a <!-- raw HTML omitted --> drawable to easily differentiate between flavors and variants. This will show you how.</p>
+<p>Ever wanted to have different icons for each flavor and variant in your Android app? Something like a little bug to indicate the debug version of your app, like so:</p>
+<figure>
+    <img src="https://jacquessmuts.github.io/images/layerlist4.png"
+         alt="An inordinate fondness for beetles" width="40%"/> 
+</figure>
 
-<h4 id="5-add-the-project-to-circlecihttpscirclecicom">5. Add the project to <a href="https://circleci.com">CircleCI</a></h4>
-<p>For my CircleCI config.yml file, I literally just copy-paste <a href="https://github.com/JacquesSmuts/RxHelpers/tree/master/.circleci">the same file</a> across all my library projects for the initial setup. This file doesn't run tests or anything right now, but as I'm building up my libraries that will change. If it has changed to add features you're not using, <a href="https://github.com/JacquesSmuts/RxHelpers/blob/2a2349a72bea5025c87b05bf3d0b385e7ee1f5b8/.circleci/config.yml#L1">this is the link to the original file at the time of writing.</a></p>
-<p>Also remember to add the environment variable <code>BINTRAY_KEY</code> to your CircleCI settings, like so:</p>
+<p>Sure, but it's effort. And you have to ask a designer to make a bunch of different icons. Or, even worse, you have to create a bunch of different icons yourself. That's wasteful, so instead you should use a layer-list. To automatically generate icons you do the following. Assuming you have <code>mipmap/ic_launcher</code> icon already, you should</p>
+<p>1.) Create an <code>ic_launcher_overlaid.xml</code> file in your <code>main/drawable</code> folder, with the following content:</p>
+<script type="application/javascript" src="https://gist.github.com/JacquesSmuts/3541b17741c40e3c24453830d0ee102a.js"></script>
+
+<p>How does this work? The layer-list puts the <code>launcher_overlay</code> on top of the normal <code>ic_launcher</code> image, then puts 100px padding to the top and left, so that the <code>launcher_overlay</code> sits in the bottom right corner. That might take some adjustment to get things right.</p>
 <figure class="zoomable">
-    <img src="https://jacquessmuts.github.io/images/library_template1.png"
-         alt="CircleCI" width="80%"/> <figcaption>
-            <h4>Use your own Bintray API key, from Bintray User settings.</h4>
+    <img src="https://jacquessmuts.github.io/images/layerlist1.png"
+         alt="Default Launcher Icon" width="10%"/> <figcaption>
+            <h4>drawable/ic_launcher.</h4>
         </figcaption>
 </figure>
 
-<p>You may also want to set up CircleCI to build only on pull requests. But don't worry, this config won't deploy without your say-so.</p>
-<h4 id="6-deploy">6. Deploy!</h4>
-<p>Commit to master and make sure CircleCI builds your project. If you copied my CircleCI config file, you should see a workflow that looks like this:</p>
+<p>2.) update your <code>AndroidManifest.xml</code> file to point to the new launcher icon.</p>
+<script type="application/javascript" src="https://gist.github.com/JacquesSmuts/fcd8ba8abc4df58909c7c624d53d9127.js"></script>
+
+<p>The only thing left is:</p>
+<p>3.) Create <code>drawable/launcher_overlay</code> for each variant/flavor you need.</p>
+<p>You can create a single transparent pixel in <code>main/drawable</code> as the default. Then add the appropriate images you need in the <code>flavorVariant/drawable</code> folders. I added this image to my debug folder:</p>
 <figure class="zoomable">
-    <img src="https://jacquessmuts.github.io/images/library_template2.png"
-         alt="CircleCI" width="80%"/> <figcaption>
-            <h4>Hodl</h4>
+    <img src="https://jacquessmuts.github.io/images/layerlist2.png"
+         alt="An inordinate fondness for beetles" width="10%"/> <figcaption>
+            <h4>Beetle</h4>
         </figcaption>
 </figure>
 
-<p>Click the &ldquo;Hold&rdquo; button and approve the build. If you do, it will deploy to Bintray. If you get any errors, CircleCI should have logs which explain the issue so you can resolve it from there.</p>
-<h4 id="7-add-the-repo-to-jcenter">7. Add The Repo to JCenter()</h4>
-<p>Once you have a package deployed to Bintray, click the &ldquo;Link to JCenter()&rdquo; button on the package details view on Bintray. It's slightly hidden but it's there somewhere. After a few hours, you should have an approved JCenter() link. You only have to do this once, because every future deployment of this repo will be deployed to JCenter automatically.</p>
-<h4 id="8-update-the-readme-with-status-badges">8. Update the Readme with Status Badges</h4>
-<p>Create a Readme.md in your repo which explains how to use and download your repo. You'll find the gradle instructions on Bintray, as well as a Status Badge you can paste into your Readme. It will look like this:</p>
-<p><a href="https://bintray.com/jacquessmuts/RxHelpers/rxhelpers/_latestVersion"><img src="https://api.bintray.com/packages/jacquessmuts/RxHelpers/rxhelpers/images/download.svg" alt="Download"> </a></p>
-<p>and it will update automatically every time you deploy a new version, without needing to update your readme. I usually add a status badge for CircleCI as well.</p>
-<h4 id="9-share-it">9. Share It</h4>
-<p>Congrats, you just deployed your library. Share it with the world. Tweet about it, blog about it, even just share in the comments below. Libraries are amazing.</p>
-<h2 id="examples">Examples</h2>
-<p>Some libraries I've made using this method:</p>
-<ul>
-<li><a href="https://github.com/JacquesSmuts/RxHelpers">RxHelpers</a></li>
-<li><a href="https://github.com/flatcircle/ConnectivityHelper">ConnectivityHelper</a></li>
-<li><a href="https://github.com/flatcircle/ViewHelper">ViewHelper</a></li>
-<li><a href="https://github.com/flatcircle/CoroutineHelper">CoroutineHelper</a></li>
-<li><a href="https://github.com/flatcircle/LiveDataHelper">LiveDataHelper</a></li>
-</ul></article>
+<p>If all goes well, you'll end up with a launcher icon that looks like this:</p>
+<figure class="zoomable">
+    <img src="https://jacquessmuts.github.io/images/layerlist3.png"
+         alt="An inordinate fondness for beetles" width="10%"/> 
+</figure>
+
+<p>If you're wondering about Adaptive Icons, all you have to know is that the adaptive icon references a foreground drawable. In the same way that you can replace the <code>ic_launcher</code> with a layer-list, you can also replace <code>ic_launcher_foreground</code> with a layer-list.</p></article>
     <footer class="post-footer">
       
       <ul class="post-tags">
         
           <li><a href="https://jacquessmuts.github.io/tags/android"><span class="tag">Android</span></a></li>
         
-          <li><a href="https://jacquessmuts.github.io/tags/kotlin"><span class="tag">Kotlin</span></a></li>
+          <li><a href="https://jacquessmuts.github.io/tags/ic_launcher.png"><span class="tag">Ic_launcher.png</span></a></li>
         
-          <li><a href="https://jacquessmuts.github.io/tags/library"><span class="tag">Library</span></a></li>
+          <li><a href="https://jacquessmuts.github.io/tags/launcher-icon"><span class="tag">Launcher Icon</span></a></li>
         
-          <li><a href="https://jacquessmuts.github.io/tags/circleci"><span class="tag">CircleCI</span></a></li>
+          <li><a href="https://jacquessmuts.github.io/tags/layer-list-as-launcher"><span class="tag">Layer-List as Launcher</span></a></li>
         
       </ul>
       
       <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>285</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.
       </p>
     </footer>
     
