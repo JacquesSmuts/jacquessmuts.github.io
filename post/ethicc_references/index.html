@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
 
   
-  <title>Add Overlays to Your Launcher Icon Using Layer-List</title>
+  <title>Further Reading for Ethical Programming</title>
 
   
   
@@ -23,18 +23,18 @@
   
 
   
-  <meta name="author" content="Jacques">
-  <meta name="description" content="You can use a drawable to easily differentiate between flavors and variants. This will show you how.
+  <meta name="author" content="Jacques Smuts">
+  <meta name="description" content="This post contains further reading for my recent talk on the Slippery Slope of Unethical Programming
 ">
 
   
   
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@jacquessmuts">
-    <meta name="twitter:title" content="Add Overlays to Your Launcher Icon Using Layer-List">
-    <meta name="twitter:description" content="You can use a drawable to easily differentiate between flavors and variants. This will show you how.
+    <meta name="twitter:title" content="Further Reading for Ethical Programming">
+    <meta name="twitter:description" content="This post contains further reading for my recent talk on the Slippery Slope of Unethical Programming
 ">
-    <meta name="twitter:image" content="https://jacquessmuts.github.io/images/layerlist3.png">
+    <meta name="twitter:image" content="https://jacquessmuts.github.io/images/ethicc.png">
   
 
   
@@ -46,11 +46,11 @@
 
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Add Overlays to Your Launcher Icon Using Layer-List">
-  <meta property="og:description" content="You can use a drawable to easily differentiate between flavors and variants. This will show you how.
+  <meta property="og:title" content="Further Reading for Ethical Programming">
+  <meta property="og:description" content="This post contains further reading for my recent talk on the Slippery Slope of Unethical Programming
 ">
-  <meta property="og:url" content="https://jacquessmuts.github.io/post/layer_list_as_launcher_icon/">
-  <meta property="og:image" content="https://jacquessmuts.github.io/images/layerlist3.png">
+  <meta property="og:url" content="https://jacquessmuts.github.io/post/ethicc_references/">
+  <meta property="og:image" content="https://jacquessmuts.github.io/images/ethicc.png">
 
 
 
@@ -58,7 +58,7 @@
 <meta name="generator" content="Hugo 0.62.2">
 
 
-<link rel="canonical" href="https://jacquessmuts.github.io/post/layer_list_as_launcher_icon/">
+<link rel="canonical" href="https://jacquessmuts.github.io/post/ethicc_references/">
 
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -210,69 +210,38 @@
 
   <section class="main post-detail">
     <header class="post-header">
-      <h1 class="post-title">Add Overlays to Your Launcher Icon Using Layer-List</h1>
-      <p class="post-meta">@Jacques · Feb 16, 2020 · 2 min read</p>
+      <h1 class="post-title">Further Reading for Ethical Programming</h1>
+      <p class="post-meta">@Jacques Smuts · Sep 6, 2020 · 1 min read</p>
     </header>
-    <article class="post-content"><p>You can use a <!-- raw HTML omitted --> drawable to easily differentiate between flavors and variants. This will show you how.</p>
-<h2 id="why">Why?</h2>
-<p>Ever wanted to have different icons for each flavor and variant in your Android app? Something like a little bug to indicate the debug version of your app, like so:</p>
-<figure>
-    <img src="https://jacquessmuts.github.io/images/layerlist4.png"
-         alt="An inordinate fondness for beetles" width="40%"/> 
-</figure>
-
-<p>Sure, but it's effort. And you have to ask a designer to make a bunch of different icons. Or, even worse, you have to create a bunch of different icons yourself. That's wasteful, so instead you should use a layer-list. It has a default icon, and then it can dynamically insert an overlay image on top of your launcher icon, based upon your flavor or build variant. That way, you don't need a bunch of different icons.</p>
-<h2 id="how">How?</h2>
-<p>Assuming you have <code>mipmap/ic_launcher</code> icon already, you should</p>
-<p>1.) Create an <code>ic_launcher_overlaid.xml</code> file in your <code>main/drawable</code> folder, with the following content:</p>
-<script type="application/javascript" src="https://gist.github.com/JacquesSmuts/3541b17741c40e3c24453830d0ee102a.js"></script>
-
-<p>How does this work? The layer-list puts the <code>launcher_overlay</code> on top of the normal <code>ic_launcher</code> image, then puts 100px padding to the top and left, so that the <code>launcher_overlay</code> sits in the bottom right corner. That might take some adjustment to get things right.</p>
-<figure class="zoomable">
-    <img src="https://jacquessmuts.github.io/images/layerlist1.png"
-         alt="Default Launcher Icon" width="10%"/> <figcaption>
-            <h4>drawable/ic_launcher.</h4>
-        </figcaption>
-</figure>
-
-<p>2.) update your <code>AndroidManifest.xml</code> file to point to the new launcher icon.</p>
-<script type="application/javascript" src="https://gist.github.com/JacquesSmuts/fcd8ba8abc4df58909c7c624d53d9127.js"></script>
-
-<p>The only thing left is:</p>
-<p>3.) Create <code>drawable/launcher_overlay</code> for each variant/flavor you need.</p>
-<p>You can create a single transparent pixel in <code>main/drawable</code> as the default. Then add the appropriate images you need in the <code>flavorVariant/drawable</code> folders. I added this image to my debug folder:</p>
-<figure class="zoomable">
-    <img src="https://jacquessmuts.github.io/images/layerlist2.png"
-         alt="An inordinate fondness for beetles" width="10%"/> <figcaption>
-            <h4>Beetle</h4>
-        </figcaption>
-</figure>
-
-<p>If all goes well, you'll end up with a launcher icon that looks like this:</p>
-<figure class="zoomable">
-    <img src="https://jacquessmuts.github.io/images/layerlist3.png"
-         alt="An inordinate fondness for beetles" width="10%"/> 
-</figure>
-
-<p>If you're wondering about Adaptive Icons, all you have to know is that the adaptive icon references a foreground drawable. In the same way that you can replace the <code>ic_launcher</code> with a layer-list, you can also replace <code>ic_launcher_foreground</code> with a layer-list.</p>
-<hr>
-<p>I'd like to thank my colleague, Laurie Scheepers, for suggesting we try xml drawables as app icons.</p></article>
+    <article class="post-content"><p>This post contains further reading for my recent talk on the Slippery Slope of Unethical Programming</p>
+<p>[Here is the link to the talk, once the talk is online.](The Slippery Slope of Unethical Programming)</p>
+<h2 id="additional-reading">Additional Reading</h2>
+<p><a href="https://www.cc.gatech.edu/~beki/cs4001/Winner.pdf">Do artifacts have politics</a></p>
+<p><a href="https://www.fastcompany.com/90449853/this-woman-knows-the-secret-to-fixing-big-techs-most-pervasive-problem">Margaret Hamilton on Software Professionalization</a></p>
+<p><a href="https://medium.com/swlh/the-most-important-word-silicon-valley-doesnt-know-1477d12ffcd0">The Most Important Word Silicon Valley Doesn't Know</a></p>
+<p><a href="https://youtu.be/WdgjljQSbj0?list=WL">Why the web is Communist</a></p>
+<p><a href="https://youtu.be/tUAX0gnZ3Nw">Games as a Service is Fraud</a></p>
+<p><a href="https://twitter.com/chiefofstuffs/status/1292213923114913792?s=09">Breaking up the Internet</a></p>
+<p><a href="https://www.hellsoft.se/break-up-the-app-stores/">Breaking up app stores</a></p>
+<h2 id="organisations">Organisations</h2>
+<p><a href="https://iww.org/">Industrial Workers of the World</a></p>
+<p><a href="https://techworkerscoalition.org/">Tech Workers Coalition</a></p>
+<p><a href="https://www.gameworkersunite.org/">Game Workers Unite</a></p>
+<p><a href="https://www.acm.org/">Association of Computing Machinery</a></p>
+<p><a href="https://www.ajl.org/">Algorithmic Justice League</a></p>
+<p><a href="https://www.pivotforhumanity.com/noani/">Pivot for Humanity</a></p></article>
     <footer class="post-footer">
       
       <ul class="post-tags">
         
+          <li><a href="https://jacquessmuts.github.io/tags/kotlin"><span class="tag">Kotlin</span></a></li>
+        
           <li><a href="https://jacquessmuts.github.io/tags/android"><span class="tag">Android</span></a></li>
-        
-          <li><a href="https://jacquessmuts.github.io/tags/ic_launcher.png"><span class="tag">Ic_launcher.png</span></a></li>
-        
-          <li><a href="https://jacquessmuts.github.io/tags/launcher-icon"><span class="tag">Launcher Icon</span></a></li>
-        
-          <li><a href="https://jacquessmuts.github.io/tags/layer-list-as-launcher"><span class="tag">Layer-List as Launcher</span></a></li>
         
       </ul>
       
       <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>203</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.
       </p>
     </footer>
     
