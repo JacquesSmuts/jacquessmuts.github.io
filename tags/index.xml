@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Sun, 06 Sep 2020 19:51:12 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 07 Oct 2020 02:48:01 +0200</lastBuildDate>
     
 	<atom:link href="https://jacquessmuts.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,18 +15,63 @@
     <item>
       <title>android</title>
       <link>https://jacquessmuts.github.io/tags/android/</link>
-      <pubDate>Sun, 06 Sep 2020 19:51:12 +0200</pubDate>
+      <pubDate>Wed, 07 Oct 2020 02:48:01 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/tags/android/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>Architecture</title>
+      <link>https://jacquessmuts.github.io/tags/architecture/</link>
+      <pubDate>Wed, 07 Oct 2020 02:48:01 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/tags/architecture/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>kotlin</title>
       <link>https://jacquessmuts.github.io/tags/kotlin/</link>
-      <pubDate>Sun, 06 Sep 2020 19:51:12 +0200</pubDate>
+      <pubDate>Wed, 07 Oct 2020 02:48:01 +0200</pubDate>
       
       <guid>https://jacquessmuts.github.io/tags/kotlin/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Margaret Hamilton</title>
+      <link>https://jacquessmuts.github.io/tags/margaret-hamilton/</link>
+      <pubDate>Wed, 07 Oct 2020 02:48:01 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/tags/margaret-hamilton/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>TDD</title>
+      <link>https://jacquessmuts.github.io/tags/tdd/</link>
+      <pubDate>Wed, 07 Oct 2020 02:48:01 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/tags/tdd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Testing</title>
+      <link>https://jacquessmuts.github.io/tags/testing/</link>
+      <pubDate>Wed, 07 Oct 2020 02:48:01 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/tags/testing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Testing Pyramid</title>
+      <link>https://jacquessmuts.github.io/tags/testing-pyramid/</link>
+      <pubDate>Wed, 07 Oct 2020 02:48:01 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/tags/testing-pyramid/</guid>
       <description></description>
     </item>
     
@@ -220,7 +265,7 @@
     </item>
     
     <item>
-      <title>Modularization</title>
+      <title>modularization</title>
       <link>https://jacquessmuts.github.io/tags/modularization/</link>
       <pubDate>Thu, 25 Apr 2019 10:35:54 +0200</pubDate>
       

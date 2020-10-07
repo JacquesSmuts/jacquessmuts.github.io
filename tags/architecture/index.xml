@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Architecture on Jacques Smuts</title>
+    <link>https://jacquessmuts.github.io/tags/architecture/</link>
+    <description>Recent content in Architecture on Jacques Smuts</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+    <lastBuildDate>Wed, 07 Oct 2020 02:48:01 +0200</lastBuildDate>
+    
+	<atom:link href="https://jacquessmuts.github.io/tags/architecture/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>The Testing Pyramid Has a Deeper Foundation</title>
+      <link>https://jacquessmuts.github.io/post/compile_time_tests/</link>
+      <pubDate>Wed, 07 Oct 2020 02:48:01 +0200</pubDate>
+      
+      <guid>https://jacquessmuts.github.io/post/compile_time_tests/</guid>
+      <description>&lt;p&gt;Kotlin allows us to structure our code around compile-time tests. This post explains how.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
