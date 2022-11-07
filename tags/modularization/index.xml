@@ -1,34 +1,141 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>modularization on Jacques Smuts</title>
-    <link>https://jacquessmuts.github.io/tags/modularization/</link>
-    <description>Recent content in modularization on Jacques Smuts</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Thu, 25 Apr 2019 10:35:54 +0200</lastBuildDate>
-    
-	<atom:link href="https://jacquessmuts.github.io/tags/modularization/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>Don&#39;t Pass Around Your Room/Database Entity</title>
-      <link>https://jacquessmuts.github.io/post/modularization_room/</link>
-      <pubDate>Thu, 25 Apr 2019 10:35:54 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/modularization_room/</guid>
-      <description>&lt;p&gt;If you&#39;re thinking of modularizing your Android App and you use Android Room, you should not pass around your Room Entity.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Is your modularization making any progress?</title>
-      <link>https://jacquessmuts.github.io/post/modularization/</link>
-      <pubDate>Sat, 20 Apr 2019 21:15:17 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/modularization/</guid>
-      <description>&lt;p&gt;You should modularize your Kotlin Android app, since it&#39;s the best way to enforce &lt;a href=&#34;https://developer.android.com/jetpack/docs/guide#common-principles&#34;&gt;separation of concerns&lt;/a&gt;, but how do you know if you&#39;re doing it right? Here&#39;s some tips to help.&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+    <channel>
+        <title>modularization on Jacques Smuts</title>
+        <link>https://jacquessmuts.github.io/tags/modularization/</link>
+        <description>Recent content in modularization on Jacques Smuts</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+        <lastBuildDate>Thu, 25 Apr 2019 10:35:54 +0200</lastBuildDate><atom:link href="https://jacquessmuts.github.io/tags/modularization/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Don&#39;t Pass Around Your Room/Database Entity</title>
+        <link>https://jacquessmuts.github.io/post/modularization_room/</link>
+        <pubDate>Thu, 25 Apr 2019 10:35:54 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/modularization_room/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/modularization_room1.png" alt="Featured image of post Don&#39;t Pass Around Your Room/Database Entity" /&gt;&lt;p&gt;If you&amp;rsquo;re thinking of modularizing your Android App and you use Android Room, you should not pass around your Room Entity.&lt;/p&gt;
+&lt;h2 id=&#34;room-only-in-your-database-module&#34;&gt;Room: Only In Your Database Module&lt;/h2&gt;
+&lt;p&gt;Room is great, and so is modularization. If you&amp;rsquo;re using Room, you probably have several &lt;a class=&#34;link&#34; href=&#34;https://developer.android.com/training/data-storage/room/defining-data&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Room Entity Objects&lt;/a&gt; that look kinda like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/0fc7ced6f167b435f41882c36e9a80cf.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;Chances are you&amp;rsquo;re passing this model around everywhere. Every time you want to access your &lt;code&gt;User&lt;/code&gt; class, or save it, or display the data to the UI, you use the same &lt;code&gt;User&lt;/code&gt; class, which doubles as your Room &lt;code&gt;Entity&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;For a one-module proof of concept app, this is probably fine. But the moment your app expands and you begin to modularize, you&amp;rsquo;ll run into issues. Specifically, Gradle will tell you that you have &lt;code&gt;unresolved Supertypes&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Supertypes&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;following&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;classes&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cannot&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;be&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;resolved&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Please&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;make&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sure&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;you&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;have&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;required&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dependencies&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;classpath&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;com&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;example&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;persistence&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;AppDatabase&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;unresolved&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;supertypes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;androidx&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;room&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;RoomDatabase&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This happens because you&amp;rsquo;re passing the &lt;code&gt;Entity&lt;/code&gt; from your database module to other modules which don&amp;rsquo;t implement the room compiler. So then you add the room compiler to your other modules. &lt;a class=&#34;link&#34; href=&#34;https://stackoverflow.com/questions/53152796/androidx-room-unresolved-supertypes-roomdatabase&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Just like StackOverflow suggests&lt;/a&gt;.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/af7ffc45a38232998cf48ec0d3722855.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;strong&gt;Don&amp;rsquo;t do this.&lt;/strong&gt; Please. It breaks the core concept of &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Information_hiding&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Information Hiding&lt;/a&gt; as would be required by a project that implements a proper Separation of Concerns.&lt;/p&gt;
+&lt;h3 id=&#34;map-your-entity&#34;&gt;Map Your Entity&lt;/h3&gt;
+&lt;p&gt;Instead, you should have two distinct objects. You should one object that represents the database Entity, and one object for passing around the pure data. Your database module should be literally the only module which imports the Room library. If any other module imports those implementation details of the database module, then you are not &lt;code&gt;Information Hiding&lt;/code&gt; as you should. This is especially true if you may want to change out your Room database for something like &lt;a class=&#34;link&#34; href=&#34;https://github.com/square/sqldelight&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;SqlDelight&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Instead, map your data class to a new &lt;code&gt;Entity&lt;/code&gt;, like so:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/b2419911d125845cdc701166491421e5.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;Perhaps you have some other way of mapping to and from your &lt;code&gt;User&lt;/code&gt; to your &lt;code&gt;UserEntity&lt;/code&gt; class. You may think it&amp;rsquo;d be better if it happened automatically via a Serializer or the like. Normally I&amp;rsquo;d agree that automated serialization is easier in the long term, but this way, any changes to your &lt;code&gt;User&lt;/code&gt; class results in a compiler error in your &lt;code&gt;UserEntity&lt;/code&gt; class, which shows you:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;That your database needs to go up a version; and&lt;/li&gt;
+&lt;li&gt;what migration steps to take, based on what changes the mapper requires.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;I suggest you turn all your database classes into &lt;code&gt;internal&lt;/code&gt; class, &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/modularization/&#34; &gt;as I&amp;rsquo;ve discussed before&lt;/a&gt;. This is a bit of a tedious thing to do sometimes, but you will be super-happy in the long term. Future work and refactoring will be very easy.&lt;/p&gt;
+&lt;p&gt;There is one other thing though.&lt;/p&gt;
+&lt;h3 id=&#34;livedata--room-but-in-another-module&#34;&gt;LiveData + Room, But In Another Module&lt;/h3&gt;
+&lt;p&gt;One of the nice things about LiveData and Room is how easily they interact.&lt;/p&gt;
+&lt;p&gt;But then you have this problem in your Repository&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/modularization_room2.png&#34;
+         alt=&#34;compiler error&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If you see this warning, you&amp;#39;re headed in the right direction.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Turns out you can&amp;rsquo;t use LiveData to hook directly on to your database, because that exposes internal database entities outside the module. You want LiveData but you still want a proper separation of concerns. How? You use the LiveData Transformation function.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/edde89d887a97e2dafe7da164f39ed5d.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;This means you have a direct LiveData pipeline from your ViewModel/View to your database, without actually exposing your internal database components. You get to have your module and access it too.&lt;/p&gt;
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;I showed you why you shouldn&amp;rsquo;t pass around your Room @Entity, and how to separate your modules without losing functionality.&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Is your modularization making any progress?</title>
+        <link>https://jacquessmuts.github.io/post/modularization/</link>
+        <pubDate>Sat, 20 Apr 2019 21:15:17 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/modularization/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/modularization3.png" alt="Featured image of post Is your modularization making any progress?" /&gt;&lt;p&gt;You should modularize your Kotlin Android app, since it&amp;rsquo;s the best way to enforce &lt;a class=&#34;link&#34; href=&#34;https://developer.android.com/jetpack/docs/guide#common-principles&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;separation of concerns&lt;/a&gt;, but how do you know if you&amp;rsquo;re doing it right? Here&amp;rsquo;s some tips to help.&lt;/p&gt;
+&lt;h2 id=&#34;am-i-doing-it-right&#34;&gt;Am I doing it right?&lt;/h2&gt;
+&lt;p&gt;If you&amp;rsquo;re following one of the &lt;a class=&#34;link&#34; href=&#34;https://medium.com/androiddevelopers/a-patchwork-plaid-monolith-to-modularized-app-60235d9f212e&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;great guides&lt;/a&gt; out there, you&amp;rsquo;re probably doing it mostly right, but how do you know? Can you measure a difference? Here&amp;rsquo;s a good way to check. Generate a dependency graph for your app. I used &lt;a class=&#34;link&#34; href=&#34;https://github.com/alexzaitsev/apk-dependency-graph&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;APK Dependency Graph Generator&lt;/a&gt;. All you need to do is compile the apk-dependency project, point it to an apk, and it will generate an interactive graph like the one below.&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/modularization2.png&#34;
+         alt=&#34;a dependency graph&#34; width=&#34;60%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If you click the link below, you should see something like this.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;This graph demonstrates a way to look for ease of refactoring with two nice examples:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The &lt;code&gt;ServerClient&lt;/code&gt; in the bottom right provides a complete separation between the api and the rest of the app. The api calls can therefore be refactored easily.&lt;/li&gt;
+&lt;li&gt;Lots of classes are reliant on the &lt;code&gt;TeaBag&lt;/code&gt; class in the middle. A single change there is likely to cascade outward, making refactoring difficult.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Below, an example of a project which is not easy to refactor, update or even debug:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/modularization3.png&#34;
+         alt=&#34;a dependency graph&#34; width=&#34;60%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;An unnamed legacy project.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;There is no separation of concerns here. This project is in dire need of modularization, but where do you even begin?&lt;/p&gt;
+&lt;h2 id=&#34;where-to-begin&#34;&gt;Where to begin?&lt;/h2&gt;
+&lt;p&gt;I usually follow these steps:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.android.com/studio/projects/android-library&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Create a module&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Identify one or more classes that should not be accessible outside of a specific context&lt;/li&gt;
+&lt;li&gt;Move those classes into the module&lt;/li&gt;
+&lt;li&gt;Add the &lt;code&gt;internal&lt;/code&gt; &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/reference/visibility-modifiers.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;visibility modifier&lt;/a&gt; (or making the class &lt;code&gt;package-private&lt;/code&gt; if you&amp;rsquo;re using Java)&lt;/li&gt;
+&lt;li&gt;Try to compile and get an error&lt;/li&gt;
+&lt;li&gt;Fix this error without removing the &lt;code&gt;internal&lt;/code&gt; keyword. This may involve creating a little bit of boilerplate.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/modularization4.png&#34;
+         alt=&#34;compiler error&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If you see this warning, you&amp;#39;re headed in the right direction.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;A specific example of this would be the database module. I moved my &lt;code&gt;database&lt;/code&gt; class, &lt;code&gt;data model&lt;/code&gt; classes, &lt;code&gt;DAO&lt;/code&gt; classes, and &lt;code&gt;repository&lt;/code&gt; class into the database module. I made everything &lt;code&gt;internal&lt;/code&gt; except for &lt;code&gt;repository&lt;/code&gt;, which provides the API to the database for the rest of the app. After some restructuring and cleanup, I ended up with a nicer class structure.&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/modularization5.png&#34;
+         alt=&#34;a dependency graph&#34; width=&#34;60%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Dependency graph, but after internalizing the database module&lt;/h4&gt;&lt;p&gt;It seems similar to the one above, but with some subtle differences.&lt;/p&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Okay, I have to admit, it doesn&amp;rsquo;t seem like we made that much of a difference. But here&amp;rsquo;s the real benefit:&lt;/p&gt;
+&lt;h2 id=&#34;the-real-benefit&#34;&gt;The real benefit&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;When a new developer works in a non-database module and tries to access the database directly, the compiler will stop them.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The two dependency graphs are similar, except that a moment&amp;rsquo;s thoughtlessness can pull everything into spaghetti in the first instance. I have used the &lt;code&gt;internal&lt;/code&gt; modifier in my database module, which means that a developer would be stopped from breaking a delicate separation of concerns with a single function.&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/modularization6.png&#34;
+         alt=&#34;compiler error 2&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Trying to access the database directly from MainActivity.kt.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;If you run into these errors in a project, you know the project is well modularized.&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;We have looked at two ways in which to analyze the state of your modularization:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/alexzaitsev/apk-dependency-graph&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;APK Dependency Graph Generator&lt;/a&gt;; and&lt;/li&gt;
+&lt;li&gt;The prevalance of the &lt;code&gt;internal&lt;/code&gt; modifier (or lack of &lt;code&gt;public&lt;/code&gt; in Java)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!-- raw HTML omitted --&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

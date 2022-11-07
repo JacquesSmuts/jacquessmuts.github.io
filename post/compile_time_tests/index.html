@@ -1,420 +1,530 @@
 <!DOCTYPE html>
-<html lang="en-us">
-<head>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Kotlin allows us to structure our code around compile-time tests. This post explains how.
+'>
+<title>The Testing Pyramid Has a Deeper Foundation</title>
 
-  <meta charset="utf-8" />
+<link rel='canonical' href='https://jacquessmuts.github.io/post/compile_time_tests/'>
 
-  
-  <title>The Testing Pyramid Has a Deeper Foundation</title>
+<link rel="stylesheet" href="https://jacquessmuts.github.io/scss/style.min.8191399262444ab68b72a18c97392f5349be20a1615d77445be51e974c144cff.css"><script src="https://unpkg.com/kotlin-playground@1" data-selector=".kotlin-code"></script><meta property='og:title' content='The Testing Pyramid Has a Deeper Foundation'>
+<meta property='og:description' content='Kotlin allows us to structure our code around compile-time tests. This post explains how.
+'>
+<meta property='og:url' content='https://jacquessmuts.github.io/post/compile_time_tests/'>
+<meta property='og:site_name' content='Jacques Smuts'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='architecture' /><meta property='article:tag' content='theory' /><meta property='article:tag' content='margaret hamilton' /><meta property='article:tag' content='testing' /><meta property='article:published_time' content='2020-10-07T02:48:01&#43;02:00'/><meta property='article:modified_time' content='2020-10-07T02:48:01&#43;02:00'/><meta property='og:image' content='https://jacquessmuts.github.io/images/compile_test1.png' />
+<meta name="twitter:title" content="The Testing Pyramid Has a Deeper Foundation">
+<meta name="twitter:description" content="Kotlin allows us to structure our code around compile-time tests. This post explains how.
+"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://jacquessmuts.github.io/images/compile_test1.png' />
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-139178159-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
 
-  
-  
-  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
-  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
-  <link href="//at.alicdn.com" rel="dns-prefetch">
-  <link href="//fonts.googleapis.com" rel="dns-prefetch">
-  <link href="//fonts.gstatic.com" rel="dns-prefetch">
-  <link href="///disqus.com" rel="dns-prefetch">
-  <link href="//c.disquscdn.com" rel="dns-prefetch">
-  
-  <link href="//www.google-analytics.com" rel="dns-prefetch">
-  
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
 
-  
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
 
-  
-  <meta name="author" content="Jacques Smuts">
-  <meta name="description" content="Kotlin allows us to structure our code around compile-time tests. This post explains how.
-">
-
-  
-  
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@jacquessmuts">
-    <meta name="twitter:title" content="The Testing Pyramid Has a Deeper Foundation">
-    <meta name="twitter:description" content="Kotlin allows us to structure our code around compile-time tests. This post explains how.
-">
-    <meta name="twitter:image" content="https://jacquessmuts.github.io/images/compile_test1.png">
-  
-
-  
-  <script src="https://unpkg.com/kotlin-playground@1" data-selector=".kotlin-code"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script>
-
-  
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="The Testing Pyramid Has a Deeper Foundation">
-  <meta property="og:description" content="Kotlin allows us to structure our code around compile-time tests. This post explains how.
-">
-  <meta property="og:url" content="https://jacquessmuts.github.io/post/compile_time_tests/">
-  <meta property="og:image" content="https://jacquessmuts.github.io/images/compile_test1.png">
-
-
-
-
-<meta name="generator" content="Hugo 0.62.2">
-
-
-<link rel="canonical" href="https://jacquessmuts.github.io/post/compile_time_tests/">
-
-<meta name="renderer" content="webkit">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="format-detection" content="telephone=no,email=no,adress=no">
-<meta http-equiv="Cache-Control" content="no-transform">
-
-
-<meta name="robots" content="index,follow">
-<meta name="referrer" content="origin-when-cross-origin">
-
-
-
-
-
-
-
-<meta name="theme-color" content="#02b875">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="Jacques Smuts">
-<meta name="msapplication-tooltip" content="Jacques Smuts">
-<meta name='msapplication-navbutton-color' content="#02b875">
-<meta name="msapplication-TileColor" content="#02b875">
-<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
-<link rel="icon" href="https://jacquessmuts.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://jacquessmuts.github.io/icons/icon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://jacquessmuts.github.io/icons/icon-32x32.png">
-<link rel="icon" sizes="192x192" href="https://jacquessmuts.github.io/icons/icon-192x192.png">
-<link rel="apple-touch-icon" href="https://jacquessmuts.github.io/icons/icon-152x152.png">
-<link rel="manifest" href="https://jacquessmuts.github.io/manifest.json">
-
-
-<link rel="preload" href="https://jacquessmuts.github.io/styles/main.min.css" as="style">
-
-<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
-<link rel="preload" href="https://jacquessmuts.github.io/images/avatar.png" as="image">
-<link rel="preload" href="https://jacquessmuts.github.io/images/grey-prism.svg" as="image">
-
-
-<style>
-  body {
-    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
-  }
-</style>
-<link rel="stylesheet" href="https://jacquessmuts.github.io/styles/main.min.css">
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
-
-
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
-
-
-
-  
-  
-<!--[if lte IE 8]>
-  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
-<![endif]-->
-
-<!--[if lte IE 9]>
-  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
-<![endif]-->
-
-
-</head>
-  <body>
-    <div class="suspension">
-      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
-      
+    <header>
         
-	<a role="button" aria-label="Go to comments" title="Go to comments" class="to-comment" href="#disqus_thread"><span class="icon icon-comment" aria-hidden="true"></span></a>
+            
+            <figure class="site-avatar">
+                <a href="https://jacquessmuts.github.io/">
+                
+                    
+                    
+                    
+                        
+                        <img src="https://jacquessmuts.github.io/img/avatar_hu5fa628c318f4ac500f361023abcb481d_32022_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
         
-      
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="https://jacquessmuts.github.io/">Jacques Smuts</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='https://jacquessmuts.github.io/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://jacquessmuts.github.io/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://jacquessmuts.github.io/page/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links and References</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://jacquessmuts.github.io/page/famous/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>I&#39;m Famous, Mom!</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://jacquessmuts.github.io/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="https://jacquessmuts.github.io/post/compile_time_tests/">
+                
+                    <img src="https://jacquessmuts.github.io/images/compile_test1.png" loading="lazy" alt="Featured image of post The Testing Pyramid Has a Deeper Foundation" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="https://jacquessmuts.github.io/categories/android/" style="background-color: #3ddc84; color: #000;">
+                Android
+            </a>
+        
+            <a href="https://jacquessmuts.github.io/categories/compile-time-safety/" >
+                Compile Time Safety
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="https://jacquessmuts.github.io/post/compile_time_tests/">The Testing Pyramid Has a Deeper Foundation</a>
+        </h2>
+    
+        
     </div>
-    
-    
-  <header class="site-header">
-  <a href="https://jacquessmuts.github.io/"><img class="avatar" src="https://jacquessmuts.github.io/images/avatar.png" alt="Avatar"></a>
-  
-  <h2 class="title"><a href="https://jacquessmuts.github.io/">Jacques Smuts</a></h2>
-  
-  <p class="subtitle">~ Android Developer~</p>
-  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
-    <span class="icon icon-menu" aria-hidden="true"></span>
-  </button>
 
-  <nav class="site-menu collapsed">
-    <h2 class="offscreen">Main Menu</h2>
-    <ul class="menu-list">
-      
-      
-      
-      
-        <li class="menu-item
-          
-          
-           is-active">
-          <a href="https://jacquessmuts.github.io/">Home</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://github.com/jacquessmuts">Works</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://jacquessmuts.github.io/post/references/">I&#39;m Famous, Mom</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://jacquessmuts.github.io/tags/">Tags</a>
-        </li>
-      
-    </ul>
-  </nav>
-  <nav class="social-menu collapsed">
-    <h2 class="offscreen">Social Networks</h2>
-    <ul class="social-list"><li class="social-item">
-          <a href="mailto:githubpage@jacquessmuts.com" title="Email" aria-label="Email">
-            <span class="icon icon-email" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//github.com/jacquessmuts" rel="me" title="GitHub" aria-label="GitHub">
-	    <span class="icon icon-github" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//twitter.com/jacquessmuts" rel="me" title="Twitter" aria-label="Twitter">
-            <span class="icon icon-twitter" aria-hidden="true"></span>
-          </a>
-        </li></ul>
-  </nav>
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Oct 07, 2020</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    5 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
 </header>
 
-  <section class="main post-detail">
-    <header class="post-header">
-      <h1 class="post-title">The Testing Pyramid Has a Deeper Foundation</h1>
-      <p class="post-meta">@Jacques Smuts · Oct 7, 2020 · 5 min read</p>
-    </header>
-    <article class="post-content"><p>Kotlin allows us to structure our code around compile-time tests. This post explains how.</p>
+    <section class="article-content">
+    
+    
+    <p>Kotlin allows us to structure our code around compile-time tests. This post explains how.</p>
 <h2 id="four-layered-testing-pyramid">Four layered testing pyramid</h2>
 <p>You probably know the testing pyramid. Unit tests run faster and are easier to develop and run, so you should have more of them, compared to your integration tests and end-to-end tests. However if you assume that this pyramid applies to any sort of automated validation of your code, then the testing pyramid should actually look like this:</p>
-<figure class="zoomable">
-    <img src="https://jacquessmuts.github.io/images/compile_test1.png"
-         alt="Illuminati tested" width="70%"/> <figcaption>
+<figure class="zoomable"><img src="https://jacquessmuts.github.io/images/compile_test1.png"
+         alt="Illuminati tested" width="70%"/><figcaption>
             <h4>Testing Pyramid&#43;</h4>
         </figcaption>
 </figure>
 
-<p>If you're wondering what Compile Time tests mean, I mean everything that runs during and even before compilation, to provide &ldquo;Compile Time Safety&rdquo;: Static Analysis, Syntax Errors, Linting, Generated Classes, (Gradle) Build Tool Tasks and anything else I might be forgetting. Compile time tests refers to any errors you get that prevent your unit-tests from running in the first place.</p>
-<p>I'm sure I'm not the first one to propose this. I looked around and found <a href="https://twitter.com/aarondjents/status/805913874704674816">a few</a> other <a href="https://twitter.com/mrjedmao/status/1085750574996312064">similar ideas</a>, but only really in the JavaScript community. My guess is that since they cannot rely on the compiler by default, they consider the addition of static tests to be part of the testing framework. Java/Kotlin developers, on the other hand, consider type safety to be an assumed but separate step from the testing framework.</p>
+<p>If you&rsquo;re wondering what Compile Time tests mean, I mean everything that runs during and even before compilation, to provide &ldquo;Compile Time Safety&rdquo;: Static Analysis, Syntax Errors, Linting, Generated Classes, (Gradle) Build Tool Tasks and anything else I might be forgetting. Compile time tests refers to any errors you get that prevent your unit-tests from running in the first place.</p>
+<p>I&rsquo;m sure I&rsquo;m not the first one to propose this. I looked around and found <a class="link" href="https://twitter.com/aarondjents/status/805913874704674816"  target="_blank" rel="noopener"
+    >a few</a> other <a class="link" href="https://twitter.com/mrjedmao/status/1085750574996312064"  target="_blank" rel="noopener"
+    >similar ideas</a>, but only really in the JavaScript community. My guess is that since they cannot rely on the compiler by default, they consider the addition of static tests to be part of the testing framework. Java/Kotlin developers, on the other hand, consider type safety to be an assumed but separate step from the testing framework.</p>
 <h2 id="fail-fast-verification">Fail Fast Verification</h2>
-<p>Leaving the pyramid aside, I knew that the concept had to be much older than 2016. I did some research and found <a href="https://www.sciencedirect.com/science/article/pii/0164121279900049?via%3Dihub">this amazing paper</a> by Margaret Hamilton. If you don't know Margaret Hamilton, all you have to know is that she's able to ship bug-free code, like some kind of mad scientist. You need to read the full article, but for our purposes I'll sum up the relevant parts. Her proposal is that a software system should be verified in this order:</p>
+<p>Leaving the pyramid aside, I knew that the concept had to be much older than 2016. I did some research and found <a class="link" href="https://www.sciencedirect.com/science/article/pii/0164121279900049?via%3Dihub"  target="_blank" rel="noopener"
+    >this amazing paper</a> by Margaret Hamilton. If you don&rsquo;t know Margaret Hamilton, all you have to know is that she&rsquo;s able to ship bug-free code, like some kind of mad scientist. You need to read the full article, but for our purposes I&rsquo;ll sum up the relevant parts. Her proposal is that a software system should be verified in this order:</p>
 <ol>
 <li>Conceptually</li>
 <li>Statically</li>
 <li>Dynamically</li>
 </ol>
 <p>The static verification at the time was extremely limited, so they had to build a lot of it themselves. Margaret Hamilton took &ldquo;fail fast&rdquo; to its logical conclusion and did everything in her power to pick up problems before they became problems; first in planning, then in code. She also designed and implemented end-to-end testing systems, but preferred to have the majority of the validation be done before the end-to-end tests ran. Furthermore, her analyses concluded that bugs are less likely to occur if you have modular systems, as well as extensive documentation, specifications and conceptual planning in place before coding starts.</p>
-<p>So with that background in place, let's get back to the four-layered testing pyramid.</p>
+<p>So with that background in place, let&rsquo;s get back to the four-layered testing pyramid.</p>
 <h2 id="four-layered-testing-pyramid-in-kotlin">Four layered testing pyramid, in Kotlin</h2>
-<figure class="zoomable">
-    <img src="https://jacquessmuts.github.io/images/compile_test1.png"
-         alt="Illuminati confirmed" width="20%"/> <figcaption>
+<figure class="zoomable"><img src="https://jacquessmuts.github.io/images/compile_test1.png"
+         alt="Illuminati confirmed" width="20%"/><figcaption>
             <h4>Testing Pyramid&#43;</h4>
         </figcaption>
 </figure>
 
-<p>You should be aware that there are <a href="https://martinfowler.com/articles/practical-test-pyramid.html">some variations to and criticism of</a> the original testing pyramid, but that it makes a good rule of thumb for architecting your processes and systems. When you search for blogs or literature about how the testing pyramid fits into software development, you will find little-to-zero mention of static analysis or compiler checks. Yet if you're coding in Java/Kotlin your IDE is constantly running automated checks on your code that most people consider to be completely separate from their automated tests. <strong>It is important to consider compile-time tests as just one part of a bigger system of automated software validation.</strong></p>
+<p>You should be aware that there are <a class="link" href="https://martinfowler.com/articles/practical-test-pyramid.html"  target="_blank" rel="noopener"
+    >some variations to and criticism of</a> the original testing pyramid, but that it makes a good rule of thumb for architecting your processes and systems. When you search for blogs or literature about how the testing pyramid fits into software development, you will find little-to-zero mention of static analysis or compiler checks. Yet if you&rsquo;re coding in Java/Kotlin your IDE is constantly running automated checks on your code that most people consider to be completely separate from their automated tests. <strong>It is important to consider compile-time tests as just one part of a bigger system of automated software validation.</strong></p>
 <p>Considering that every function is tested for spelling and reference, for number of arguments, for return type, and various other checks by the compiler, I think it is fair to say that the number of verifications performed by the compiler exceeds those performed by your unit-tests.</p>
 <h2 id="the-implication-on-your-daily-process">The Implication On Your Daily Process</h2>
 <p>Test-Driven-Development is meant to teach you to architect your code in such a way that makes it easy to test. First you write a failing test, then you make that test pass. The first step, according to TDD, is to have a failing test that looks something like this:</p>
-<figure class="zoomable">
-    <img src="https://jacquessmuts.github.io/images/compile_test3.png"
-         alt="normal test" width="70%"/> <figcaption>
+<figure class="zoomable"><img src="https://jacquessmuts.github.io/images/compile_test3.png"
+         alt="normal test" width="70%"/><figcaption>
             <h4>First Failing Test?</h4>
         </figcaption>
 </figure>
 
 <p>But I see this as the first failing test:</p>
-<figure class="zoomable">
-    <img src="https://jacquessmuts.github.io/images/compile_test2.png"
-         alt="static test" width="70%"/> <figcaption>
+<figure class="zoomable"><img src="https://jacquessmuts.github.io/images/compile_test2.png"
+         alt="static test" width="70%"/><figcaption>
             <h4>First Failing Test</h4>
         </figcaption>
 </figure>
 
-<p>This seems like a dumb distinction to make, but I believe it to be important. If you change the type of input or the number of arguments for the <code>convertStringToInt</code> function, your tests don't fail; the compilation fails before your tests can even run. Which means the input-type and input-amount test is performed automatically, but that it is still a verification step that fails properly.</p>
+<p>This seems like a dumb distinction to make, but I believe it to be important. If you change the type of input or the number of arguments for the <code>convertStringToInt</code> function, your tests don&rsquo;t fail; the compilation fails before your tests can even run. Which means the input-type and input-amount test is performed automatically, but that it is still a verification step that fails properly.</p>
 <h2 id="the-implications-on-your-architecture">The Implications On Your Architecture</h2>
 <p>Not everyone uses TDD, but everyone should architect their Android projects in such a way that it is easy to unit-test. By going down this route you will hopefully start to implement some of the popular and sensible choices:</p>
 <ul>
 <li>Modularization</li>
-<li>Inversion of Control via <a href="https://www.martinfowler.com/articles/injection.html">Dependency Injection</a></li>
+<li>Inversion of Control via <a class="link" href="https://www.martinfowler.com/articles/injection.html"  target="_blank" rel="noopener"
+    >Dependency Injection</a></li>
 <li>Decoupling Classes / Dependencies</li>
-<li><a href="https://old.reddit.com/r/androiddev/comments/9ifv54/are_kotlin_coroutines_really_going_to_replace/">Functional Reactive Programming</a></li>
-<li>Pretty much everything written in <a href="https://www.goodreads.com/book/show/44936.Refactoring">Refactoring by Fowler</a></li>
+<li><a class="link" href="https://old.reddit.com/r/androiddev/comments/9ifv54/are_kotlin_coroutines_really_going_to_replace/"  target="_blank" rel="noopener"
+    >Functional Reactive Programming</a></li>
+<li>Pretty much everything written in <a class="link" href="https://www.goodreads.com/book/show/44936.Refactoring"  target="_blank" rel="noopener"
+    >Refactoring by Fowler</a></li>
 </ul>
 <p>And various other small techniques that you develop subconsciously as you prioritise around testability.</p>
-<p>However, what if you prioritise your architecture to go beyond failing fast in unit tests? What if you prioritise things to fail fast like in the 4-layered test-pyramid above? Breaking changes should ideally fail at compile-time. For me, as an Android Developer, this is the ideal. My compile-time is often around a full minute and I'd prefer if breaking changes alerted me before I even have to do a full compile, much less run tests.</p>
-<p>A simple example would be if my <code>convertStringToInt</code> function required an additional argument. I'd get this error:</p>
-<figure class="zoomable">
-    <img src="https://jacquessmuts.github.io/images/compile_test4.png"
-         alt="what a terrible function I should just use the standard library for this" width="70%"/> <figcaption>
+<p>However, what if you prioritise your architecture to go beyond failing fast in unit tests? What if you prioritise things to fail fast like in the 4-layered test-pyramid above? Breaking changes should ideally fail at compile-time. For me, as an Android Developer, this is the ideal. My compile-time is often around a full minute and I&rsquo;d prefer if breaking changes alerted me before I even have to do a full compile, much less run tests.</p>
+<p>A simple example would be if my <code>convertStringToInt</code> function required an additional argument. I&rsquo;d get this error:</p>
+<figure class="zoomable"><img src="https://jacquessmuts.github.io/images/compile_test4.png"
+         alt="what a terrible function I should just use the standard library for this" width="70%"/><figcaption>
             <h4>Perfect test: it failed before it even ran</h4>
         </figcaption>
 </figure>
 
 <p>If you want to pick up breaking changes faster, your goal is to <strong>structure your code in a way where breaking changes more often cause compile time errors before they cause test failures.</strong></p>
 <h2 id="okay-cool-compilation-errors-are-sometimes-better-than-test-failures-so-give-me-some-practical-examples">&ldquo;Okay, cool. Compilation errors are sometimes better than test failures. So give me some practical examples&rdquo;</h2>
-<p>This was the theoretical portion. In the follow-ups to this post, I'll give some practical examples, which may include:
-This was the theoretical portion. In the follow-ups to this post, I'll give some practical examples, which may include:</p>
+<p>This was the theoretical portion. In the follow-ups to this post, I&rsquo;ll give some practical examples, which may include:
+This was the theoretical portion. In the follow-ups to this post, I&rsquo;ll give some practical examples, which may include:</p>
 <ul>
-<li>//TODO: <a href="https://jacquessmuts.github.io/post/compile_time_tests/">Using named arguments</a></li>
-<li>//TODO: <a href="https://jacquessmuts.github.io/post/compile_time_tests/">Using custom lint-tests</a></li>
-<li>//TODO: <a href="https://jacquessmuts.github.io/post/compile_time_tests/">Using <code>when</code> with enums/sealed classes</a></li>
-<li>//TODO: <a href="https://jacquessmuts.github.io/post/compile_time_tests/">&lt;<code>reified Type</code>&gt; Generics instead of &lt;*&gt;</a></li>
-<li>//TODO: <a href="https://jacquessmuts.github.io/post/compile_time_tests/">Labels for <code>this</code> and scope</a></li>
-<li>//TODO: <a href="https://jacquessmuts.github.io/post/compile_time_tests/">Using libraries that generate interfaces</a> (View Binding, NavigationSafeArgs, Dagger, Apollo)</li>
-<li>//TODO: <a href="https://jacquessmuts.github.io/post/compile_time_tests/">Using coroutines for asynchronous operations</a></li>
-<li>//TODO: <a href="https://jacquessmuts.github.io/post/compile_time_tests/">Using Kotlin Gradle DSL</a></li>
-<li>//TODO:  <a href="https://jacquessmuts.github.io/post/compile_time_tests/">Adding static analysis tools, like Detekt</a></li>
-</ul></article>
-    <footer class="post-footer">
-      
-      <ul class="post-tags">
+<li>//TODO: <a class="link" href="https://jacquessmuts.github.io/post/compile_time_tests/" >Using named arguments</a></li>
+<li>//TODO: <a class="link" href="https://jacquessmuts.github.io/post/compile_time_tests/" >Using custom lint-tests</a></li>
+<li>//TODO: <a class="link" href="https://jacquessmuts.github.io/post/compile_time_tests/" >Using <code>when</code> with enums/sealed classes</a></li>
+<li>//TODO: <a class="link" href="https://jacquessmuts.github.io/post/compile_time_tests/" >&lt;<code>reified Type</code>&gt; Generics instead of &lt;*&gt;</a></li>
+<li>//TODO: <a class="link" href="https://jacquessmuts.github.io/post/compile_time_tests/" >Labels for <code>this</code> and scope</a></li>
+<li>//TODO: <a class="link" href="https://jacquessmuts.github.io/post/compile_time_tests/" >Using libraries that generate interfaces</a> (View Binding, NavigationSafeArgs, Dagger, Apollo)</li>
+<li>//TODO: <a class="link" href="https://jacquessmuts.github.io/post/compile_time_tests/" >Using coroutines for asynchronous operations</a></li>
+<li>//TODO: <a class="link" href="https://jacquessmuts.github.io/post/compile_time_tests/" >Using Kotlin Gradle DSL</a></li>
+<li>//TODO:  <a class="link" href="https://jacquessmuts.github.io/post/compile_time_tests/" >Adding static analysis tools, like Detekt</a></li>
+</ul>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
         
-          <li><a href="https://jacquessmuts.github.io/tags/kotlin"><span class="tag">Kotlin</span></a></li>
+            <a href="https://jacquessmuts.github.io/tags/architecture/">architecture</a>
         
-          <li><a href="https://jacquessmuts.github.io/tags/testing"><span class="tag">Testing</span></a></li>
+            <a href="https://jacquessmuts.github.io/tags/theory/">theory</a>
         
-          <li><a href="https://jacquessmuts.github.io/tags/tdd"><span class="tag">TDD</span></a></li>
+            <a href="https://jacquessmuts.github.io/tags/margaret-hamilton/">margaret hamilton</a>
         
-          <li><a href="https://jacquessmuts.github.io/tags/testing-pyramid"><span class="tag">Testing Pyramid</span></a></li>
+            <a href="https://jacquessmuts.github.io/tags/testing/">testing</a>
         
-          <li><a href="https://jacquessmuts.github.io/tags/android"><span class="tag">Android</span></a></li>
-        
-          <li><a href="https://jacquessmuts.github.io/tags/margaret-hamilton"><span class="tag">Margaret Hamilton</span></a></li>
-        
-          <li><a href="https://jacquessmuts.github.io/tags/architecture"><span class="tag">Architecture</span></a></li>
-        
-      </ul>
-      
-      <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.
-      </p>
+    </section>
+
+
     </footer>
+
+
     
-      <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
+</article>
+
     
+
     
+
+     
     
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "jacquessmuts" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-      
+        
     
-  </section>
-  
-<footer class="site-footer">
-  <p>© 2017-2020 Jacques Smuts</p>
-  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
-  
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2022 Jacques Smuts
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
 </footer>
 
 
-<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
+    
+    <div class="pswp__bg"></div>
 
+    
+    <div class="pswp__scroll-wrap">
 
-<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
 
+        
+        <div class="pswp__ui pswp__ui--hidden">
 
+            <div class="pswp__top-bar">
 
+                
 
-<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [['$','$'], ['\\(','\\)']],
-      displayMath: [['$$','$$'], ['\\[','\\]']],
-      processEscapes: true,
-      processEnvironments: true,
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-      TeX: { equationNumbers: { autoNumber: "AMS" },
-      extensions: ["AMSmath.js", "AMSsymbols.js"] }
-    },
-  });
-</script>
-<script type="text/x-mathjax-config">
-  // Fix <code> tags after MathJax finishes running. This is a
-  // hack to overcome a shortcoming of Markdown. Discussion at
-  // https://github.com/mojombo/jekyll/issues/199
-  MathJax.Hub.Queue(() => {
-    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
-  });
-</script>
+                <div class="pswp__counter"></div>
 
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
 
+                <button class="pswp__button pswp__button--share" title="Share"></button>
 
-<script src="https://jacquessmuts.github.io/scripts/index.min.js"></script>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
 
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="https://jacquessmuts.github.io/ts/main.js" defer></script>
 <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('\/service-worker.js').then(function() {
-      console.log('[ServiceWorker] Registered');
-    });
-  }
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
 </script>
 
-
-
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-139178159-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-
-
-
-
-
-  </body>
+    </body>
 </html>

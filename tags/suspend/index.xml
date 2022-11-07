@@ -1,25 +1,279 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>suspend on Jacques Smuts</title>
-    <link>https://jacquessmuts.github.io/tags/suspend/</link>
-    <description>Recent content in suspend on Jacques Smuts</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Sun, 02 Jun 2019 09:08:10 +0200</lastBuildDate>
+    <channel>
+        <title>suspend on Jacques Smuts</title>
+        <link>https://jacquessmuts.github.io/tags/suspend/</link>
+        <description>Recent content in suspend on Jacques Smuts</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+        <lastBuildDate>Sun, 02 Jun 2019 09:08:10 +0200</lastBuildDate><atom:link href="https://jacquessmuts.github.io/tags/suspend/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Using the synchronized keyword in coroutines?</title>
+        <link>https://jacquessmuts.github.io/post/coroutine_sync_mutex/</link>
+        <pubDate>Sun, 02 Jun 2019 09:08:10 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/coroutine_sync_mutex/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/coroutine_sync_mutex.png" alt="Featured image of post Using the synchronized keyword in coroutines?" /&gt;&lt;p&gt;Working with coroutines is subtly different from normal locking functions. Introduce some thread-safety with mutex.&lt;/p&gt;
+&lt;h2 id=&#34;thread-safety-normally&#34;&gt;Thread-Safety, normally&lt;/h2&gt;
+&lt;p&gt;So hopefully you&amp;rsquo;re aware of basic thread-safety in Kotlin/Java. Sometimes you have a shared state of some kind that should only be accessed by one thread at a time. If you&amp;rsquo;re coming from Java, you probably use the &lt;code&gt;synchronized(lock)&lt;/code&gt; operator in order to ensure that a shared mutable object can only be accessed one at a time. For some great reading on this topic I suggest &lt;a class=&#34;link&#34; href=&#34;https://proandroiddev.com/synchronization-and-thread-safety-techniques-in-java-and-kotlin-f63506370e6d&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this post on Medium&lt;/a&gt;.&lt;/p&gt;
+&lt;h4 id=&#34;so-imagine-a-scenario-where-we-are-running-a-few-long-running-operations-like-api-calls-but-we-want-to-make-sure-that-we-never-run-more-than-one-such-operation-at-a-time&#34;&gt;So imagine a scenario where we are running a few long-running operations (like API calls), but we want to make sure that we never run more than one such operation at a time.&lt;/h4&gt;
+&lt;p&gt;When I was starting out with Java threading I&amp;rsquo;d probably write something risky like this:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-	<atom:link href="https://jacquessmuts.github.io/tags/suspend/index.xml" rel="self" type="application/rss+xml" />
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+
+fun main() {
+
+    val lockClass = SyncLockClass()
+    for (i in 1..10) {
+        GlobalScope.launch { lockClass.runFunction(i) }
+    }
+
+    Thread.sleep(2000) // We&amp;#39;re sleeping here because otherwise the JVM would terminate before printing the results
+}
+
+class SyncLockClass() {
+	val lock = Any()
+	var latestValue: Int = 0
+
+//sampleStart
+	fun runFunction(input: Int) {
+        println(&amp;#34;start function $input&amp;#34;)
+	    [mark]synchronized(lock) {[/mark]
+	        Thread.sleep(100) // This could also be a long-running calculation or an API call
+	        latestValue = input
+	    }
+	    println(&amp;#34;finished function $input at ${System.currentTimeMillis()}&amp;#34;)
+	}
+//sampleEnd
+
+	companion object {
+		// Put the sync lock inside a companion object if you want to ensure that all instances of this class share a lock
+		// val lock = Any()
+	}
+}
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Press the play button above (assuming you didn&amp;rsquo;t block JavaScript on this page) to see the result. Each function is blocked and waits at the &lt;code&gt;synchronized&lt;/code&gt; keyword for the previous function to finish. This mostly satisfies our initial requirement, but blocks any thread which hits the &lt;code&gt;synchronized&lt;/code&gt; section while it is locked. Notice how once the first few functions are hit, the JVM is blocked from starting new threads until the previous thread finishes. In other words this method works (but is dangerous) if you have lots of threads and are running blocking functions. In Kotlin Coroutines however we run &lt;code&gt;suspending&lt;/code&gt; functions, not blocking functions.&lt;/p&gt;
+&lt;h2 id=&#34;badly-with-coroutines&#34;&gt;Badly, with Coroutines&lt;/h2&gt;
+&lt;p&gt;If you&amp;rsquo;re already using coroutines you should know that a suspending function does not always block a thread. In some circumstances it pauses (suspends) the operation so that other operations can use the CPU.&lt;/p&gt;
+&lt;p&gt;In the example above, I&amp;rsquo;m using coroutines to launch the function, but I&amp;rsquo;m still blocking the thread every time the &lt;code&gt;runFunction()&lt;/code&gt; function is performed, which means I&amp;rsquo;m not really utilizing the full power of Kotlin coroutines. So, what if we replaced the blocking &lt;code&gt;Sleep&lt;/code&gt; function with the suspending &lt;code&gt;delay()&lt;/code&gt; function?&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
+
+fun main() {
+
+    val lockClass = SyncLockClass()
+
+    for (i in 1..10) {
+        GlobalScope.launch { lockClass.runFunction(i) }
+    }
+
+    Thread.sleep(2000) // We&amp;#39;re sleeping here because otherwise the JVM would terminate before printing the results
+}
+
+class SyncLockClass() {
+	val lock = Any()
+	var latestValue: Int = 0
+
+//sampleStart
+	suspend fun runFunction(input: Int) {
+        println(&amp;#34;start function $input&amp;#34;)
+	    synchronized(lock) {
+	        [mark]delay(100)[/mark] // This could also be a long-running calculation or an API call
+	        latestValue = input
+	    }
+	    println(&amp;#34;finished function $input at ${System.currentTimeMillis()}&amp;#34;)
+	}
+//sampleEnd
+}
+
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Try to run the above code and you&amp;rsquo;ll get an error: &lt;code&gt;The &#39;delay&#39; suspension point is inside a critical section&lt;/code&gt;. What does this mean? You should not delay or suspend or sleep your thread inside of a synchronized() block, as explained somewhat &lt;a class=&#34;link&#34; href=&#34;https://stackoverflow.com/questions/4160413/why-is-sleeping-inside-a-critical-section-a-concurrency-issue&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;in this StackOverflow Thread&lt;/a&gt;. It would ideally display as a warning in my first example as well. A critical section of code (such as in between the &lt;code&gt;synchronized&lt;/code&gt; block) should be as short as possible. It is not for long-running operations because it blocks the thread. But a suspending function does not necessarily block the thread.&lt;/p&gt;
+&lt;p&gt;So how do we solve this issue? Maybe you&amp;rsquo;re an oldschool Java dev and you think to just use ReentrantLock() instead. After all, synchronized is merely a simplified version of ReentrantLock. This is cheating to try and be smarter than the compiler. Don&amp;rsquo;t do this. Run the code below to see why.&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-    <item>
-      <title>Using the synchronized keyword in coroutines?</title>
-      <link>https://jacquessmuts.github.io/post/coroutine_sync_mutex/</link>
-      <pubDate>Sun, 02 Jun 2019 09:08:10 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/coroutine_sync_mutex/</guid>
-      <description>&lt;p&gt;Working with coroutines is subtly different from normal locking functions. Introduce some thread-safety with mutex.&lt;/p&gt;</description>
-    </item>
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
+import java.util.concurrent.locks.ReentrantLock
+
+fun main() {
+
+    val lockClass = SyncLockClass()
+
+	for (i in 1..10) {
+        GlobalScope.launch { lockClass.runFunction(i) }
+    }
+
+    Thread.sleep(2000) // We&amp;#39;re sleeping here because otherwise the JVM would terminate before printing the results
+}
+
+class SyncLockClass() {
+    val reentrantLock = ReentrantLock()
+	var latestValue: Int = 0
+
+//sampleStart
+	suspend fun runFunction(input: Int) {
+        println(&amp;#34;start function $input&amp;#34;)
+        reentrantLock.lock()
+	    [mark]delay(100)[/mark] // This could also be a long-running calculation or an API call
+	    latestValue = input
+	    reentrantLock.unlock()
+	    println(&amp;#34;finished function $input at ${System.currentTimeMillis()}&amp;#34;)
+	}
+//sampleEnd
+}
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;As you can see this is not the results we want at all. The lock breaks, and then it gets ignored. You&amp;rsquo;ll probably have a runtime error in the log as well. So how do we fix this? We use a Mutex.&lt;/p&gt;
+&lt;h2 id=&#34;coroutinessyncmutex&#34;&gt;Coroutines.Sync.Mutex&lt;/h2&gt;
+&lt;p&gt;There are some things we can read online on Mutex. We&amp;rsquo;ve got &lt;a class=&#34;link&#34; href=&#34;https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.sync/-mutex/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;the class documentation&lt;/a&gt;, we have this nice &lt;a class=&#34;link&#34; href=&#34;https://medium.com/@nazarivanchuk/shared-mutable-state-with-coroutines-33a85e903466&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;acricte&lt;/a&gt; which explains how to use the mutex with a shared mutable state, and finally we have the &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/reference/coroutines/shared-mutable-state-and-concurrency.html#mutual-exclusion&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;official kotlin guide&lt;/a&gt;. That last link is probably the best one.&lt;/p&gt;
+&lt;p&gt;The important takeaway is that the Mutex is part of the Coroutines package, which means we know that this mutex takes the suspending nature of coroutines into account. So how would we use it in our example?&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-  </channel>
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+
+fun main() {
+
+    val lockClass = SyncLockClass()
+
+	for (i in 1..10) {
+        GlobalScope.launch { lockClass.runSuspendFunctionWithMutex(i) }
+    }
+
+    Thread.sleep(2000) // We&amp;#39;re sleeping here because otherwise the JVM would terminate before printing the results
+}
+
+class SyncLockClass() {
+	var latestValue: Int = 0
+	val mutex = Mutex()
+
+	//sampleStart
+	suspend fun runSuspendFunctionWithMutex(input: Int) {
+
+    	println(&amp;#34;running suspend function $input&amp;#34;)
+	    [mark]mutex.withLock { [/mark]
+	    	delay(100) // This could also be a long-running calculation or an API call
+	        println(&amp;#34;finished suspend function $input at ${System.currentTimeMillis()}&amp;#34;)
+	        latestValue = input
+	    }
+
+}
+//sampleEnd
+}
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;And now things are working fine. All of the API calls are started as soon as possible and none of the threads are locked. If you look at the timestamps of the logs above you&amp;rsquo;ll see that the events are also returned with the expected 100ms delay in between each one. The only way to have achieved this result using the same techniques as in the first example is to have 10 threads at your disposal. In fact, I can probably increase the amount of coroutines I launch with this method. Let&amp;rsquo;s push it until we break it:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
+    
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+
+fun main() {
+
+    val lockClass = SyncLockClass()
+
+    println(&amp;#34;(only printing the first 3, and multiples of 50)&amp;#34;)
+	//sampleStart
+	for (i in 1..4000) {
+        GlobalScope.launch { lockClass.runSuspendFunctionWithMutex(i) }
+    }
+
+    Thread.sleep(8000) // We&amp;#39;re sleeping here because otherwise the JVM would terminate before printing the results
+	//sampleEnd
+}
+
+class SyncLockClass() {
+	var latestValue: Int = 0
+	val mutex = Mutex()
+
+	suspend fun runSuspendFunctionWithMutex(input: Int) {
+
+		if (input &amp;lt; 4 || input % 50 == 0)
+    		println(&amp;#34;running suspend function $input&amp;#34;)
+	    mutex.withLock {
+	    	delay(2) // This could also be a long-running calculation or an API call
+
+			if (input &amp;lt; 4 || input % 50 == 0)
+	        	println(&amp;#34;finished suspend function $input at ${System.currentTimeMillis()}&amp;#34;)
+	        latestValue = input
+	    }
+
+}
+}
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;I didn&amp;rsquo;t manage to break the Kotlin Playground with any amount of coroutines. The environment provided by the Kotlin playground only allows you to run for 10 seconds. The above code maximises that time without breaking anything, or blocking any threads. If you scroll through the logs you&amp;rsquo;ll see that some of the old functions are eventually getting finished while more coroutines are still being launched. This just goes to show how powerful coroutines and suspending functions are.&lt;/p&gt;
+&lt;h2 id=&#34;a-better-way&#34;&gt;A Better way?&lt;/h2&gt;
+&lt;p&gt;Threading and concurrency is a difficult topic. It is exceptionally easy to shoot yourself in the foot, by for example creating a deadlock. I suggest you read &lt;a class=&#34;link&#34; href=&#34;https://medium.com/@elizarov/deadlocks-in-non-hierarchical-csp-e5910d137cc&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this great article by Roman Elizarov&lt;/a&gt; on how to avoid deadlocks in practical coroutines. (Thanks to &lt;a class=&#34;link&#34; href=&#34;https://github.com/spand&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Johannes Jensen&lt;/a&gt; for the suggestion.)&lt;/p&gt;
+&lt;p&gt;Our code sample above works, but it&amp;rsquo;s still dangerous. If one function gets locked or indefinitely suspended for any reason, you end up in a deadlock. Ideally you want to avoid launching a coroutine or entering a suspend function until the conditions are ideal to do so. If you cannot stop a coroutine from being launched when it&amp;rsquo;s not ready, you can at least queue up several suspend functions using the &lt;code&gt;Mutex&lt;/code&gt; class.&lt;/p&gt;
+&lt;p&gt;But since we&amp;rsquo;re queuing things up, maybe it would be better to use something like the &lt;a class=&#34;link&#34; href=&#34;https://docs.oracle.com/javase/8/docs/api/?java/util/concurrent/BlockingQueue.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;BlockingQueue&lt;/a&gt; class in Java? I&amp;rsquo;m still investigating that part, but spoilers: &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/reference/coroutines/channels.html#channel-basics&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Channels&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Coroutines are better than multithreading, but comes with all of the same dangers as normal multithreading. Just because it&amp;rsquo;s easy to use does not mean it&amp;rsquo;s safe. Be careful out there.&lt;/p&gt;
+&lt;p&gt;Can you think of a better way to handle this scenario? Please let me know in the comments below.&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

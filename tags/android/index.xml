@@ -1,124 +1,912 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>android on Jacques Smuts</title>
-    <link>https://jacquessmuts.github.io/tags/android/</link>
-    <description>Recent content in android on Jacques Smuts</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Wed, 07 Oct 2020 02:48:01 +0200</lastBuildDate>
+    <channel>
+        <title>android on Jacques Smuts</title>
+        <link>https://jacquessmuts.github.io/tags/android/</link>
+        <description>Recent content in android on Jacques Smuts</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+        <lastBuildDate>Sun, 16 Feb 2020 14:54:38 +0200</lastBuildDate><atom:link href="https://jacquessmuts.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Add Overlays to Your Launcher Icon Using Layer-List</title>
+        <link>https://jacquessmuts.github.io/post/layer_list_as_launcher_icon/</link>
+        <pubDate>Sun, 16 Feb 2020 14:54:38 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/layer_list_as_launcher_icon/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/layerlist3.png" alt="Featured image of post Add Overlays to Your Launcher Icon Using Layer-List" /&gt;&lt;p&gt;You can use a &lt;!-- raw HTML omitted --&gt; drawable to easily differentiate between flavors and variants. This will show you how.&lt;/p&gt;
+&lt;h2 id=&#34;why&#34;&gt;Why?&lt;/h2&gt;
+&lt;p&gt;Ever wanted to have different icons for each flavor and variant in your Android app? Something like a little bug to indicate the debug version of your app, like so:&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/layerlist4.png&#34;
+         alt=&#34;An inordinate fondness for beetles&#34; width=&#34;40%&#34;/&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Sure, but it&amp;rsquo;s effort. And you have to ask a designer to make a bunch of different icons. Or, even worse, you have to create a bunch of different icons yourself. That&amp;rsquo;s wasteful, so instead you should use a layer-list. It has a default icon, and then it can dynamically insert an overlay image on top of your launcher icon, based upon your flavor or build variant. That way, you don&amp;rsquo;t need a bunch of different icons.&lt;/p&gt;
+&lt;h2 id=&#34;how&#34;&gt;How?&lt;/h2&gt;
+&lt;p&gt;Assuming you have &lt;code&gt;mipmap/ic_launcher&lt;/code&gt; icon already, you should&lt;/p&gt;
+&lt;p&gt;1.) Create an &lt;code&gt;ic_launcher_overlaid.xml&lt;/code&gt; file in your &lt;code&gt;main/drawable&lt;/code&gt; folder, with the following content:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/3541b17741c40e3c24453830d0ee102a.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;How does this work? The layer-list puts the &lt;code&gt;launcher_overlay&lt;/code&gt; on top of the normal &lt;code&gt;ic_launcher&lt;/code&gt; image, then puts 100px padding to the top and left, so that the &lt;code&gt;launcher_overlay&lt;/code&gt; sits in the bottom right corner. That might take some adjustment to get things right.&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/layerlist1.png&#34;
+         alt=&#34;Default Launcher Icon&#34; width=&#34;10%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;drawable/ic_launcher.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;2.) update your &lt;code&gt;AndroidManifest.xml&lt;/code&gt; file to point to the new launcher icon.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/fcd8ba8abc4df58909c7c624d53d9127.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;The only thing left is:&lt;/p&gt;
+&lt;p&gt;3.) Create &lt;code&gt;drawable/launcher_overlay&lt;/code&gt; for each variant/flavor you need.&lt;/p&gt;
+&lt;p&gt;You can create a single transparent pixel in &lt;code&gt;main/drawable&lt;/code&gt; as the default. Then add the appropriate images you need in the &lt;code&gt;flavorVariant/drawable&lt;/code&gt; folders. I added this image to my debug folder:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/layerlist2.png&#34;
+         alt=&#34;An inordinate fondness for beetles&#34; width=&#34;10%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Beetle&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;If all goes well, you&amp;rsquo;ll end up with a launcher icon that looks like this:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/layerlist3.png&#34;
+          alt=&#34;An inordinate fondness for beetles&#34; width=&#34;10%&#34;/&gt;
+ &lt;/figure&gt;
+
+&lt;p&gt;If you&amp;rsquo;re wondering about Adaptive Icons, all you have to know is that the adaptive icon references a foreground drawable. In the same way that you can replace the &lt;code&gt;ic_launcher&lt;/code&gt; with a layer-list, you can also replace &lt;code&gt;ic_launcher_foreground&lt;/code&gt; with a layer-list.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;I&amp;rsquo;d like to thank my colleague, Laurie Scheepers, for suggesting we try xml drawables as app icons.&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Getting arbitrary properties from unknown classes with KProperty</title>
+        <link>https://jacquessmuts.github.io/post/kproperty/</link>
+        <pubDate>Thu, 01 Aug 2019 20:29:26 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/kproperty/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/generic_interfaces3.png" alt="Featured image of post Getting arbitrary properties from unknown classes with KProperty" /&gt;&lt;p&gt;The Kproperty class is powerful and useful.&lt;/p&gt;
+&lt;h3 id=&#34;accessing-a-property-normally&#34;&gt;Accessing a property, normally&lt;/h3&gt;
+&lt;p&gt;You have a class, maybe a &lt;code&gt;data class&lt;/code&gt; to retain info about films. Our class might look like this:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-	<atom:link href="https://jacquessmuts.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+
+fun main (args: Array&amp;lt;String&amp;gt;) {
+//sampleStart
+	data class Film(val name: String, val releaseDate: Long, val runtime: Int)
+    val hereditary = Film(&amp;#34;Hereditary&amp;#34;, 1528401600, 127)
+    println(hereditary.name)
+//sampleEnd
+
+	println(&amp;#34;is the best horror film since The Thing&amp;#34;)
+}
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Which is fine for a basic class. However there are a massive amount of different films. And different film types, with different attributes. Horror films have some sort of monster or threat, but drama films don&amp;rsquo;t. Animated films have an animation style, and documentary films have an educational subject matter. A simple solution would be to extend your &lt;code&gt;Film&lt;/code&gt; class to have multiple &lt;code&gt;null&lt;/code&gt;able fields to reflect all of the potential properties of a film. That solution would reflect a database table more accurately and can be a perfectly fine solution.&lt;/p&gt;
+&lt;h2 id=&#34;dynamic-typing-via-interfaces&#34;&gt;Dynamic Typing via Interfaces&lt;/h2&gt;
+&lt;p&gt;But perhaps you have a constraint where a better approach would be to follow the SOLID principles and create some sort of &lt;a class=&#34;link&#34; href=&#34;https://medium.com/@severinperez/avoiding-interface-pollution-with-the-interface-segregation-principle-5d3859c21013&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Clean Code implementation of interfaces&lt;/a&gt; that a data class can extend. A bunch of little interfaces, like so:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+
+//sampleStart
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+//sampleEnd
+
+fun main (args: Array&amp;lt;String&amp;gt;) {
+    val divergent = YoungAdultFilm(&amp;#34;Divergent&amp;#34;, 1395172800, 127, 50, &amp;#34;fascism&amp;#34;, 1, true)
+    println(divergent.name)
+   	println(&amp;#34;is not.&amp;#34;)
+}
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Yes, this is a fairly unusual way of doing it, but sometimes it is required due to circumstances outside of your control. Luckily it still has some advantages in type safety. For example, now we are able to do checks to determine whether or not a given class is a certain type and return the property of our choosing. With the magic of Kotlin&amp;rsquo;s aggressive type inference, this code compiles and is typesafe:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-    <item>
-      <title>The Testing Pyramid Has a Deeper Foundation</title>
-      <link>https://jacquessmuts.github.io/post/compile_time_tests/</link>
-      <pubDate>Wed, 07 Oct 2020 02:48:01 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/compile_time_tests/</guid>
-      <description>&lt;p&gt;Kotlin allows us to structure our code around compile-time tests. This post explains how.&lt;/p&gt;</description>
-    </item>
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+
+
+fun main (args: Array&amp;lt;String&amp;gt;) {
+    val midsommar = YoungAdultFilm(&amp;#34;Midsommar&amp;#34;, 1395172800, 127, 0, &amp;#34;Society&amp;#34;, 1, true)
+    val hasLoveTriangles = hasLoveTriangles(midsommar)
+    println(&amp;#34;${midsommar.name} has love triangles? $hasLoveTriangles&amp;#34;)
+}
+//sampleStart
+fun hasLoveTriangles(film: Film): Boolean {
     
-    <item>
-      <title>Further Reading for Ethical Programming</title>
-      <link>https://jacquessmuts.github.io/post/ethicc_references/</link>
-      <pubDate>Sun, 06 Sep 2020 19:51:12 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/ethicc_references/</guid>
-      <description>&lt;p&gt;This post contains further reading for my recent talk on the Slippery Slope of Unethical Programming&lt;/p&gt;</description>
-    </item>
+    return if (film is Romance) {
+        film.loveTriangles &amp;gt; 0
+    } else {
+        false
+    }
+}
+//sampleEnd
+
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;The film might or might not be a Romance. But the moment we have done a check for &lt;code&gt;film is Romance&lt;/code&gt; then the compiler can infer that the film has the &lt;code&gt;loveTriangles&lt;/code&gt; property.&lt;/p&gt;
+&lt;p&gt;Pretty convenient right?&lt;/p&gt;
+&lt;p&gt;But now for every single property we have to write this out manually. If film is &lt;code&gt;PostApocalyptic&lt;/code&gt;, then get the &lt;code&gt;causeOfSocietalCollapse&lt;/code&gt; property. If the film is &lt;code&gt;Romance&lt;/code&gt;, then get the &lt;code&gt;happyEnding&lt;/code&gt; property. And so forth for every single property of every interface which extends &lt;code&gt;Film&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This all becomes rather tedious. So maybe we should rather write out something Generic, which allows us to check for any arbitrary property. Is this even possible?&lt;/p&gt;
+&lt;h2 id=&#34;generics-saves-the-day-again&#34;&gt;Generics Saves the Day Again&lt;/h2&gt;
+&lt;p&gt;Yes. We can iterate through the properties and find the one which matches a name we specify. This is not an ideal solution because we have to pass in a string. Not very typesafe. And if any variable name changes, that string will no longer match.&lt;/p&gt;
+&lt;p&gt;However, with Kotlin&amp;rsquo;s &lt;code&gt;inline&lt;/code&gt; and &lt;code&gt;reified&lt;/code&gt; keywords, we can do amazing generic work. First you have to have the Kotlin Reflection Library, (as described in my &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/generic_interface_and_methods/&#34; &gt;previous article on Reflection&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;Then you have to read about &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/tutorials/kotlin-for-py/member-references-and-reflection.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Reflection and KProperty&amp;lt;&amp;gt;&lt;/a&gt; and that if you can get access to a property, you can obtain the value of that property by using &lt;code&gt;kproperty.get(instance)&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Then putting all that together then we can write out a fairly simple generic function, like so:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-    <item>
-      <title>Add Overlays to Your Launcher Icon Using Layer-List</title>
-      <link>https://jacquessmuts.github.io/post/layer_list_as_launcher_icon/</link>
-      <pubDate>Sun, 16 Feb 2020 14:54:38 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/layer_list_as_launcher_icon/</guid>
-      <description>&lt;p&gt;You can use a &lt;!-- raw HTML omitted --&gt; drawable to easily differentiate between flavors and variants. This will show you how.&lt;/p&gt;</description>
-    </item>
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+import kotlin.reflect.KProperty1
+
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+
+
+//sampleStart
+fun main (args: Array&amp;lt;String&amp;gt;) {
+
+    val film = YoungAdultFilm(&amp;#34;The End of Evangelion&amp;#34;, 869342400, 85, 20, &amp;#34;Instrumentality&amp;#34;, 1, true)
+
+    [mark]val hasHappyEnding: Boolean? = getAttribute(film, Romance::happyEnding)[/mark]
+    println(&amp;#34;${film.name} has a happy ending? $hasHappyEnding&amp;#34;)
+}
+
+inline fun &amp;lt;T, reified Interface&amp;gt; getAttribute(input: Film, property: KProperty1&amp;lt;Interface, T&amp;gt;): T? {
+    if (input is Interface) {
+        return property.get(input) as? T
+    }
+    return null
+}
+//sampleEnd
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Now you can just pass in your &lt;code&gt;Interface::Property&lt;/code&gt; reference and you&amp;rsquo;ll know that the right property type will be accessed, that the property is definitely linked to the right interface, and that any future name changes will not result in breaking changes without the IDE telling you.&lt;/p&gt;
+&lt;h4 id=&#34;to-explain-the-function&#34;&gt;To explain the function:&lt;/h4&gt;
+&lt;p&gt;KProperty1 takes as Generic input the interface or class to which it belongs, as well as the required output (&lt;code&gt;T&lt;/code&gt;). In our case we allow any output, but it must be a property of the given &lt;code&gt;&amp;lt;Interface&amp;gt;&lt;/code&gt;. In short, we can theoretically get &lt;em&gt;any attribute&lt;/em&gt; from a given class with casting, but that isn&amp;rsquo;t safe. Instead we use this function, and with the &lt;code&gt;&amp;lt;Interface, T&amp;gt;&lt;/code&gt; we pass in, it is still typesafe and reliable.&lt;/p&gt;
+&lt;p&gt;This looks pretty great so far. If you want to keep going you can turn the getAttribute into an Extension Function or infix function on the Film class. Maybe you find this to be a bit more readable:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-    <item>
-      <title>Getting arbitrary properties from unknown classes with KProperty</title>
-      <link>https://jacquessmuts.github.io/post/kproperty/</link>
-      <pubDate>Thu, 01 Aug 2019 20:29:26 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/kproperty/</guid>
-      <description>&lt;p&gt;The Kproperty class is powerful and useful.&lt;/p&gt;</description>
-    </item>
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+import kotlin.reflect.KProperty1
+
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+
+fun main (args: Array&amp;lt;String&amp;gt;) {
+
+    val film = YoungAdultFilm(&amp;#34;The End of Evangelion&amp;#34;, 869342400, 85, 20, &amp;#34;Instrumentality&amp;#34;, 1, true)
+
+//sampleStart
+    val hasHappyEnding = film.getAttribute(Romance::happyEnding) ?: false
+//sampleEnd
     
-    <item>
-      <title>Coroutines Introduction Video</title>
-      <link>https://jacquessmuts.github.io/post/coroutines_presentation/</link>
-      <pubDate>Wed, 17 Jul 2019 21:53:05 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/coroutines_presentation/</guid>
-      <description>&lt;p&gt;A video presentation on coroutines, a talk I gave at GDG Cape Town&lt;/p&gt;</description>
-    </item>
+    println(&amp;#34;${film.name} has a happy ending? $hasHappyEnding&amp;#34;)
+}
+
+inline fun &amp;lt;T, reified Interface&amp;gt;Film.getAttribute(property: KProperty1&amp;lt;Interface, T&amp;gt;): T? {
+    return getFilmAttribute(this, property)
+}
+
+inline fun &amp;lt;T, reified Interface&amp;gt; getFilmAttribute(input: Film, property: KProperty1&amp;lt;Interface, T&amp;gt;): T? {
+    if (input is Interface) {
+        return property.get(input) as? T
+    }
+    return null
+}
+
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;h3 id=&#34;win-win&#34;&gt;Win win?&lt;/h3&gt;
+&lt;p&gt;Well mostly. The disadvantage is that you can&amp;rsquo;t know whether or not any given property is nullable or not. Via this method, everything becomes nullable. To obtain only non-nullable values you have to either do the type-casting manually, or use a default value. You can see me passing &lt;code&gt;false&lt;/code&gt; into the elvis operator above as a default value.&lt;/p&gt;
+&lt;p&gt;Furthermore, there&amp;rsquo;s a performance cost.&lt;/p&gt;
+&lt;h3 id=&#34;reflection-is-slower-but-by-how-much&#34;&gt;Reflection is Slower, But By How Much?&lt;/h3&gt;
+&lt;p&gt;Luckily this one is fairly simple to test. I just access the property several times, and log how long it takes to do that directly or via reflection. The code is here, and you can run it to see the result for yourself:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-    <item>
-      <title>Escaping Callback Hell with Generic SuspendCoroutine Infix Extension Functions</title>
-      <link>https://jacquessmuts.github.io/post/callback_hell/</link>
-      <pubDate>Mon, 20 May 2019 23:12:36 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/callback_hell/</guid>
-      <description>&lt;p&gt;Callback hell happens all the time in Android. Luckily, with coroutines, there&#39;s an easy way out.&lt;/p&gt;</description>
-    </item>
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+import kotlin.reflect.KProperty1
+import kotlin.system.measureTimeMillis
+
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+
+//sampleStart
+val iterations = 1000000000
+fun main (args: Array&amp;lt;String&amp;gt;) {
+
+    val normalTime = measureTimeMillis(::normalDirectAccessTime)
+    println(&amp;#34;It takes $normalTime milliseconds to do $iterations direct property access operations&amp;#34;)
+
+    val manualCastingTime = measureTimeMillis(::manualCastingAccessTime)
+    println(&amp;#34;It takes $manualCastingTime milliseconds to do $iterations manual casting property access operations&amp;#34;)
     
-    <item>
-      <title>The Problem with Kotlin Kfunction Receiver Functions</title>
-      <link>https://jacquessmuts.github.io/post/kfunction_analogues/</link>
-      <pubDate>Wed, 08 May 2019 17:54:58 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/kfunction_analogues/</guid>
-      <description>&lt;p&gt;KFunction can be written in more than one way. Here&#39;s a list of analogues, plus some criticism of the Receiver Function.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Creating and Deploying an Android Library via CircleCI</title>
-      <link>https://jacquessmuts.github.io/post/library_template/</link>
-      <pubDate>Tue, 07 May 2019 22:19:00 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/library_template/</guid>
-      <description>&lt;p&gt;This is the template I use to create new Android libraries with CircleCI support for Continuous Deployment.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Generics &#43; Reflection &#43; Type Inference &#43; Reified Type = Kotlin Magic</title>
-      <link>https://jacquessmuts.github.io/post/generic_interface_and_methods/</link>
-      <pubDate>Wed, 01 May 2019 08:30:00 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/generic_interface_and_methods/</guid>
-      <description>&lt;p&gt;With Kotlin, it&#39;s easier than ever to code with reflection and generics. This post attempts to give one example.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Don&#39;t Pass Around Your Room/Database Entity</title>
-      <link>https://jacquessmuts.github.io/post/modularization_room/</link>
-      <pubDate>Thu, 25 Apr 2019 10:35:54 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/modularization_room/</guid>
-      <description>&lt;p&gt;If you&#39;re thinking of modularizing your Android App and you use Android Room, you should not pass around your Room Entity.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Is your modularization making any progress?</title>
-      <link>https://jacquessmuts.github.io/post/modularization/</link>
-      <pubDate>Sat, 20 Apr 2019 21:15:17 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/modularization/</guid>
-      <description>&lt;p&gt;You should modularize your Kotlin Android app, since it&#39;s the best way to enforce &lt;a href=&#34;https://developer.android.com/jetpack/docs/guide#common-principles&#34;&gt;separation of concerns&lt;/a&gt;, but how do you know if you&#39;re doing it right? Here&#39;s some tips to help.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Original Site</title>
-      <link>https://jacquessmuts.github.io/post/original-site/</link>
-      <pubDate>Thu, 18 Apr 2019 17:03:47 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/original-site/</guid>
-      <description>&lt;p&gt;My original site is at &lt;a href=&#34;https://jacquessmuts.com&#34;&gt;JacquesSmuts.com&lt;/a&gt;&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+    val reflectionTime = measureTimeMillis(::reflectionAccessTime)
+    println(&amp;#34;It takes $reflectionTime milliseconds to do $iterations reflected property access operations&amp;#34;)
+   
+}
+//sampleEnd
+
+fun normalDirectAccessTime() {
+   
+    val film = YoungAdultFilm(&amp;#34;The End of Evangelion&amp;#34;, 869342400, 85, 20, &amp;#34;Instrumentality&amp;#34;, 1, true)
+
+    repeat(iterations) {
+        film.happyEnding
+    }
+}
+
+fun manualCastingAccessTime() {
+	val film = YoungAdultFilm(&amp;#34;The End of Evangelion&amp;#34;, 869342400, 85, 20, &amp;#34;Instrumentality&amp;#34;, 1, true)
+
+    repeat(iterations) {
+        getHappyEnding(film)
+    }
+}
+
+fun getHappyEnding(film: Film): Boolean {
+	return if (film is Romance) {
+		film.happyEnding
+	} else {
+		false
+	}
+}
+
+
+fun reflectionAccessTime() {
+   
+    val film = YoungAdultFilm(&amp;#34;The End of Evangelion&amp;#34;, 869342400, 85, 20, &amp;#34;Instrumentality&amp;#34;, 1, true)
+
+    repeat(iterations) {
+        getAttribute(film, Romance::happyEnding) ?: false
+    }
+}
+
+inline fun &amp;lt;T, reified Interface&amp;gt; getAttribute(input: Film, property: KProperty1&amp;lt;Interface, *&amp;gt;): T? {
+    if (input is Interface) {
+        return property.get(input) as? T
+    }
+    return null
+}
+
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;In my case, the reflected property access operation takes on average about 2.5 times longer than the direct access. And the manual casting takes just a smidgeon longer than the normal direct access.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s actually pretty impressive. I was expecting more than 90% decrease in performance for reflection; instead it&amp;rsquo;s only about 60%. This is not ideal if you care about optimizing for billions of operations per second, but acceptable for less intense usecases, such as in user(Android) applications that cater for a single user at a time.&lt;/p&gt;
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;KProperty is an essential class for doing higher-order programming in Kotlin. You can use it to get further information about any given property, or you can use it to obtain properties that you don&amp;rsquo;t normally have access to, as demonstrated above.&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Coroutines Introduction Video</title>
+        <link>https://jacquessmuts.github.io/post/coroutines_presentation/</link>
+        <pubDate>Wed, 17 Jul 2019 21:53:05 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/coroutines_presentation/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/coroutines_video1.png" alt="Featured image of post Coroutines Introduction Video" /&gt;&lt;p&gt;A video presentation on coroutines, a talk I gave at GDG Cape Town&lt;/p&gt;
+&lt;div class=&#34;video-wrapper&#34;&gt;
+    &lt;iframe loading=&#34;lazy&#34; 
+            src=&#34;https://www.youtube.com/embed/qaiO1BHIsgo&#34; 
+            allowfullscreen 
+            title=&#34;YouTube Video&#34;
+    &gt;
+    &lt;/iframe&gt;
+&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>Escaping Callback Hell with Generic SuspendCoroutine Infix Extension Functions</title>
+        <link>https://jacquessmuts.github.io/post/callback-hell/</link>
+        <pubDate>Mon, 20 May 2019 23:12:36 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/callback-hell/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/callback_hell4.png" alt="Featured image of post Escaping Callback Hell with Generic SuspendCoroutine Infix Extension Functions" /&gt;&lt;p&gt;Callback hell happens all the time in Android. Luckily, with coroutines, there&amp;rsquo;s an easy way out.&lt;/p&gt;
+&lt;p&gt;So you&amp;rsquo;re hopefully aware of &lt;a class=&#34;link&#34; href=&#34;http://callbackhell.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;callback hell&lt;/a&gt;, which makes your code difficult to read, and also makes the sequence of events difficult to understand. This is something we want to avoid, but it&amp;rsquo;s not always easy. If you&amp;rsquo;re using any sort of third-party library, (like Firebase) you&amp;rsquo;re probably forced into this pattern regularly. A simple callback would look like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/6cdad47d20e6c4f2a92ebee4f1ff8640.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;As you can see, we&amp;rsquo;re one level into callbacks. At a glance, it would seem like the result would be handled immediately after sending out the &lt;code&gt;saveUsername&lt;/code&gt; function. But it in fact creates an asynchronous task (most likely on the IO thread). Which means the order of events quickly becomes unclear, especially to a new developer climbing on the project. An experienced dev would know that the order of events isn&amp;rsquo;t clear, but it&amp;rsquo;ll take a few minutes to fully comprehend what the actual order is.&lt;/p&gt;
+&lt;p&gt;However, if your operation is suitable for coroutines (such as API calls, disk writes or background processes) we can &amp;ldquo;flatten&amp;rdquo; the callback hell fairly easily.&lt;/p&gt;
+&lt;h3 id=&#34;suspendcoroutine&#34;&gt;SuspendCoroutine&lt;/h3&gt;
+&lt;p&gt;I&amp;rsquo;m assuming you&amp;rsquo;re aware of coroutines and suspendFunctions already. If not, it&amp;rsquo;s time to &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/reference/coroutines-overview.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;start using them&lt;/a&gt;. First, I need to introduce suspendCoroutine. The &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines.experimental/suspend-coroutine.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;official documentation on suspendCoroutine&lt;/a&gt; doesn&amp;rsquo;t make it particularly clear. But &lt;a class=&#34;link&#34; href=&#34;https://stackoverflow.com/questions/50315802/correct-way-to-suspend-coroutine-until-taskt-is-complete&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this StackOverflow answer&lt;/a&gt; provides a good idea of how to use it. So if we were to write a suspendCoroutine version of our function, it would look like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/40462adab3f657da91d25dfdba84ef99.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;As you can see, the saveUsername function has turned into a function which returns the result in the same line, but can only be called from a coroutineContext/suspendFunction. This is perfect for making your code look cleaner and run in sequence with more confidence.&lt;/p&gt;
+&lt;p&gt;However, it requires you to write a suspendCoroutine function for each function you want to flatten in this way. This adds a lot of boilerplate. So is there some way we can use generics to avoid this boilerplate? Of course!&lt;/p&gt;
+&lt;h3 id=&#34;generic-suspendcoroutine&#34;&gt;Generic SuspendCoroutine&lt;/h3&gt;
+&lt;p&gt;If you read my &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/generic_interface_and_methods/&#34; &gt;first article on kotlin generics&lt;/a&gt; you&amp;rsquo;ll know that the IntelliJ IDE is smarter than us, so we&amp;rsquo;ll use it to generate our function. We&amp;rsquo;ll call our function &lt;code&gt;suspendAsync()&lt;/code&gt; and pass in our method, along with the input, and see what happens. Remember you can pass a method reference with &lt;code&gt;instance::method&lt;/code&gt;&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/callback_hell1.png&#34;
+         alt=&#34;compiler error&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If you see this warning, you&amp;#39;re headed in the right direction. &lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Then IntelliJ creates a function which looks like this:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/callback_hell2.png&#34;
+         alt=&#34;compiler result&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Not generic yet. &lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;And through a little bit of Generic reworking, as well as &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/kfunction_analogues/&#34; &gt;my knowledge of KFunction analogues&lt;/a&gt;, I replaced the &lt;code&gt;&amp;lt;String&amp;gt;&lt;/code&gt; input and output types with generic types, resulting in this function:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/8ae63a3da81d38708c0c35a300280a86.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;As you can see, it&amp;rsquo;s about the same as our previous function. The difference is, you can pass in any function which takes a single input and a function callback, and it becomes a one-liner instead of a callback.&lt;/p&gt;
+&lt;p&gt;If you want to pass in two inputs, it&amp;rsquo;s slightly trickier, but still very doable:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/9d1c10544e72c4d88e978ca65c5f07ff.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;And there you have it. You can reduce any qualifying callback with these functions. Other variations can be covered with a few more generic functions. However, it doesn&amp;rsquo;t feel very nice calling a function in this way. First you write &lt;code&gt;suspendAsync&lt;/code&gt;, then you pass in the function you actually want to call? Not the best, because we&amp;rsquo;re used to referencing the function we want to call first.&lt;/p&gt;
+&lt;p&gt;So maybe we can do better?&lt;/p&gt;
+&lt;h3 id=&#34;generic-infix-suspendcoroutine-extension-function&#34;&gt;Generic Infix SuspendCoroutine Extension Function&lt;/h3&gt;
+&lt;p&gt;I like the &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/reference/functions.html#infix-notation&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;infix notation in Kotlin&lt;/a&gt;, though I usually avoid it because it&amp;rsquo;s a little dangerous and it&amp;rsquo;s not easy for new developers to discover it&amp;rsquo;s usage in any given codebase. In this case the increased readability and ease of use may be worth it.&lt;/p&gt;
+&lt;p&gt;So using the same method of letting the IDE generate our function for us, we write out the infix function we want. I call it &lt;code&gt;suspendAndInvokeWith&lt;/code&gt;, because we are invoking a function, turning it into a suspend function, and passing in arguments.&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/callback_hell3.png&#34;
+         alt=&#34;compiler result&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If it wasn&amp;#39;t for compiler suggestions I&amp;#39;d be useless. &lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Which we clean up and genericify a little bit into our result:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/d099eff5e66aa6b1d5de924f87c9e967.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;This feels a lot more natural. You start out by writing the function you would normally write, using the infix notation and passing in your input.&lt;/p&gt;
+&lt;p&gt;Infix functions require only a single input, so if you want to pass in more than one argument into a function, you need to do it by using Pairs or Triples, like so:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/b6b45f506d001005bc8914e0925986cc.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;And there you have it. This won&amp;rsquo;t work on everything, but it&amp;rsquo;s a start to reducing boilerplate.&lt;/p&gt;
+&lt;h3 id=&#34;source&#34;&gt;Source&lt;/h3&gt;
+&lt;p&gt;At &lt;a class=&#34;link&#34; href=&#34;https://flatcircle.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Flat Circle&lt;/a&gt;, we&amp;rsquo;re trying to make our code as readable as possible, and found that using coroutines and avoiding callback hell is a good way to go about doing this. So we built these infix notations (and a few other utility functions) into a little &lt;a class=&#34;link&#34; href=&#34;https://github.com/flatcircle/coroutinehelper&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CoroutineHelper Library&lt;/a&gt; to make our lives easier. Please go ahead and use that library or copy the code to help make your code as readable as possible.&lt;/p&gt;
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;Callback hell isn&amp;rsquo;t the end of the world, but sometimes it can add just a little bit too much confusion to an already complex lifecycle. Hopefully with Coroutines, coupled with the techniques and Generic Utility functions above, you can reduce callback hell a little bit in your code.&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>The Problem with Kotlin Kfunction Receiver Functions</title>
+        <link>https://jacquessmuts.github.io/post/kfunction_analogues/</link>
+        <pubDate>Wed, 08 May 2019 17:54:58 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/kfunction_analogues/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/generic_interfaces3.png" alt="Featured image of post The Problem with Kotlin Kfunction Receiver Functions" /&gt;&lt;p&gt;KFunction can be written in more than one way. Here&amp;rsquo;s a list of analogues, plus some criticism of the Receiver Function.&lt;/p&gt;
+&lt;p&gt;After my &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/generic_interface_and_methods/&#34; &gt;previous article on Reflection&lt;/a&gt; was posted, I got a great comment from @pacoworks:&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;KSuspendFunction does not support that syntax (yet?). So to build up towards understanding KSuspendFunction1, I stuck with KFunction1 and its usage.&lt;br&gt;&lt;br&gt;Normally I use your syntax, but the article was already too long to get into that :P &lt;a href=&#34;https://t.co/nUaDArDA5S&#34;&gt;pic.twitter.com/nUaDArDA5S&lt;/a&gt;&lt;/p&gt;&amp;mdash; Jacques Smuts (@JacquesSmuts) &lt;a href=&#34;https://twitter.com/JacquesSmuts/status/1126057942724296704?ref_src=twsrc%5Etfw&#34;&gt;May 8, 2019&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;I assumed that since the IDE told me that there was a type mismatch, that suspend functions weren&amp;rsquo;t supported.&lt;/p&gt;
+&lt;p&gt;Turns out I was wrong; KSuspendFunction can be shortened. (click that thread to read more)  They&amp;rsquo;re called Receiver Functions and they have since been added to the &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/reference/lambdas.html#function-types&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Kotlin official documentation for higher-order-functions&lt;/a&gt; with a nice explanation.&lt;/p&gt;
+&lt;p&gt;So, in order to help me remember the different ways to reference higher-order functions, I made this grid. It omits the list of passed interfaces for brevity.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/f43755a820658b19f6c5fdd4fdb14eb4.js&#34;&gt;&lt;/script&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;KFunction&lt;/th&gt;
+&lt;th&gt;Analogue&lt;/th&gt;
+&lt;th&gt;ReceiverFunction&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;KFunction1&amp;lt;Interface, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;(Interface) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;Interface.() -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;KFunction2&amp;lt;Interface, Input, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;(Interface, Input) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;Interface.(Input) -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;KFunction3&amp;lt;Interface, In1, In2, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;(Interface, In1, In2) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;Interface.(In1, In2) -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;KSuspendFunction1&amp;lt;Interface, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;suspend (Interface) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;suspend Interface.() -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;KSuspendFunction2&amp;lt;Interface, Input, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;suspend (Interface, Input) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;suspend Interface.(Input) -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;In all 3 cases you have to add &lt;code&gt;implementation &amp;quot;org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion&amp;quot;&lt;/code&gt; in your gradle.&lt;/p&gt;
+&lt;p&gt;However you only have to add the &lt;code&gt;import kotlin.reflect.KFunction1&lt;/code&gt; import at the top of your file if you&amp;rsquo;re using the explicit KFunction syntax.&lt;/p&gt;
+&lt;p&gt;I like the way ReceiverFunction is composed and I would like to use that, however I see a problem with it. If any new developer unused to this syntax works on this code, what should they google to find out more? &lt;code&gt;().-&amp;gt;T&lt;/code&gt; ? It&amp;rsquo;s difficult to work with Reflection and Generics the first time, but if you see &amp;ldquo;KSuspendFunction1&amp;rdquo; you will be able to google it and find references to Reflection to understand what the code is doing.&lt;/p&gt;
+&lt;p&gt;The other thing to note is that if you use the ReceiverFunction notation and pass the wrong type of function, the IDE will always default to referring to the passed function argument as &amp;ldquo;KFunction&amp;rdquo;.&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/kfunction_analogues2.png&#34;
+         alt=&#34;compiler error&#34; width=&#34;90%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;I didn&amp;#39;t call it a KSuspendFunction, but the IDE does. &lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Which means the developer is likely to think that they are passing something entirely different than the required input, unless they know both the KFunction notation and the Receiver Function notation.&lt;/p&gt;
+&lt;p&gt;Since I like the Receiver Function syntax, I&amp;rsquo;m going to add a link to the Kotlin documentation in my code comments wherever I use the ReceiverFunction syntax. &lt;a class=&#34;link&#34; href=&#34;https://stackoverflow.com/questions/45875491/what-is-a-receiver-in-kotlin&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;This explanation on StackOverflow&lt;/a&gt; as well, since it explains the usage of receiver functions a bit better.&lt;/p&gt;
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;Receiver Functions are nice, but there is no simple way for a developer to get to the right documentation from the code or IDE unless they already know what Receiver Functions are, or that they refer to KFunction.
+In order to make it easier for people to understand your code, you need to choose one:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Refer to KFunction explicitly; or&lt;/li&gt;
+&lt;li&gt;Add comments every time you use Higher Order Receiver Functions&lt;/li&gt;
+&lt;/ul&gt;</description>
+        </item>
+        <item>
+        <title>Creating and Deploying an Android Library via CircleCI</title>
+        <link>https://jacquessmuts.github.io/post/library_template/</link>
+        <pubDate>Tue, 07 May 2019 22:19:00 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/library_template/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/library_template3.png" alt="Featured image of post Creating and Deploying an Android Library via CircleCI" /&gt;&lt;p&gt;This is the template I use to create new Android libraries with CircleCI support for Continuous Deployment.&lt;/p&gt;
+&lt;h2 id=&#34;libraries-better-than-util-classes&#34;&gt;Libraries: Better Than Util Classes&lt;/h2&gt;
+&lt;p&gt;I often find myself copying code from other projects. After some discussion with my colleagues we decided to put everything that we re-use into libraries. Even those tiny util functions you usually just copy-paste when you need it. Libraries are better than copy-pasting for several reasons:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;It makes future work easier&lt;/li&gt;
+&lt;li&gt;Writing a library teaches you to think more abstractly about any problem you&amp;rsquo;re trying to solve.&lt;/li&gt;
+&lt;li&gt;Future work can benefit everyone, rather than just the project you&amp;rsquo;re on&lt;/li&gt;
+&lt;li&gt;It forces separation of concerns&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Plus many more reasons, but you probably know this already. So here&amp;rsquo;s the steps I follow to create a library:&lt;/p&gt;
+&lt;h2 id=&#34;how-to-make-a-library&#34;&gt;How to Make a Library&lt;/h2&gt;
+&lt;h4 id=&#34;1-create-a-librarynameexample-project-in-android-studio-and-add-a-libraryname-module&#34;&gt;1. Create a &lt;code&gt;LibraryNameExample&lt;/code&gt; project in Android Studio and add a &lt;code&gt;LibraryName&lt;/code&gt; module.&lt;/h4&gt;
+&lt;p&gt;I followed &lt;a class=&#34;link&#34; href=&#34;https://medium.com/@anujguptawork/how-to-create-your-own-android-library-and-publish-it-750e0f7481bf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this guide&lt;/a&gt; for the first part, but I don&amp;rsquo;t deploy on JitPack. I prefer Bintray for having easier deployment to JCenter(). Being on JCenter gives your library a false sense of official status, which you want.&lt;/p&gt;
+&lt;h4 id=&#34;2-add-the-project-to-githubhttpsgithubcomnew-under-libraryname&#34;&gt;2. Add the project to &lt;a class=&#34;link&#34; href=&#34;https://github.com/new&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;GitHub&lt;/a&gt; under &lt;code&gt;LibraryName&lt;/code&gt;&lt;/h4&gt;
+&lt;h4 id=&#34;3-create-the-repo-on-bintrayhttpsbintraycom-under-libraryname&#34;&gt;3. Create the repo on &lt;a class=&#34;link&#34; href=&#34;https://bintray.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Bintray&lt;/a&gt; under &lt;code&gt;LibraryName&lt;/code&gt;&lt;/h4&gt;
+&lt;h4 id=&#34;4-add-the-bintray-release-dependency-and-settings&#34;&gt;4. Add the bintray-release dependency and settings&lt;/h4&gt;
+&lt;p&gt;I followed &lt;a class=&#34;link&#34; href=&#34;https://medium.com/@anitaa_1990/6-easy-steps-to-upload-your-android-library-to-bintray-jcenter-59e6030c8890&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this guide&lt;/a&gt;, and created my account on bintray as instructed there. However I save my BINTRAY_KEY api key in my CircleCI setup, and access it from the gradle setup for bintray-release, like so:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/a004eec630f299bfa01bb63aabf00474.js&#34;&gt;&lt;/script&gt;
+
+&lt;h4 id=&#34;5-add-the-project-to-circlecihttpscirclecicom&#34;&gt;5. Add the project to &lt;a class=&#34;link&#34; href=&#34;https://circleci.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CircleCI&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;For my CircleCI config.yml file, I literally just copy-paste &lt;a class=&#34;link&#34; href=&#34;https://github.com/JacquesSmuts/RxHelpers/tree/master/.circleci&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;the same file&lt;/a&gt; across all my library projects for the initial setup. This file doesn&amp;rsquo;t run tests or anything right now, but as I&amp;rsquo;m building up my libraries that will change. If it has changed to add features you&amp;rsquo;re not using, &lt;a class=&#34;link&#34; href=&#34;https://github.com/JacquesSmuts/RxHelpers/blob/2a2349a72bea5025c87b05bf3d0b385e7ee1f5b8/.circleci/config.yml#L1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this is the link to the original file at the time of writing.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Also remember to add the environment variable &lt;code&gt;BINTRAY_KEY&lt;/code&gt; to your CircleCI settings, like so:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/library_template1.png&#34;
+         alt=&#34;CircleCI&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Use your own Bintray API key, from Bintray User settings.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;You may also want to set up CircleCI to build only on pull requests. But don&amp;rsquo;t worry, this config won&amp;rsquo;t deploy without your say-so.&lt;/p&gt;
+&lt;h4 id=&#34;6-deploy&#34;&gt;6. Deploy!&lt;/h4&gt;
+&lt;p&gt;Commit to master and make sure CircleCI builds your project. If you copied my CircleCI config file, you should see a workflow that looks like this:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/library_template2.png&#34;
+         alt=&#34;CircleCI&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Hodl&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Click the &amp;ldquo;Hold&amp;rdquo; button and approve the build. If you do, it will deploy to Bintray. If you get any errors, CircleCI should have logs which explain the issue so you can resolve it from there.&lt;/p&gt;
+&lt;h4 id=&#34;7-add-the-repo-to-jcenter&#34;&gt;7. Add The Repo to JCenter()&lt;/h4&gt;
+&lt;p&gt;Once you have a package deployed to Bintray, click the &amp;ldquo;Link to JCenter()&amp;rdquo; button on the package details view on Bintray. It&amp;rsquo;s slightly hidden but it&amp;rsquo;s there somewhere. After a few hours, you should have an approved JCenter() link. You only have to do this once, because every future deployment of this repo will be deployed to JCenter automatically.&lt;/p&gt;
+&lt;h4 id=&#34;8-update-the-readme-with-status-badges&#34;&gt;8. Update the Readme with Status Badges&lt;/h4&gt;
+&lt;p&gt;Create a Readme.md in your repo which explains how to use and download your repo. You&amp;rsquo;ll find the gradle instructions on Bintray, as well as a Status Badge you can paste into your Readme. It will look like this:&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://bintray.com/jacquessmuts/RxHelpers/rxhelpers/_latestVersion&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;img src=&#34;https://api.bintray.com/packages/jacquessmuts/RxHelpers/rxhelpers/images/download.svg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Download&#34;
+	
+	
+&gt; &lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;and it will update automatically every time you deploy a new version, without needing to update your readme. I usually add a status badge for CircleCI as well.&lt;/p&gt;
+&lt;h4 id=&#34;9-share-it&#34;&gt;9. Share It&lt;/h4&gt;
+&lt;p&gt;Congrats, you just deployed your library. Share it with the world. Tweet about it, blog about it, even just share in the comments below. Libraries are amazing.&lt;/p&gt;
+&lt;h2 id=&#34;examples&#34;&gt;Examples&lt;/h2&gt;
+&lt;p&gt;Some libraries I&amp;rsquo;ve made using this method:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/JacquesSmuts/RxHelpers&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;RxHelpers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/flatcircle/ConnectivityHelper&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ConnectivityHelper&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/flatcircle/ViewHelper&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ViewHelper&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/flatcircle/CoroutineHelper&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CoroutineHelper&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/flatcircle/LiveDataHelper&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LiveDataHelper&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+        </item>
+        <item>
+        <title>Generics &#43; Reflection &#43; Type Inference &#43; Reified Type = Kotlin Magic</title>
+        <link>https://jacquessmuts.github.io/post/generic_interface_and_methods/</link>
+        <pubDate>Wed, 01 May 2019 08:30:00 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/generic_interface_and_methods/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/generic_interfaces3.png" alt="Featured image of post Generics &#43; Reflection &#43; Type Inference &#43; Reified Type = Kotlin Magic" /&gt;&lt;p&gt;With Kotlin, it&amp;rsquo;s easier than ever to code with reflection and generics. This post attempts to give one example.&lt;/p&gt;
+&lt;h2 id=&#34;background-an-unlikely-scenario&#34;&gt;Background: An unlikely scenario&lt;/h2&gt;
+&lt;p&gt;I couldn&amp;rsquo;t think of a simpler scenario to demonstrate KFunction and KSuspendFunction working well in tandem with Generics, so please bear with me when I present this unlikely scenario.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s assume you have several different endpoints and you need to differentiate between them easily, even though they can change dynamically. If you&amp;rsquo;re an Android developer, you&amp;rsquo;re probably used to Retrofit and its associated Interfaces. You have several classes that look like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/8374926ea79785b96aec53714d1dd44e.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;Each of these interfaces are used by RetroFit to generate the right api call you can call. And then you have a few classes which may or may not implement these interfaces. So if you have a list of unknown services and you want to get the AWS Repos, you have to iterate through your services, find the AwsService and then make the call. You can do something like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/142f78c848c784119ca76bdc151ea01f.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;But this means that every single time you want to check your GitHubRepos, your AwsRepos, or any other api call, you have to manually write out this entire process from scratch. That&amp;rsquo;s highly inefficient and boilerplatey. Can&amp;rsquo;t you push them all through some central function?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Yes, with Reflection + Generics you can&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;kotlin-reflection&#34;&gt;Kotlin Reflection&lt;/h2&gt;
+&lt;p&gt;So first, you should read the &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/tutorials/kotlin-for-py/member-references-and-reflection.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;official kotlin documentation on reflection&lt;/a&gt;. It&amp;rsquo;s a really good starting point, even if you already know Reflection from other languages. Even better, read &lt;a class=&#34;link&#34; href=&#34;https://medium.com/kotlin-thursdays/introduction-to-kotlin-generics-reified-generic-parameters-7643f53ba513&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this great guide on Medium&lt;/a&gt; about both reflection and generics. But how does this relate to us?&lt;/p&gt;
+&lt;p&gt;We want to pass the AWS Repo function in the AWS interface and get the AWSRepo result. Later we&amp;rsquo;ll make it generic, but first step is just reflection. So let&amp;rsquo;s call that non-existent function. We&amp;rsquo;ll call it &lt;code&gt;doAwsApiCall&lt;/code&gt; and it has two input parameters:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The list of &lt;code&gt;services&lt;/code&gt;; and&lt;/li&gt;
+&lt;li&gt;the &lt;code&gt;listAwsRepos&lt;/code&gt; method from the &lt;code&gt;AwsCodeCommitService&lt;/code&gt; interface.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;doAwsApiCall&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;services&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AwsCodeCommitService&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;listAwsRepos&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;But that function doesn&amp;rsquo;t exist yet, so just ask IntelliJ/Android Studio to create it for you. (We&amp;rsquo;re doing this because the IDE is smarter than us at figuring out the input parameters.)&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/generic_interfaces1.png&#34;
+         alt=&#34;compiler error&#34; width=&#34;50%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If you see this warning, you&amp;#39;re headed in the right direction. &lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;And you&amp;rsquo;ll get something like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/10a7bab01fe4e8292b307955beac2da6.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;So the &lt;code&gt;KFunction1&lt;/code&gt; here is reference to a specific function that can be called. To make a class run that function, you just have to pass the calling class into the function. Yes, that&amp;rsquo;s hard to understand and a little bit backwards, but maybe it makes more sense in code.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/53d6fb84c6ac3eebb6dde3d830bca61b.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;This is almost the same as our first implementation, except for the commented part. What this means is that we can pass in any function from the &lt;code&gt;AwsCodeCommitService&lt;/code&gt; interface, and it will automatically be called inside the &lt;code&gt;doAwsApiCall&lt;/code&gt; function.&lt;/p&gt;
+&lt;p&gt;But this means we have to write this code for each of our interfaces. One for &lt;code&gt;GitHubService&lt;/code&gt;, one for &lt;code&gt;BitBucketService&lt;/code&gt;, and so forth. That&amp;rsquo;s a lot better, but still not good enough. If we wanta single function to handle all of these api calls, then we must answer this question:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Can we write a function that takes &lt;strong&gt;ANY&lt;/strong&gt; interface and call &lt;strong&gt;ANY&lt;/strong&gt; function from that interface, and return &lt;strong&gt;ANY&lt;/strong&gt; result, &lt;strong&gt;and still be type safe&lt;/strong&gt;?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Yes, with Reflection and Generics you can!&lt;/p&gt;
+&lt;h2 id=&#34;kotlin-generics-plus-reflection&#34;&gt;Kotlin Generics Plus Reflection&lt;/h2&gt;
+&lt;p&gt;So, using the great explanation into inline functions and reified Generics in &lt;a class=&#34;link&#34; href=&#34;https://medium.com/kotlin-thursdays/introduction-to-kotlin-generics-reified-generic-parameters-7643f53ba513&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this great guide on Medium&lt;/a&gt; as a basis, I&amp;rsquo;m going to just turn everything into a Generic and see what happens.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/087ee57e4afca3fde8112c3b37dcbf4e.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;All I did was&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Added &lt;code&gt;&amp;lt;reified Service, Result&amp;gt;&lt;/code&gt; to the beginning of the function, to pass in those types&lt;/li&gt;
+&lt;li&gt;Replace any reference to &lt;code&gt;AwsCodeCommitService&lt;/code&gt; with the generic &lt;code&gt;Service&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Replaced any reference to &lt;code&gt;List&amp;lt;AwsRepo&amp;gt;&lt;/code&gt; with the generic &lt;code&gt;Result&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;And it works and accepts literally any &lt;code&gt;interface::method&lt;/code&gt; pair which returns the expected Result type. I wanted to restrict it a bit, so I made sure that &lt;code&gt;Service&lt;/code&gt; extends the &lt;code&gt;RetroService&lt;/code&gt; interface I defined all the way at the top. Now it only accepts the right methods.&lt;/p&gt;
+&lt;p&gt;However&amp;hellip;&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/generic_interfaces2.png&#34;
+         alt=&#34;compiler error&#34; width=&#34;90%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If you see this warning, you&amp;#39;re headed in the right direction. &lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;The &lt;code&gt;GitHubRepos&lt;/code&gt; api call takes a username as an input parameter. So now the IDE is telling you that &lt;code&gt;listGitHubRepos(username)&lt;/code&gt; is a KFunction2. What&amp;rsquo;s that?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;KFunction1 is a function reference with zero input arguments, e.g. &lt;code&gt;listAwsRepos()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;KFunction2 is a function reference with one input argument, e.g. &lt;code&gt;listGitHubRepos(username: String)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So let&amp;rsquo;s create another &lt;code&gt;doApiCall()&lt;/code&gt;, except that it takes kFunction2 as an input.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/499cab2b907298bc03de8d02d19c22c0.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;And this function works. All we had to do was add the &lt;code&gt;Input&lt;/code&gt; Type as a Generic type, and pass the &lt;code&gt;input&lt;/code&gt; into the &lt;code&gt;KFunction2&lt;/code&gt;. This means in other words that we can pass in a list of unknown classes, a function and an input. If any class in that list of unknown classes is the correct type, the right function will be called on that class.&lt;/p&gt;
+&lt;p&gt;The best part is that because of Kotlin&amp;rsquo;s intensely awesome type inference, I never even had to pass in the &lt;code&gt;&amp;lt;Service, Input, Result&amp;gt;&lt;/code&gt; types. It was inferred automatically.&lt;/p&gt;
+&lt;h2 id=&#34;suspend-functions&#34;&gt;Suspend Functions&lt;/h2&gt;
+&lt;p&gt;You may have noticed that little suspend function back in the beginning. I didn&amp;rsquo;t forget about it. It&amp;rsquo;s handled identically, but you have to create a new function for it unfortunately. Something like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/96af861d1096ed8feb8c299d19a623b0.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;As you can see, all I did was replace KFunction1 and KFunction2 with KSuspendFunction1 and KSuspendFunction2, respectively. The reason for this is because the signature for a suspend function and normal function in Kotlin are not the same. Hopefully if you&amp;rsquo;re using suspend functions you already know this though.&lt;/p&gt;
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;I don&amp;rsquo;t even know why anyone would land in this bizarre scenario of needing to iterate through dozens of dynamically changing classes with unpredictable interfaces. But if you do, it&amp;rsquo;s very solveable with the techniques above.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Reflection is great&lt;/li&gt;
+&lt;li&gt;Generics are amazing&lt;/li&gt;
+&lt;li&gt;Kotlin Generics + Reflection + Type Inference is mindblowing&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you can get your mind around higher-order functions, generics, and reflection, you will become way more efficient as a developer. I hope this shows an example why.&lt;/p&gt;
+&lt;h4 id=&#34;follow-up-and-thanks&#34;&gt;Follow-Up and Thanks&lt;/h4&gt;
+&lt;p&gt;I wrote a &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/kfunction_analogues/&#34; &gt;follow-up article&lt;/a&gt; based on some nice feedback I got.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;d also like to thank my colleague, &lt;a class=&#34;link&#34; href=&#34;https://twitter.com/pantsula&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Jannie&lt;/a&gt; at Flat Circle for coming up with this problem for me to solve.&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Don&#39;t Pass Around Your Room/Database Entity</title>
+        <link>https://jacquessmuts.github.io/post/modularization_room/</link>
+        <pubDate>Thu, 25 Apr 2019 10:35:54 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/modularization_room/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/modularization_room1.png" alt="Featured image of post Don&#39;t Pass Around Your Room/Database Entity" /&gt;&lt;p&gt;If you&amp;rsquo;re thinking of modularizing your Android App and you use Android Room, you should not pass around your Room Entity.&lt;/p&gt;
+&lt;h2 id=&#34;room-only-in-your-database-module&#34;&gt;Room: Only In Your Database Module&lt;/h2&gt;
+&lt;p&gt;Room is great, and so is modularization. If you&amp;rsquo;re using Room, you probably have several &lt;a class=&#34;link&#34; href=&#34;https://developer.android.com/training/data-storage/room/defining-data&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Room Entity Objects&lt;/a&gt; that look kinda like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/0fc7ced6f167b435f41882c36e9a80cf.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;Chances are you&amp;rsquo;re passing this model around everywhere. Every time you want to access your &lt;code&gt;User&lt;/code&gt; class, or save it, or display the data to the UI, you use the same &lt;code&gt;User&lt;/code&gt; class, which doubles as your Room &lt;code&gt;Entity&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;For a one-module proof of concept app, this is probably fine. But the moment your app expands and you begin to modularize, you&amp;rsquo;ll run into issues. Specifically, Gradle will tell you that you have &lt;code&gt;unresolved Supertypes&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Supertypes&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;following&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;classes&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cannot&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;be&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;resolved&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Please&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;make&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sure&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;you&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;have&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;required&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dependencies&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;classpath&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;com&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;example&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;persistence&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;AppDatabase&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;unresolved&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;supertypes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;androidx&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;room&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;RoomDatabase&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This happens because you&amp;rsquo;re passing the &lt;code&gt;Entity&lt;/code&gt; from your database module to other modules which don&amp;rsquo;t implement the room compiler. So then you add the room compiler to your other modules. &lt;a class=&#34;link&#34; href=&#34;https://stackoverflow.com/questions/53152796/androidx-room-unresolved-supertypes-roomdatabase&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Just like StackOverflow suggests&lt;/a&gt;.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/af7ffc45a38232998cf48ec0d3722855.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;strong&gt;Don&amp;rsquo;t do this.&lt;/strong&gt; Please. It breaks the core concept of &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Information_hiding&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Information Hiding&lt;/a&gt; as would be required by a project that implements a proper Separation of Concerns.&lt;/p&gt;
+&lt;h3 id=&#34;map-your-entity&#34;&gt;Map Your Entity&lt;/h3&gt;
+&lt;p&gt;Instead, you should have two distinct objects. You should one object that represents the database Entity, and one object for passing around the pure data. Your database module should be literally the only module which imports the Room library. If any other module imports those implementation details of the database module, then you are not &lt;code&gt;Information Hiding&lt;/code&gt; as you should. This is especially true if you may want to change out your Room database for something like &lt;a class=&#34;link&#34; href=&#34;https://github.com/square/sqldelight&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;SqlDelight&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Instead, map your data class to a new &lt;code&gt;Entity&lt;/code&gt;, like so:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/b2419911d125845cdc701166491421e5.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;Perhaps you have some other way of mapping to and from your &lt;code&gt;User&lt;/code&gt; to your &lt;code&gt;UserEntity&lt;/code&gt; class. You may think it&amp;rsquo;d be better if it happened automatically via a Serializer or the like. Normally I&amp;rsquo;d agree that automated serialization is easier in the long term, but this way, any changes to your &lt;code&gt;User&lt;/code&gt; class results in a compiler error in your &lt;code&gt;UserEntity&lt;/code&gt; class, which shows you:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;That your database needs to go up a version; and&lt;/li&gt;
+&lt;li&gt;what migration steps to take, based on what changes the mapper requires.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;I suggest you turn all your database classes into &lt;code&gt;internal&lt;/code&gt; class, &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/modularization/&#34; &gt;as I&amp;rsquo;ve discussed before&lt;/a&gt;. This is a bit of a tedious thing to do sometimes, but you will be super-happy in the long term. Future work and refactoring will be very easy.&lt;/p&gt;
+&lt;p&gt;There is one other thing though.&lt;/p&gt;
+&lt;h3 id=&#34;livedata--room-but-in-another-module&#34;&gt;LiveData + Room, But In Another Module&lt;/h3&gt;
+&lt;p&gt;One of the nice things about LiveData and Room is how easily they interact.&lt;/p&gt;
+&lt;p&gt;But then you have this problem in your Repository&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/modularization_room2.png&#34;
+         alt=&#34;compiler error&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If you see this warning, you&amp;#39;re headed in the right direction.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Turns out you can&amp;rsquo;t use LiveData to hook directly on to your database, because that exposes internal database entities outside the module. You want LiveData but you still want a proper separation of concerns. How? You use the LiveData Transformation function.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/edde89d887a97e2dafe7da164f39ed5d.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;This means you have a direct LiveData pipeline from your ViewModel/View to your database, without actually exposing your internal database components. You get to have your module and access it too.&lt;/p&gt;
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;I showed you why you shouldn&amp;rsquo;t pass around your Room @Entity, and how to separate your modules without losing functionality.&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Is your modularization making any progress?</title>
+        <link>https://jacquessmuts.github.io/post/modularization/</link>
+        <pubDate>Sat, 20 Apr 2019 21:15:17 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/modularization/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/modularization3.png" alt="Featured image of post Is your modularization making any progress?" /&gt;&lt;p&gt;You should modularize your Kotlin Android app, since it&amp;rsquo;s the best way to enforce &lt;a class=&#34;link&#34; href=&#34;https://developer.android.com/jetpack/docs/guide#common-principles&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;separation of concerns&lt;/a&gt;, but how do you know if you&amp;rsquo;re doing it right? Here&amp;rsquo;s some tips to help.&lt;/p&gt;
+&lt;h2 id=&#34;am-i-doing-it-right&#34;&gt;Am I doing it right?&lt;/h2&gt;
+&lt;p&gt;If you&amp;rsquo;re following one of the &lt;a class=&#34;link&#34; href=&#34;https://medium.com/androiddevelopers/a-patchwork-plaid-monolith-to-modularized-app-60235d9f212e&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;great guides&lt;/a&gt; out there, you&amp;rsquo;re probably doing it mostly right, but how do you know? Can you measure a difference? Here&amp;rsquo;s a good way to check. Generate a dependency graph for your app. I used &lt;a class=&#34;link&#34; href=&#34;https://github.com/alexzaitsev/apk-dependency-graph&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;APK Dependency Graph Generator&lt;/a&gt;. All you need to do is compile the apk-dependency project, point it to an apk, and it will generate an interactive graph like the one below.&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/modularization2.png&#34;
+         alt=&#34;a dependency graph&#34; width=&#34;60%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If you click the link below, you should see something like this.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;This graph demonstrates a way to look for ease of refactoring with two nice examples:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The &lt;code&gt;ServerClient&lt;/code&gt; in the bottom right provides a complete separation between the api and the rest of the app. The api calls can therefore be refactored easily.&lt;/li&gt;
+&lt;li&gt;Lots of classes are reliant on the &lt;code&gt;TeaBag&lt;/code&gt; class in the middle. A single change there is likely to cascade outward, making refactoring difficult.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Below, an example of a project which is not easy to refactor, update or even debug:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/modularization3.png&#34;
+         alt=&#34;a dependency graph&#34; width=&#34;60%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;An unnamed legacy project.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;There is no separation of concerns here. This project is in dire need of modularization, but where do you even begin?&lt;/p&gt;
+&lt;h2 id=&#34;where-to-begin&#34;&gt;Where to begin?&lt;/h2&gt;
+&lt;p&gt;I usually follow these steps:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.android.com/studio/projects/android-library&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Create a module&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Identify one or more classes that should not be accessible outside of a specific context&lt;/li&gt;
+&lt;li&gt;Move those classes into the module&lt;/li&gt;
+&lt;li&gt;Add the &lt;code&gt;internal&lt;/code&gt; &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/reference/visibility-modifiers.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;visibility modifier&lt;/a&gt; (or making the class &lt;code&gt;package-private&lt;/code&gt; if you&amp;rsquo;re using Java)&lt;/li&gt;
+&lt;li&gt;Try to compile and get an error&lt;/li&gt;
+&lt;li&gt;Fix this error without removing the &lt;code&gt;internal&lt;/code&gt; keyword. This may involve creating a little bit of boilerplate.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/modularization4.png&#34;
+         alt=&#34;compiler error&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If you see this warning, you&amp;#39;re headed in the right direction.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;A specific example of this would be the database module. I moved my &lt;code&gt;database&lt;/code&gt; class, &lt;code&gt;data model&lt;/code&gt; classes, &lt;code&gt;DAO&lt;/code&gt; classes, and &lt;code&gt;repository&lt;/code&gt; class into the database module. I made everything &lt;code&gt;internal&lt;/code&gt; except for &lt;code&gt;repository&lt;/code&gt;, which provides the API to the database for the rest of the app. After some restructuring and cleanup, I ended up with a nicer class structure.&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/modularization5.png&#34;
+         alt=&#34;a dependency graph&#34; width=&#34;60%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Dependency graph, but after internalizing the database module&lt;/h4&gt;&lt;p&gt;It seems similar to the one above, but with some subtle differences.&lt;/p&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Okay, I have to admit, it doesn&amp;rsquo;t seem like we made that much of a difference. But here&amp;rsquo;s the real benefit:&lt;/p&gt;
+&lt;h2 id=&#34;the-real-benefit&#34;&gt;The real benefit&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;When a new developer works in a non-database module and tries to access the database directly, the compiler will stop them.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The two dependency graphs are similar, except that a moment&amp;rsquo;s thoughtlessness can pull everything into spaghetti in the first instance. I have used the &lt;code&gt;internal&lt;/code&gt; modifier in my database module, which means that a developer would be stopped from breaking a delicate separation of concerns with a single function.&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/modularization6.png&#34;
+         alt=&#34;compiler error 2&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Trying to access the database directly from MainActivity.kt.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;If you run into these errors in a project, you know the project is well modularized.&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;We have looked at two ways in which to analyze the state of your modularization:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/alexzaitsev/apk-dependency-graph&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;APK Dependency Graph Generator&lt;/a&gt;; and&lt;/li&gt;
+&lt;li&gt;The prevalance of the &lt;code&gt;internal&lt;/code&gt; modifier (or lack of &lt;code&gt;public&lt;/code&gt; in Java)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!-- raw HTML omitted --&gt;</description>
+        </item>
+        <item>
+        <title>Original Site</title>
+        <link>https://jacquessmuts.github.io/post/original-site/</link>
+        <pubDate>Thu, 18 Apr 2019 17:03:47 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/original-site/</guid>
+        <description>&lt;p&gt;My original site is at &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;JacquesSmuts.com&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;There isn&amp;rsquo;t a lot there. Since it&amp;rsquo;s WordPress, I&amp;rsquo;ll probably take it down some time and move everything to this site.&lt;/p&gt;
+&lt;p&gt;If I&amp;rsquo;m feeling less lazy, I&amp;rsquo;ll probably host this static page there, or just set jacquessmuts.com to redirect here.&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

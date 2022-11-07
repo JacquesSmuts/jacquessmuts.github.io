@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="Scripts/sidr/stylesheets/jquery.sidr.dark.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    
+    <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    
+    <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
     <script type="text/javascript" src="Scripts/sidr/jquery.sidr.js"></script>
     <script type="text/javascript" src="Scripts/underscore/underscore-min.js"></script>
@@ -39,13 +39,13 @@
     </style>
 </head>
 <body>
-
+<!--script type="text/javascript" src="Scripts/jquery/jquery-2.1.4.min.js"></script-->
 
 <script type="text/javascript" src="analyzed.js"></script>
 
-
-
-
+<!-- ================================================= -->
+<!-- ===========ACTUAL HTML           ================ -->
+<!-- ================================================= -->
 
 <a id="simple-menu" class="waves-effect waves-light btn" href="#sidr"><i class="material-icons right">reorder</i>Live editor</a>
 
@@ -71,7 +71,7 @@
 </div>
 
 <div id="chart">
-    
+    <!-- Here the SVG will be placed-->
 </div>
 
 <div id="sidr">
@@ -145,22 +145,22 @@ force.start();
 <script src="Scripts/parse-compiled.js"></script>
 <script>
 
-    
-    
-    
+    //  ===================================================
+    //  =============== CONFIGURABLE PARAMS  ==============
+    //  ===================================================
 
     var default_link_distance = 10;
 
-    
-    
-    
-    
+    // How far can we change default_link_distance?
+    // 0   - I don't care
+    // 0.5 - Change it as you want, but it's preferrable to have default_link_distance
+    // 1   - One does not change default_link_distance
     var default_link_strength = 0.7;
 
-    
+    // Should I comment this?
     var default_circle_radius = 15;
 
-    
+    // you can set it to true, but this will not help to understanf what's going on
     var show_texts_near_circles = false;
     var show_inactive_elements = true;
     var default_max_texts_length = 100;
@@ -177,11 +177,11 @@ force.start();
             x = w.innerWidth || e.clientWidth || g.clientWidth,
             y = w.innerHeight || e.clientHeight || g.clientHeight;
 
-    
-    
-    
+    //  ===================================================
+    //  =============== http://d3js.org/ Magic ===========
+    //  ===================================================
 
-    
+    // https://github.com/mbostock/d3/wiki/Ordinal-Scales#categorical-colors
     var color = d3.scale.category10();
 
     var container = d3.select("#chart").append("svg")
@@ -189,9 +189,9 @@ force.start();
             .attr("height", y)
             .style("overflow", "hidden");
 
-    
-    
-    
+    //  ===================================================
+    //  =============== ZOOM LOGIC ========================
+    //  ===================================================
 
     container.append("rect")
             .attr("width", x)
@@ -203,9 +203,9 @@ force.start();
             }));
 
 
-    
-    
-    
+    //  ===================================================
+    //  =============== FORCE LAYOUT ======================
+    //  ===================================================
 
     var force = d3.layout.force()
             .charge(function (d) {
@@ -225,9 +225,9 @@ force.start();
     var svg = container.append('g');
     var actions = graph_actions.create(svg, dvgraph);
 
-    
-    
-    
+    //  ===================================================
+    //  ===============  MARKERS SETUP   ==================
+    //  ===================================================
 
     svg.append("defs").selectAll("marker")
             .data(["default", "dependency", "dependants"])
@@ -246,9 +246,9 @@ force.start();
             .attr("d", "M0,-5L10,0L0,5");
 
 
-    
-    
-    
+    //  ===================================================
+    //  ===============  LINKS SETUP     ==================
+    //  ===================================================
 
     var link = svg.append("g").selectAll("path")
             .data(d3graph.links)
@@ -259,9 +259,9 @@ force.start();
                 return 1;
             });
 
-    
-    
-    
+    //  ===================================================
+    //  ===============  NODES SETUP     ==================
+    //  ===================================================
 
     var node = svg.append("g").selectAll("circle.node")
             .data(d3graph.nodes)
@@ -289,16 +289,16 @@ force.start();
                 if (d3.event.defaultPrevented) {
                     return
                 }
-                
+                // Don't actually show context menu
                 d3.event.preventDefault();
 
                 actions.selectNodesStartingFromNode(d);
                 force.start();
             });
 
-    
-    
-    
+    //  ===================================================
+    //  ===============  TEXT NODES SETUP     =============
+    //  ===================================================
 
     var text = svg.append("g").selectAll("text")
             .data(force.nodes())
@@ -308,9 +308,9 @@ force.start();
                 return d.name.substring(0, default_max_texts_length)
             });
 
-    
-    
-    
+    //  ===================================================
+    //  ===============  LINK CLASS UPDATE    =============
+    //  ===================================================
 
     function updateLinkVisibilities() {
         var paths = document.getElementsByClassName("link")
@@ -339,9 +339,9 @@ force.start();
             nodes[i].className.baseVal = clazz;
         }
     }
-    
-    
-    
+    //  ===================================================
+    //  ===============  FORCE UPDATE        =============
+    //  ===================================================
 
     force.on("tick", function (e) {
         svg.selectAll(".node").attr("r", radius);
@@ -354,9 +354,9 @@ force.start();
         updateNodeVisibilities();
     });
 
-    
-    
-    
+    //  ===================================================
+    //  ===============  HELPER FUNCTIONS     =============
+    //  ===================================================
     function link_line(d) {
         var dx = d.target.x - d.source.x,
                 dy = d.target.y - d.source.y,
@@ -380,8 +380,9 @@ force.start();
         return default_circle_radius + default_circle_radius * d.source / 10;
     }
 
-    
-
+    /*
+     Window resize update
+     */
     w.onresize = function () {
         x = w.innerWidth || e.clientWidth || g.clientWidth;
         y = w.innerHeight || e.clientHeight || g.clientHeight;
@@ -394,9 +395,9 @@ force.start();
 </script>
 
 <script>
-    
-    
-    
+    //  ===================================================
+    //  =============== INPUTS HANDLING      ==============
+    //  ===================================================
     d3.selectAll("input").on("change", function change() {
 
         if (this.name == "circle_size") {
@@ -429,9 +430,9 @@ force.start();
 
 
 <script>
-    
-    
-    
+    //  ===================================================
+    //  =============== LIVE FILTERING      ==============
+    //  ===================================================
 
     function live_filter_graph(regexp, classname, invert) {
         classname = typeof classname !== 'undefined' ? classname : "filtered";
@@ -464,7 +465,7 @@ force.start();
 
 
     d3.select("#search_input").on("input", function () {
-        
+        // Filter all items
         console.log("Input changed to" + this.value);
         actions.deselect_selected_node();
 

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>named parameters on Jacques Smuts</title>
+        <link>https://jacquessmuts.github.io/tags/named-parameters/</link>
+        <description>Recent content in named parameters on Jacques Smuts</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+        <lastBuildDate>Mon, 07 Nov 2022 11:33:09 +0200</lastBuildDate><atom:link href="https://jacquessmuts.github.io/tags/named-parameters/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Use More Named Arguments in Kotlin</title>
+        <link>https://jacquessmuts.github.io/post/compile_time_tests2/</link>
+        <pubDate>Mon, 07 Nov 2022 11:33:09 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/compile_time_tests2/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/compile_test_named_arg.png" alt="Featured image of post Use More Named Arguments in Kotlin" /&gt;&lt;p&gt;Using named arguments in Kotlin causes breaking changes to be caught faster. This article shows you how.&lt;/p&gt;
+&lt;p&gt;This article is a follow-up on &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Part 1 in this series,&lt;/a&gt; wherein I explain why the test pyramid is incomplete, and that you should architect so that breaking changes gets caught at compile-time if possible.&lt;/p&gt;
+&lt;p&gt;Further context: I wrote this in 2020, but crashed out from pandemic-induced stress before I could finish the series. I&amp;rsquo;m now going back to finish it.&lt;/p&gt;
+&lt;h2 id=&#34;what-is-a-named-argument&#34;&gt;What is a named argument?&lt;/h2&gt;
+&lt;p&gt;When you pass an argument to a function or parameter, you can name the argument instead of just passing in the arguments in the right order. This is most powerful when you have optional arguments, but for now, let&amp;rsquo;s assume you have a simple &lt;code&gt;User&lt;/code&gt; class.&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
+    
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+
+fun main() {
+//sampleStart
+  data class User(
+    val name: String,
+    val surname: String,
+    val age: Int = 0
+  )
+
+  // This is how you would normally pass arguments. Name, Surname, Age.
+  val userNormal = User(
+      &amp;#34;Kim&amp;#34;,
+      &amp;#34;Katsuragi&amp;#34;,
+      43
+  )
+
+  // This is how you use named arguments. You put in extra effort to specifically name the arguments you are passing in.
+  val userNamed = User(
+      name = &amp;#34;Klaasje&amp;#34;,
+      surname = &amp;#34;Amandou&amp;#34;,
+      age = 28
+  )
+//sampleEnd
+
+  println(&amp;#34;$userNormal is literally the best.&amp;#34;)
+}
+
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;h2 id=&#34;why-is-a-named-argument&#34;&gt;Why is a named argument?&lt;/h2&gt;
+&lt;p&gt;Named arguments are usually used to differentiate between several optional parameters and pass in only the necessary arguments. That is a great use of them, however I contend that &lt;strong&gt;you should almost always use named arguments.&lt;/strong&gt; Especially if you have more than two arguments.&lt;/p&gt;
+&lt;p&gt;The reason for this can be demonstrated simply. What if a developer was tasked to add a &lt;code&gt;height&lt;/code&gt; field? It&amp;rsquo;d be very easy to make this mistake:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
+    
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+
+fun main() {
+//sampleStart
+
+  // Added `height`
+  data class User(
+    val name: String,
+    val surname: String,
+    val height: Int, // height added here.
+    val age: Int? = null
+  )
+
+  val userNormal = User(
+      &amp;#34;Kim&amp;#34;,
+      &amp;#34;Katsuragi&amp;#34;,
+      43
+  )
+
+  val userNamed = User(
+      name = &amp;#34;Klaasje&amp;#34;,
+      surname = &amp;#34;Amandou&amp;#34;,
+      age = 28
+  )
+//sampleEnd
+
+  println(&amp;#34;$userNamed is an extremely well written character. I refused to arrest her, despite knowing that she&amp;#39;s manipulative.&amp;#34;)
+}
+
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;If you run the above code, you&amp;rsquo;ll get a compiler error. Note that the error appears (correctly) for the &lt;code&gt;userNamed&lt;/code&gt; variable, but not for &lt;code&gt;userNormal&lt;/code&gt;. Now &lt;code&gt;Kim Katsuragi&lt;/code&gt; has a height of 43 and an age of null.&lt;/p&gt;
+&lt;p&gt;This might seem like a contrived example, because &amp;ldquo;everybody knows that you should put new variables at the end&amp;rdquo;. I disagree with that notion, because it places the burden of knowledge on future unknown developers or circumstances. It&amp;rsquo;s often that developers feel the need to change the order of arguments or variables. They usually don&amp;rsquo;t, for fear of breaking things. However if you always use named arguments, the order of constructor inputs would not be a factor, and refactoring your constructor would carry less risk.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve run into various scenarios where I&amp;rsquo;ve had to change the arguments on a function/constructer where I had to manually go through every single instance where the function was called to make sure it was still being called correctly despite the change. Furthermore, I don&amp;rsquo;t know what unit-test can be written to ensure that all instances of a constructor is being called correctly. However when I switched to named arguments, I knew that the calling code would always keep working if no change was required, and throw a compiler error if a change was required.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Named arguments catches breaking changes from incorrect arguments immediately&lt;/strong&gt;, in a way which would be slower with unit-tests.&lt;/p&gt;
+&lt;p&gt;However this only works if you use named arguments everywhere. It&amp;rsquo;s not forced.&lt;/p&gt;
+&lt;h2 id=&#34;named-arguments-sounds-great-can-i-force-their-use-a-little-bit&#34;&gt;Named Arguments Sounds Great. Can I Force Their Use (a little bit)?&lt;/h2&gt;
+&lt;p&gt;Some people would propose &lt;a class=&#34;link&#34; href=&#34;https://stackoverflow.com/questions/37394266/how-can-i-force-calls-to-some-constructors-functions-to-use-named-arguments&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this hacky workaround&lt;/a&gt; that is as clever as it is unpleasant to implement. Don&amp;rsquo;t do this.&lt;/p&gt;
+&lt;p&gt;Or you can add a lint check to your project which forces you to use named arguments.&lt;/p&gt;
+&lt;p&gt;I tried to write &lt;a class=&#34;link&#34; href=&#34;https://github.com/JacquesSmuts/NamedArgsLint/blob/master/README.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this little library&lt;/a&gt; which does it for you. It forces all functions or constructors with more than two arguments to require named arguments, otherwise it tags it as an error.  Unfortunately, this library doesn&amp;rsquo;t work reliably. I kept struggling with lint, and eventually gave up (see context at the start of this article).&lt;/p&gt;
+&lt;p&gt;However, you can see there is some demand for it in Kotlin itself, &lt;a class=&#34;link&#34; href=&#34;https://youtrack.jetbrains.com/issue/KT-14934&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;here&lt;/a&gt;, as well as in &lt;a class=&#34;link&#34; href=&#34;https://github.com/detekt/detekt/issues/3534&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Detekt&lt;/a&gt;. You can use &lt;a class=&#34;link&#34; href=&#34;https://github.com/chao2zhang/RequireNamedArgument&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this library&lt;/a&gt; to force any one function to have NamedArguments, but you can&amp;rsquo;t enforce it project-wide with specific rulesets easily.&lt;/p&gt;
+&lt;p&gt;Regardless of lint libraries, you should use &lt;a class=&#34;link&#34; href=&#34;https://plugins.jetbrains.com/plugin/10942-kotlin-fill-class&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this IntelliJ plugin&lt;/a&gt; to easily fill arguments or add names to arguments. I use it all of the time.&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Use named arguments. Not everywhere all the time, but use them regularly.&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

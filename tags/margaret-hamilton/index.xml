@@ -1,25 +1,104 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Margaret Hamilton on Jacques Smuts</title>
-    <link>https://jacquessmuts.github.io/tags/margaret-hamilton/</link>
-    <description>Recent content in Margaret Hamilton on Jacques Smuts</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Wed, 07 Oct 2020 02:48:01 +0200</lastBuildDate>
-    
-	<atom:link href="https://jacquessmuts.github.io/tags/margaret-hamilton/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>The Testing Pyramid Has a Deeper Foundation</title>
-      <link>https://jacquessmuts.github.io/post/compile_time_tests/</link>
-      <pubDate>Wed, 07 Oct 2020 02:48:01 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/compile_time_tests/</guid>
-      <description>&lt;p&gt;Kotlin allows us to structure our code around compile-time tests. This post explains how.&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+    <channel>
+        <title>margaret hamilton on Jacques Smuts</title>
+        <link>https://jacquessmuts.github.io/tags/margaret-hamilton/</link>
+        <description>Recent content in margaret hamilton on Jacques Smuts</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+        <lastBuildDate>Wed, 07 Oct 2020 02:48:01 +0200</lastBuildDate><atom:link href="https://jacquessmuts.github.io/tags/margaret-hamilton/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>The Testing Pyramid Has a Deeper Foundation</title>
+        <link>https://jacquessmuts.github.io/post/compile_time_tests/</link>
+        <pubDate>Wed, 07 Oct 2020 02:48:01 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/compile_time_tests/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/compile_test1.png" alt="Featured image of post The Testing Pyramid Has a Deeper Foundation" /&gt;&lt;p&gt;Kotlin allows us to structure our code around compile-time tests. This post explains how.&lt;/p&gt;
+&lt;h2 id=&#34;four-layered-testing-pyramid&#34;&gt;Four layered testing pyramid&lt;/h2&gt;
+&lt;p&gt;You probably know the testing pyramid. Unit tests run faster and are easier to develop and run, so you should have more of them, compared to your integration tests and end-to-end tests. However if you assume that this pyramid applies to any sort of automated validation of your code, then the testing pyramid should actually look like this:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/compile_test1.png&#34;
+         alt=&#34;Illuminati tested&#34; width=&#34;70%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Testing Pyramid&amp;#43;&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;If you&amp;rsquo;re wondering what Compile Time tests mean, I mean everything that runs during and even before compilation, to provide &amp;ldquo;Compile Time Safety&amp;rdquo;: Static Analysis, Syntax Errors, Linting, Generated Classes, (Gradle) Build Tool Tasks and anything else I might be forgetting. Compile time tests refers to any errors you get that prevent your unit-tests from running in the first place.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m sure I&amp;rsquo;m not the first one to propose this. I looked around and found &lt;a class=&#34;link&#34; href=&#34;https://twitter.com/aarondjents/status/805913874704674816&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;a few&lt;/a&gt; other &lt;a class=&#34;link&#34; href=&#34;https://twitter.com/mrjedmao/status/1085750574996312064&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;similar ideas&lt;/a&gt;, but only really in the JavaScript community. My guess is that since they cannot rely on the compiler by default, they consider the addition of static tests to be part of the testing framework. Java/Kotlin developers, on the other hand, consider type safety to be an assumed but separate step from the testing framework.&lt;/p&gt;
+&lt;h2 id=&#34;fail-fast-verification&#34;&gt;Fail Fast Verification&lt;/h2&gt;
+&lt;p&gt;Leaving the pyramid aside, I knew that the concept had to be much older than 2016. I did some research and found &lt;a class=&#34;link&#34; href=&#34;https://www.sciencedirect.com/science/article/pii/0164121279900049?via%3Dihub&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this amazing paper&lt;/a&gt; by Margaret Hamilton. If you don&amp;rsquo;t know Margaret Hamilton, all you have to know is that she&amp;rsquo;s able to ship bug-free code, like some kind of mad scientist. You need to read the full article, but for our purposes I&amp;rsquo;ll sum up the relevant parts. Her proposal is that a software system should be verified in this order:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Conceptually&lt;/li&gt;
+&lt;li&gt;Statically&lt;/li&gt;
+&lt;li&gt;Dynamically&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The static verification at the time was extremely limited, so they had to build a lot of it themselves. Margaret Hamilton took &amp;ldquo;fail fast&amp;rdquo; to its logical conclusion and did everything in her power to pick up problems before they became problems; first in planning, then in code. She also designed and implemented end-to-end testing systems, but preferred to have the majority of the validation be done before the end-to-end tests ran. Furthermore, her analyses concluded that bugs are less likely to occur if you have modular systems, as well as extensive documentation, specifications and conceptual planning in place before coding starts.&lt;/p&gt;
+&lt;p&gt;So with that background in place, let&amp;rsquo;s get back to the four-layered testing pyramid.&lt;/p&gt;
+&lt;h2 id=&#34;four-layered-testing-pyramid-in-kotlin&#34;&gt;Four layered testing pyramid, in Kotlin&lt;/h2&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/compile_test1.png&#34;
+         alt=&#34;Illuminati confirmed&#34; width=&#34;20%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Testing Pyramid&amp;#43;&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;You should be aware that there are &lt;a class=&#34;link&#34; href=&#34;https://martinfowler.com/articles/practical-test-pyramid.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;some variations to and criticism of&lt;/a&gt; the original testing pyramid, but that it makes a good rule of thumb for architecting your processes and systems. When you search for blogs or literature about how the testing pyramid fits into software development, you will find little-to-zero mention of static analysis or compiler checks. Yet if you&amp;rsquo;re coding in Java/Kotlin your IDE is constantly running automated checks on your code that most people consider to be completely separate from their automated tests. &lt;strong&gt;It is important to consider compile-time tests as just one part of a bigger system of automated software validation.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Considering that every function is tested for spelling and reference, for number of arguments, for return type, and various other checks by the compiler, I think it is fair to say that the number of verifications performed by the compiler exceeds those performed by your unit-tests.&lt;/p&gt;
+&lt;h2 id=&#34;the-implication-on-your-daily-process&#34;&gt;The Implication On Your Daily Process&lt;/h2&gt;
+&lt;p&gt;Test-Driven-Development is meant to teach you to architect your code in such a way that makes it easy to test. First you write a failing test, then you make that test pass. The first step, according to TDD, is to have a failing test that looks something like this:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/compile_test3.png&#34;
+         alt=&#34;normal test&#34; width=&#34;70%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;First Failing Test?&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;But I see this as the first failing test:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/compile_test2.png&#34;
+         alt=&#34;static test&#34; width=&#34;70%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;First Failing Test&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;This seems like a dumb distinction to make, but I believe it to be important. If you change the type of input or the number of arguments for the &lt;code&gt;convertStringToInt&lt;/code&gt; function, your tests don&amp;rsquo;t fail; the compilation fails before your tests can even run. Which means the input-type and input-amount test is performed automatically, but that it is still a verification step that fails properly.&lt;/p&gt;
+&lt;h2 id=&#34;the-implications-on-your-architecture&#34;&gt;The Implications On Your Architecture&lt;/h2&gt;
+&lt;p&gt;Not everyone uses TDD, but everyone should architect their Android projects in such a way that it is easy to unit-test. By going down this route you will hopefully start to implement some of the popular and sensible choices:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Modularization&lt;/li&gt;
+&lt;li&gt;Inversion of Control via &lt;a class=&#34;link&#34; href=&#34;https://www.martinfowler.com/articles/injection.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Dependency Injection&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Decoupling Classes / Dependencies&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://old.reddit.com/r/androiddev/comments/9ifv54/are_kotlin_coroutines_really_going_to_replace/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Functional Reactive Programming&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Pretty much everything written in &lt;a class=&#34;link&#34; href=&#34;https://www.goodreads.com/book/show/44936.Refactoring&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Refactoring by Fowler&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;And various other small techniques that you develop subconsciously as you prioritise around testability.&lt;/p&gt;
+&lt;p&gt;However, what if you prioritise your architecture to go beyond failing fast in unit tests? What if you prioritise things to fail fast like in the 4-layered test-pyramid above? Breaking changes should ideally fail at compile-time. For me, as an Android Developer, this is the ideal. My compile-time is often around a full minute and I&amp;rsquo;d prefer if breaking changes alerted me before I even have to do a full compile, much less run tests.&lt;/p&gt;
+&lt;p&gt;A simple example would be if my &lt;code&gt;convertStringToInt&lt;/code&gt; function required an additional argument. I&amp;rsquo;d get this error:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/compile_test4.png&#34;
+         alt=&#34;what a terrible function I should just use the standard library for this&#34; width=&#34;70%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Perfect test: it failed before it even ran&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;If you want to pick up breaking changes faster, your goal is to &lt;strong&gt;structure your code in a way where breaking changes more often cause compile time errors before they cause test failures.&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;okay-cool-compilation-errors-are-sometimes-better-than-test-failures-so-give-me-some-practical-examples&#34;&gt;&amp;ldquo;Okay, cool. Compilation errors are sometimes better than test failures. So give me some practical examples&amp;rdquo;&lt;/h2&gt;
+&lt;p&gt;This was the theoretical portion. In the follow-ups to this post, I&amp;rsquo;ll give some practical examples, which may include:
+This was the theoretical portion. In the follow-ups to this post, I&amp;rsquo;ll give some practical examples, which may include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using named arguments&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using custom lint-tests&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using &lt;code&gt;when&lt;/code&gt; with enums/sealed classes&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;&amp;lt;&lt;code&gt;reified Type&lt;/code&gt;&amp;gt; Generics instead of &amp;lt;*&amp;gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Labels for &lt;code&gt;this&lt;/code&gt; and scope&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using libraries that generate interfaces&lt;/a&gt; (View Binding, NavigationSafeArgs, Dagger, Apollo)&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using coroutines for asynchronous operations&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using Kotlin Gradle DSL&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO:  &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Adding static analysis tools, like Detekt&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

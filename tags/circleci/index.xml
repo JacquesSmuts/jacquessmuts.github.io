@@ -1,25 +1,96 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>CircleCI on Jacques Smuts</title>
-    <link>https://jacquessmuts.github.io/tags/circleci/</link>
-    <description>Recent content in CircleCI on Jacques Smuts</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Tue, 07 May 2019 22:19:00 +0200</lastBuildDate>
-    
-	<atom:link href="https://jacquessmuts.github.io/tags/circleci/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>Creating and Deploying an Android Library via CircleCI</title>
-      <link>https://jacquessmuts.github.io/post/library_template/</link>
-      <pubDate>Tue, 07 May 2019 22:19:00 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/library_template/</guid>
-      <description>&lt;p&gt;This is the template I use to create new Android libraries with CircleCI support for Continuous Deployment.&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+    <channel>
+        <title>CircleCI on Jacques Smuts</title>
+        <link>https://jacquessmuts.github.io/tags/circleci/</link>
+        <description>Recent content in CircleCI on Jacques Smuts</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+        <lastBuildDate>Tue, 07 May 2019 22:19:00 +0200</lastBuildDate><atom:link href="https://jacquessmuts.github.io/tags/circleci/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Creating and Deploying an Android Library via CircleCI</title>
+        <link>https://jacquessmuts.github.io/post/library_template/</link>
+        <pubDate>Tue, 07 May 2019 22:19:00 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/library_template/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/library_template3.png" alt="Featured image of post Creating and Deploying an Android Library via CircleCI" /&gt;&lt;p&gt;This is the template I use to create new Android libraries with CircleCI support for Continuous Deployment.&lt;/p&gt;
+&lt;h2 id=&#34;libraries-better-than-util-classes&#34;&gt;Libraries: Better Than Util Classes&lt;/h2&gt;
+&lt;p&gt;I often find myself copying code from other projects. After some discussion with my colleagues we decided to put everything that we re-use into libraries. Even those tiny util functions you usually just copy-paste when you need it. Libraries are better than copy-pasting for several reasons:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;It makes future work easier&lt;/li&gt;
+&lt;li&gt;Writing a library teaches you to think more abstractly about any problem you&amp;rsquo;re trying to solve.&lt;/li&gt;
+&lt;li&gt;Future work can benefit everyone, rather than just the project you&amp;rsquo;re on&lt;/li&gt;
+&lt;li&gt;It forces separation of concerns&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Plus many more reasons, but you probably know this already. So here&amp;rsquo;s the steps I follow to create a library:&lt;/p&gt;
+&lt;h2 id=&#34;how-to-make-a-library&#34;&gt;How to Make a Library&lt;/h2&gt;
+&lt;h4 id=&#34;1-create-a-librarynameexample-project-in-android-studio-and-add-a-libraryname-module&#34;&gt;1. Create a &lt;code&gt;LibraryNameExample&lt;/code&gt; project in Android Studio and add a &lt;code&gt;LibraryName&lt;/code&gt; module.&lt;/h4&gt;
+&lt;p&gt;I followed &lt;a class=&#34;link&#34; href=&#34;https://medium.com/@anujguptawork/how-to-create-your-own-android-library-and-publish-it-750e0f7481bf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this guide&lt;/a&gt; for the first part, but I don&amp;rsquo;t deploy on JitPack. I prefer Bintray for having easier deployment to JCenter(). Being on JCenter gives your library a false sense of official status, which you want.&lt;/p&gt;
+&lt;h4 id=&#34;2-add-the-project-to-githubhttpsgithubcomnew-under-libraryname&#34;&gt;2. Add the project to &lt;a class=&#34;link&#34; href=&#34;https://github.com/new&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;GitHub&lt;/a&gt; under &lt;code&gt;LibraryName&lt;/code&gt;&lt;/h4&gt;
+&lt;h4 id=&#34;3-create-the-repo-on-bintrayhttpsbintraycom-under-libraryname&#34;&gt;3. Create the repo on &lt;a class=&#34;link&#34; href=&#34;https://bintray.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Bintray&lt;/a&gt; under &lt;code&gt;LibraryName&lt;/code&gt;&lt;/h4&gt;
+&lt;h4 id=&#34;4-add-the-bintray-release-dependency-and-settings&#34;&gt;4. Add the bintray-release dependency and settings&lt;/h4&gt;
+&lt;p&gt;I followed &lt;a class=&#34;link&#34; href=&#34;https://medium.com/@anitaa_1990/6-easy-steps-to-upload-your-android-library-to-bintray-jcenter-59e6030c8890&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this guide&lt;/a&gt;, and created my account on bintray as instructed there. However I save my BINTRAY_KEY api key in my CircleCI setup, and access it from the gradle setup for bintray-release, like so:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/a004eec630f299bfa01bb63aabf00474.js&#34;&gt;&lt;/script&gt;
+
+&lt;h4 id=&#34;5-add-the-project-to-circlecihttpscirclecicom&#34;&gt;5. Add the project to &lt;a class=&#34;link&#34; href=&#34;https://circleci.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CircleCI&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;For my CircleCI config.yml file, I literally just copy-paste &lt;a class=&#34;link&#34; href=&#34;https://github.com/JacquesSmuts/RxHelpers/tree/master/.circleci&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;the same file&lt;/a&gt; across all my library projects for the initial setup. This file doesn&amp;rsquo;t run tests or anything right now, but as I&amp;rsquo;m building up my libraries that will change. If it has changed to add features you&amp;rsquo;re not using, &lt;a class=&#34;link&#34; href=&#34;https://github.com/JacquesSmuts/RxHelpers/blob/2a2349a72bea5025c87b05bf3d0b385e7ee1f5b8/.circleci/config.yml#L1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this is the link to the original file at the time of writing.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Also remember to add the environment variable &lt;code&gt;BINTRAY_KEY&lt;/code&gt; to your CircleCI settings, like so:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/library_template1.png&#34;
+         alt=&#34;CircleCI&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Use your own Bintray API key, from Bintray User settings.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;You may also want to set up CircleCI to build only on pull requests. But don&amp;rsquo;t worry, this config won&amp;rsquo;t deploy without your say-so.&lt;/p&gt;
+&lt;h4 id=&#34;6-deploy&#34;&gt;6. Deploy!&lt;/h4&gt;
+&lt;p&gt;Commit to master and make sure CircleCI builds your project. If you copied my CircleCI config file, you should see a workflow that looks like this:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/library_template2.png&#34;
+         alt=&#34;CircleCI&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Hodl&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Click the &amp;ldquo;Hold&amp;rdquo; button and approve the build. If you do, it will deploy to Bintray. If you get any errors, CircleCI should have logs which explain the issue so you can resolve it from there.&lt;/p&gt;
+&lt;h4 id=&#34;7-add-the-repo-to-jcenter&#34;&gt;7. Add The Repo to JCenter()&lt;/h4&gt;
+&lt;p&gt;Once you have a package deployed to Bintray, click the &amp;ldquo;Link to JCenter()&amp;rdquo; button on the package details view on Bintray. It&amp;rsquo;s slightly hidden but it&amp;rsquo;s there somewhere. After a few hours, you should have an approved JCenter() link. You only have to do this once, because every future deployment of this repo will be deployed to JCenter automatically.&lt;/p&gt;
+&lt;h4 id=&#34;8-update-the-readme-with-status-badges&#34;&gt;8. Update the Readme with Status Badges&lt;/h4&gt;
+&lt;p&gt;Create a Readme.md in your repo which explains how to use and download your repo. You&amp;rsquo;ll find the gradle instructions on Bintray, as well as a Status Badge you can paste into your Readme. It will look like this:&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://bintray.com/jacquessmuts/RxHelpers/rxhelpers/_latestVersion&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;img src=&#34;https://api.bintray.com/packages/jacquessmuts/RxHelpers/rxhelpers/images/download.svg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Download&#34;
+	
+	
+&gt; &lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;and it will update automatically every time you deploy a new version, without needing to update your readme. I usually add a status badge for CircleCI as well.&lt;/p&gt;
+&lt;h4 id=&#34;9-share-it&#34;&gt;9. Share It&lt;/h4&gt;
+&lt;p&gt;Congrats, you just deployed your library. Share it with the world. Tweet about it, blog about it, even just share in the comments below. Libraries are amazing.&lt;/p&gt;
+&lt;h2 id=&#34;examples&#34;&gt;Examples&lt;/h2&gt;
+&lt;p&gt;Some libraries I&amp;rsquo;ve made using this method:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/JacquesSmuts/RxHelpers&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;RxHelpers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/flatcircle/ConnectivityHelper&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ConnectivityHelper&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/flatcircle/ViewHelper&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ViewHelper&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/flatcircle/CoroutineHelper&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CoroutineHelper&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/flatcircle/LiveDataHelper&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LiveDataHelper&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

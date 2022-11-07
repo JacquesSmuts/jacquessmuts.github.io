@@ -1,25 +1,387 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>reflection on Jacques Smuts</title>
-    <link>https://jacquessmuts.github.io/tags/reflection/</link>
-    <description>Recent content in reflection on Jacques Smuts</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Thu, 01 Aug 2019 20:29:26 +0200</lastBuildDate>
+    <channel>
+        <title>reflection on Jacques Smuts</title>
+        <link>https://jacquessmuts.github.io/tags/reflection/</link>
+        <description>Recent content in reflection on Jacques Smuts</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+        <lastBuildDate>Thu, 01 Aug 2019 20:29:26 +0200</lastBuildDate><atom:link href="https://jacquessmuts.github.io/tags/reflection/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Getting arbitrary properties from unknown classes with KProperty</title>
+        <link>https://jacquessmuts.github.io/post/kproperty/</link>
+        <pubDate>Thu, 01 Aug 2019 20:29:26 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/kproperty/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/generic_interfaces3.png" alt="Featured image of post Getting arbitrary properties from unknown classes with KProperty" /&gt;&lt;p&gt;The Kproperty class is powerful and useful.&lt;/p&gt;
+&lt;h3 id=&#34;accessing-a-property-normally&#34;&gt;Accessing a property, normally&lt;/h3&gt;
+&lt;p&gt;You have a class, maybe a &lt;code&gt;data class&lt;/code&gt; to retain info about films. Our class might look like this:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-	<atom:link href="https://jacquessmuts.github.io/tags/reflection/index.xml" rel="self" type="application/rss+xml" />
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+
+fun main (args: Array&amp;lt;String&amp;gt;) {
+//sampleStart
+	data class Film(val name: String, val releaseDate: Long, val runtime: Int)
+    val hereditary = Film(&amp;#34;Hereditary&amp;#34;, 1528401600, 127)
+    println(hereditary.name)
+//sampleEnd
+
+	println(&amp;#34;is the best horror film since The Thing&amp;#34;)
+}
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Which is fine for a basic class. However there are a massive amount of different films. And different film types, with different attributes. Horror films have some sort of monster or threat, but drama films don&amp;rsquo;t. Animated films have an animation style, and documentary films have an educational subject matter. A simple solution would be to extend your &lt;code&gt;Film&lt;/code&gt; class to have multiple &lt;code&gt;null&lt;/code&gt;able fields to reflect all of the potential properties of a film. That solution would reflect a database table more accurately and can be a perfectly fine solution.&lt;/p&gt;
+&lt;h2 id=&#34;dynamic-typing-via-interfaces&#34;&gt;Dynamic Typing via Interfaces&lt;/h2&gt;
+&lt;p&gt;But perhaps you have a constraint where a better approach would be to follow the SOLID principles and create some sort of &lt;a class=&#34;link&#34; href=&#34;https://medium.com/@severinperez/avoiding-interface-pollution-with-the-interface-segregation-principle-5d3859c21013&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Clean Code implementation of interfaces&lt;/a&gt; that a data class can extend. A bunch of little interfaces, like so:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+
+//sampleStart
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+//sampleEnd
+
+fun main (args: Array&amp;lt;String&amp;gt;) {
+    val divergent = YoungAdultFilm(&amp;#34;Divergent&amp;#34;, 1395172800, 127, 50, &amp;#34;fascism&amp;#34;, 1, true)
+    println(divergent.name)
+   	println(&amp;#34;is not.&amp;#34;)
+}
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Yes, this is a fairly unusual way of doing it, but sometimes it is required due to circumstances outside of your control. Luckily it still has some advantages in type safety. For example, now we are able to do checks to determine whether or not a given class is a certain type and return the property of our choosing. With the magic of Kotlin&amp;rsquo;s aggressive type inference, this code compiles and is typesafe:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-    <item>
-      <title>Getting arbitrary properties from unknown classes with KProperty</title>
-      <link>https://jacquessmuts.github.io/post/kproperty/</link>
-      <pubDate>Thu, 01 Aug 2019 20:29:26 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/kproperty/</guid>
-      <description>&lt;p&gt;The Kproperty class is powerful and useful.&lt;/p&gt;</description>
-    </item>
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+
+
+fun main (args: Array&amp;lt;String&amp;gt;) {
+    val midsommar = YoungAdultFilm(&amp;#34;Midsommar&amp;#34;, 1395172800, 127, 0, &amp;#34;Society&amp;#34;, 1, true)
+    val hasLoveTriangles = hasLoveTriangles(midsommar)
+    println(&amp;#34;${midsommar.name} has love triangles? $hasLoveTriangles&amp;#34;)
+}
+//sampleStart
+fun hasLoveTriangles(film: Film): Boolean {
     
-  </channel>
+    return if (film is Romance) {
+        film.loveTriangles &amp;gt; 0
+    } else {
+        false
+    }
+}
+//sampleEnd
+
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;The film might or might not be a Romance. But the moment we have done a check for &lt;code&gt;film is Romance&lt;/code&gt; then the compiler can infer that the film has the &lt;code&gt;loveTriangles&lt;/code&gt; property.&lt;/p&gt;
+&lt;p&gt;Pretty convenient right?&lt;/p&gt;
+&lt;p&gt;But now for every single property we have to write this out manually. If film is &lt;code&gt;PostApocalyptic&lt;/code&gt;, then get the &lt;code&gt;causeOfSocietalCollapse&lt;/code&gt; property. If the film is &lt;code&gt;Romance&lt;/code&gt;, then get the &lt;code&gt;happyEnding&lt;/code&gt; property. And so forth for every single property of every interface which extends &lt;code&gt;Film&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This all becomes rather tedious. So maybe we should rather write out something Generic, which allows us to check for any arbitrary property. Is this even possible?&lt;/p&gt;
+&lt;h2 id=&#34;generics-saves-the-day-again&#34;&gt;Generics Saves the Day Again&lt;/h2&gt;
+&lt;p&gt;Yes. We can iterate through the properties and find the one which matches a name we specify. This is not an ideal solution because we have to pass in a string. Not very typesafe. And if any variable name changes, that string will no longer match.&lt;/p&gt;
+&lt;p&gt;However, with Kotlin&amp;rsquo;s &lt;code&gt;inline&lt;/code&gt; and &lt;code&gt;reified&lt;/code&gt; keywords, we can do amazing generic work. First you have to have the Kotlin Reflection Library, (as described in my &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/generic_interface_and_methods/&#34; &gt;previous article on Reflection&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;Then you have to read about &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/tutorials/kotlin-for-py/member-references-and-reflection.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Reflection and KProperty&amp;lt;&amp;gt;&lt;/a&gt; and that if you can get access to a property, you can obtain the value of that property by using &lt;code&gt;kproperty.get(instance)&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Then putting all that together then we can write out a fairly simple generic function, like so:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
+    
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+import kotlin.reflect.KProperty1
+
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+
+
+//sampleStart
+fun main (args: Array&amp;lt;String&amp;gt;) {
+
+    val film = YoungAdultFilm(&amp;#34;The End of Evangelion&amp;#34;, 869342400, 85, 20, &amp;#34;Instrumentality&amp;#34;, 1, true)
+
+    [mark]val hasHappyEnding: Boolean? = getAttribute(film, Romance::happyEnding)[/mark]
+    println(&amp;#34;${film.name} has a happy ending? $hasHappyEnding&amp;#34;)
+}
+
+inline fun &amp;lt;T, reified Interface&amp;gt; getAttribute(input: Film, property: KProperty1&amp;lt;Interface, T&amp;gt;): T? {
+    if (input is Interface) {
+        return property.get(input) as? T
+    }
+    return null
+}
+//sampleEnd
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Now you can just pass in your &lt;code&gt;Interface::Property&lt;/code&gt; reference and you&amp;rsquo;ll know that the right property type will be accessed, that the property is definitely linked to the right interface, and that any future name changes will not result in breaking changes without the IDE telling you.&lt;/p&gt;
+&lt;h4 id=&#34;to-explain-the-function&#34;&gt;To explain the function:&lt;/h4&gt;
+&lt;p&gt;KProperty1 takes as Generic input the interface or class to which it belongs, as well as the required output (&lt;code&gt;T&lt;/code&gt;). In our case we allow any output, but it must be a property of the given &lt;code&gt;&amp;lt;Interface&amp;gt;&lt;/code&gt;. In short, we can theoretically get &lt;em&gt;any attribute&lt;/em&gt; from a given class with casting, but that isn&amp;rsquo;t safe. Instead we use this function, and with the &lt;code&gt;&amp;lt;Interface, T&amp;gt;&lt;/code&gt; we pass in, it is still typesafe and reliable.&lt;/p&gt;
+&lt;p&gt;This looks pretty great so far. If you want to keep going you can turn the getAttribute into an Extension Function or infix function on the Film class. Maybe you find this to be a bit more readable:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
+    
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+import kotlin.reflect.KProperty1
+
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+
+fun main (args: Array&amp;lt;String&amp;gt;) {
+
+    val film = YoungAdultFilm(&amp;#34;The End of Evangelion&amp;#34;, 869342400, 85, 20, &amp;#34;Instrumentality&amp;#34;, 1, true)
+
+//sampleStart
+    val hasHappyEnding = film.getAttribute(Romance::happyEnding) ?: false
+//sampleEnd
+    
+    println(&amp;#34;${film.name} has a happy ending? $hasHappyEnding&amp;#34;)
+}
+
+inline fun &amp;lt;T, reified Interface&amp;gt;Film.getAttribute(property: KProperty1&amp;lt;Interface, T&amp;gt;): T? {
+    return getFilmAttribute(this, property)
+}
+
+inline fun &amp;lt;T, reified Interface&amp;gt; getFilmAttribute(input: Film, property: KProperty1&amp;lt;Interface, T&amp;gt;): T? {
+    if (input is Interface) {
+        return property.get(input) as? T
+    }
+    return null
+}
+
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;h3 id=&#34;win-win&#34;&gt;Win win?&lt;/h3&gt;
+&lt;p&gt;Well mostly. The disadvantage is that you can&amp;rsquo;t know whether or not any given property is nullable or not. Via this method, everything becomes nullable. To obtain only non-nullable values you have to either do the type-casting manually, or use a default value. You can see me passing &lt;code&gt;false&lt;/code&gt; into the elvis operator above as a default value.&lt;/p&gt;
+&lt;p&gt;Furthermore, there&amp;rsquo;s a performance cost.&lt;/p&gt;
+&lt;h3 id=&#34;reflection-is-slower-but-by-how-much&#34;&gt;Reflection is Slower, But By How Much?&lt;/h3&gt;
+&lt;p&gt;Luckily this one is fairly simple to test. I just access the property several times, and log how long it takes to do that directly or via reflection. The code is here, and you can run it to see the result for yourself:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
+    
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+import kotlin.reflect.KProperty1
+import kotlin.system.measureTimeMillis
+
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+
+//sampleStart
+val iterations = 1000000000
+fun main (args: Array&amp;lt;String&amp;gt;) {
+
+    val normalTime = measureTimeMillis(::normalDirectAccessTime)
+    println(&amp;#34;It takes $normalTime milliseconds to do $iterations direct property access operations&amp;#34;)
+
+    val manualCastingTime = measureTimeMillis(::manualCastingAccessTime)
+    println(&amp;#34;It takes $manualCastingTime milliseconds to do $iterations manual casting property access operations&amp;#34;)
+    
+    val reflectionTime = measureTimeMillis(::reflectionAccessTime)
+    println(&amp;#34;It takes $reflectionTime milliseconds to do $iterations reflected property access operations&amp;#34;)
+   
+}
+//sampleEnd
+
+fun normalDirectAccessTime() {
+   
+    val film = YoungAdultFilm(&amp;#34;The End of Evangelion&amp;#34;, 869342400, 85, 20, &amp;#34;Instrumentality&amp;#34;, 1, true)
+
+    repeat(iterations) {
+        film.happyEnding
+    }
+}
+
+fun manualCastingAccessTime() {
+	val film = YoungAdultFilm(&amp;#34;The End of Evangelion&amp;#34;, 869342400, 85, 20, &amp;#34;Instrumentality&amp;#34;, 1, true)
+
+    repeat(iterations) {
+        getHappyEnding(film)
+    }
+}
+
+fun getHappyEnding(film: Film): Boolean {
+	return if (film is Romance) {
+		film.happyEnding
+	} else {
+		false
+	}
+}
+
+
+fun reflectionAccessTime() {
+   
+    val film = YoungAdultFilm(&amp;#34;The End of Evangelion&amp;#34;, 869342400, 85, 20, &amp;#34;Instrumentality&amp;#34;, 1, true)
+
+    repeat(iterations) {
+        getAttribute(film, Romance::happyEnding) ?: false
+    }
+}
+
+inline fun &amp;lt;T, reified Interface&amp;gt; getAttribute(input: Film, property: KProperty1&amp;lt;Interface, *&amp;gt;): T? {
+    if (input is Interface) {
+        return property.get(input) as? T
+    }
+    return null
+}
+
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;In my case, the reflected property access operation takes on average about 2.5 times longer than the direct access. And the manual casting takes just a smidgeon longer than the normal direct access.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s actually pretty impressive. I was expecting more than 90% decrease in performance for reflection; instead it&amp;rsquo;s only about 60%. This is not ideal if you care about optimizing for billions of operations per second, but acceptable for less intense usecases, such as in user(Android) applications that cater for a single user at a time.&lt;/p&gt;
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;KProperty is an essential class for doing higher-order programming in Kotlin. You can use it to get further information about any given property, or you can use it to obtain properties that you don&amp;rsquo;t normally have access to, as demonstrated above.&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

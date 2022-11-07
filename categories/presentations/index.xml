@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Presentations on Jacques Smuts</title>
+        <link>https://jacquessmuts.github.io/categories/presentations/</link>
+        <description>Recent content in Presentations on Jacques Smuts</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+        <lastBuildDate>Sun, 06 Sep 2020 19:51:12 +0200</lastBuildDate><atom:link href="https://jacquessmuts.github.io/categories/presentations/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Further Reading for Ethical Programming</title>
+        <link>https://jacquessmuts.github.io/post/ethicc_references/</link>
+        <pubDate>Sun, 06 Sep 2020 19:51:12 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/ethicc_references/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/ethicc.png" alt="Featured image of post Further Reading for Ethical Programming" /&gt;&lt;p&gt;This post contains further reading for my recent talk on the Slippery Slope of Unethical Programming&lt;/p&gt;
+&lt;h2 id=&#34;additional-reading&#34;&gt;Additional Reading&lt;/h2&gt;
+&lt;p&gt;Some things that may be relevant or interesting for further reading on this topic. I&amp;rsquo;d love to hear more recommendations if you have any. I am no expert and my talk came mostly from a place of personal experience.&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cc.gatech.edu/~beki/cs4001/Winner.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Do artifacts have politics&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.fastcompany.com/90449853/this-woman-knows-the-secret-to-fixing-big-techs-most-pervasive-problem&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Margaret Hamilton on Software Professionalization&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://medium.com/swlh/the-most-important-word-silicon-valley-doesnt-know-1477d12ffcd0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;The Most Important Word Silicon Valley Doesn&amp;rsquo;t Know&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://youtu.be/WdgjljQSbj0?list=WL&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Why the web is Communist&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://twitter.com/chiefofstuffs/status/1292213923114913792?s=09&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Breaking up the Internet&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.hellsoft.se/break-up-the-app-stores/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Breaking up app stores&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://youtu.be/tUAX0gnZ3Nw&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Games as a Service is Fraud&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;organisations-worth-looking-into-or-joining&#34;&gt;Organisations worth looking into or joining&lt;/h2&gt;
+&lt;p&gt;There are many many many organisations and it&amp;rsquo;s difficult to find comparative information or to know which ones to recommend for whome. These ones LOOK nice but my first-hand experience is extremely limited. This is part of the problem and I would love any further input on this topic.&lt;/p&gt;
+&lt;h4 id=&#34;south-africa&#34;&gt;South Africa&lt;/h4&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://ita.org.za/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;The ITA&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://ictu.org.za/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;The ICTU&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.ieee.org.za/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;The IEEE ZA&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&#34;global&#34;&gt;Global&lt;/h4&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.ajl.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Algorithmic Justice League&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.acm.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Association of Computing Machinery&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.gameworkersunite.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Game Workers Unite&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.computer.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;IEEE Computer Society&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.theiet.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;The IET&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://iww.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Industrial Workers of the World&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.pivotforhumanity.com/noani/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Pivot for Humanity&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://techworkerscoalition.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Tech Workers Coalition&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://jobstars.com/it-professional-associations-organizations/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;More here&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

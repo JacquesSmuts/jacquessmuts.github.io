@@ -1,34 +1,179 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>KFunction on Jacques Smuts</title>
-    <link>https://jacquessmuts.github.io/tags/kfunction/</link>
-    <description>Recent content in KFunction on Jacques Smuts</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Wed, 08 May 2019 17:54:58 +0200</lastBuildDate>
-    
-	<atom:link href="https://jacquessmuts.github.io/tags/kfunction/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>The Problem with Kotlin Kfunction Receiver Functions</title>
-      <link>https://jacquessmuts.github.io/post/kfunction_analogues/</link>
-      <pubDate>Wed, 08 May 2019 17:54:58 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/kfunction_analogues/</guid>
-      <description>&lt;p&gt;KFunction can be written in more than one way. Here&#39;s a list of analogues, plus some criticism of the Receiver Function.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Generics &#43; Reflection &#43; Type Inference &#43; Reified Type = Kotlin Magic</title>
-      <link>https://jacquessmuts.github.io/post/generic_interface_and_methods/</link>
-      <pubDate>Wed, 01 May 2019 08:30:00 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/generic_interface_and_methods/</guid>
-      <description>&lt;p&gt;With Kotlin, it&#39;s easier than ever to code with reflection and generics. This post attempts to give one example.&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+    <channel>
+        <title>KFunction on Jacques Smuts</title>
+        <link>https://jacquessmuts.github.io/tags/kfunction/</link>
+        <description>Recent content in KFunction on Jacques Smuts</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+        <lastBuildDate>Wed, 08 May 2019 17:54:58 +0200</lastBuildDate><atom:link href="https://jacquessmuts.github.io/tags/kfunction/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>The Problem with Kotlin Kfunction Receiver Functions</title>
+        <link>https://jacquessmuts.github.io/post/kfunction_analogues/</link>
+        <pubDate>Wed, 08 May 2019 17:54:58 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/kfunction_analogues/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/generic_interfaces3.png" alt="Featured image of post The Problem with Kotlin Kfunction Receiver Functions" /&gt;&lt;p&gt;KFunction can be written in more than one way. Here&amp;rsquo;s a list of analogues, plus some criticism of the Receiver Function.&lt;/p&gt;
+&lt;p&gt;After my &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/generic_interface_and_methods/&#34; &gt;previous article on Reflection&lt;/a&gt; was posted, I got a great comment from @pacoworks:&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;KSuspendFunction does not support that syntax (yet?). So to build up towards understanding KSuspendFunction1, I stuck with KFunction1 and its usage.&lt;br&gt;&lt;br&gt;Normally I use your syntax, but the article was already too long to get into that :P &lt;a href=&#34;https://t.co/nUaDArDA5S&#34;&gt;pic.twitter.com/nUaDArDA5S&lt;/a&gt;&lt;/p&gt;&amp;mdash; Jacques Smuts (@JacquesSmuts) &lt;a href=&#34;https://twitter.com/JacquesSmuts/status/1126057942724296704?ref_src=twsrc%5Etfw&#34;&gt;May 8, 2019&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;I assumed that since the IDE told me that there was a type mismatch, that suspend functions weren&amp;rsquo;t supported.&lt;/p&gt;
+&lt;p&gt;Turns out I was wrong; KSuspendFunction can be shortened. (click that thread to read more)  They&amp;rsquo;re called Receiver Functions and they have since been added to the &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/reference/lambdas.html#function-types&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Kotlin official documentation for higher-order-functions&lt;/a&gt; with a nice explanation.&lt;/p&gt;
+&lt;p&gt;So, in order to help me remember the different ways to reference higher-order functions, I made this grid. It omits the list of passed interfaces for brevity.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/f43755a820658b19f6c5fdd4fdb14eb4.js&#34;&gt;&lt;/script&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;KFunction&lt;/th&gt;
+&lt;th&gt;Analogue&lt;/th&gt;
+&lt;th&gt;ReceiverFunction&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;KFunction1&amp;lt;Interface, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;(Interface) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;Interface.() -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;KFunction2&amp;lt;Interface, Input, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;(Interface, Input) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;Interface.(Input) -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;KFunction3&amp;lt;Interface, In1, In2, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;(Interface, In1, In2) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;Interface.(In1, In2) -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;KSuspendFunction1&amp;lt;Interface, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;suspend (Interface) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;suspend Interface.() -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;KSuspendFunction2&amp;lt;Interface, Input, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;suspend (Interface, Input) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;suspend Interface.(Input) -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;In all 3 cases you have to add &lt;code&gt;implementation &amp;quot;org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion&amp;quot;&lt;/code&gt; in your gradle.&lt;/p&gt;
+&lt;p&gt;However you only have to add the &lt;code&gt;import kotlin.reflect.KFunction1&lt;/code&gt; import at the top of your file if you&amp;rsquo;re using the explicit KFunction syntax.&lt;/p&gt;
+&lt;p&gt;I like the way ReceiverFunction is composed and I would like to use that, however I see a problem with it. If any new developer unused to this syntax works on this code, what should they google to find out more? &lt;code&gt;().-&amp;gt;T&lt;/code&gt; ? It&amp;rsquo;s difficult to work with Reflection and Generics the first time, but if you see &amp;ldquo;KSuspendFunction1&amp;rdquo; you will be able to google it and find references to Reflection to understand what the code is doing.&lt;/p&gt;
+&lt;p&gt;The other thing to note is that if you use the ReceiverFunction notation and pass the wrong type of function, the IDE will always default to referring to the passed function argument as &amp;ldquo;KFunction&amp;rdquo;.&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/kfunction_analogues2.png&#34;
+         alt=&#34;compiler error&#34; width=&#34;90%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;I didn&amp;#39;t call it a KSuspendFunction, but the IDE does. &lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Which means the developer is likely to think that they are passing something entirely different than the required input, unless they know both the KFunction notation and the Receiver Function notation.&lt;/p&gt;
+&lt;p&gt;Since I like the Receiver Function syntax, I&amp;rsquo;m going to add a link to the Kotlin documentation in my code comments wherever I use the ReceiverFunction syntax. &lt;a class=&#34;link&#34; href=&#34;https://stackoverflow.com/questions/45875491/what-is-a-receiver-in-kotlin&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;This explanation on StackOverflow&lt;/a&gt; as well, since it explains the usage of receiver functions a bit better.&lt;/p&gt;
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;Receiver Functions are nice, but there is no simple way for a developer to get to the right documentation from the code or IDE unless they already know what Receiver Functions are, or that they refer to KFunction.
+In order to make it easier for people to understand your code, you need to choose one:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Refer to KFunction explicitly; or&lt;/li&gt;
+&lt;li&gt;Add comments every time you use Higher Order Receiver Functions&lt;/li&gt;
+&lt;/ul&gt;</description>
+        </item>
+        <item>
+        <title>Generics &#43; Reflection &#43; Type Inference &#43; Reified Type = Kotlin Magic</title>
+        <link>https://jacquessmuts.github.io/post/generic_interface_and_methods/</link>
+        <pubDate>Wed, 01 May 2019 08:30:00 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/generic_interface_and_methods/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/generic_interfaces3.png" alt="Featured image of post Generics &#43; Reflection &#43; Type Inference &#43; Reified Type = Kotlin Magic" /&gt;&lt;p&gt;With Kotlin, it&amp;rsquo;s easier than ever to code with reflection and generics. This post attempts to give one example.&lt;/p&gt;
+&lt;h2 id=&#34;background-an-unlikely-scenario&#34;&gt;Background: An unlikely scenario&lt;/h2&gt;
+&lt;p&gt;I couldn&amp;rsquo;t think of a simpler scenario to demonstrate KFunction and KSuspendFunction working well in tandem with Generics, so please bear with me when I present this unlikely scenario.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s assume you have several different endpoints and you need to differentiate between them easily, even though they can change dynamically. If you&amp;rsquo;re an Android developer, you&amp;rsquo;re probably used to Retrofit and its associated Interfaces. You have several classes that look like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/8374926ea79785b96aec53714d1dd44e.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;Each of these interfaces are used by RetroFit to generate the right api call you can call. And then you have a few classes which may or may not implement these interfaces. So if you have a list of unknown services and you want to get the AWS Repos, you have to iterate through your services, find the AwsService and then make the call. You can do something like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/142f78c848c784119ca76bdc151ea01f.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;But this means that every single time you want to check your GitHubRepos, your AwsRepos, or any other api call, you have to manually write out this entire process from scratch. That&amp;rsquo;s highly inefficient and boilerplatey. Can&amp;rsquo;t you push them all through some central function?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Yes, with Reflection + Generics you can&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;kotlin-reflection&#34;&gt;Kotlin Reflection&lt;/h2&gt;
+&lt;p&gt;So first, you should read the &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/tutorials/kotlin-for-py/member-references-and-reflection.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;official kotlin documentation on reflection&lt;/a&gt;. It&amp;rsquo;s a really good starting point, even if you already know Reflection from other languages. Even better, read &lt;a class=&#34;link&#34; href=&#34;https://medium.com/kotlin-thursdays/introduction-to-kotlin-generics-reified-generic-parameters-7643f53ba513&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this great guide on Medium&lt;/a&gt; about both reflection and generics. But how does this relate to us?&lt;/p&gt;
+&lt;p&gt;We want to pass the AWS Repo function in the AWS interface and get the AWSRepo result. Later we&amp;rsquo;ll make it generic, but first step is just reflection. So let&amp;rsquo;s call that non-existent function. We&amp;rsquo;ll call it &lt;code&gt;doAwsApiCall&lt;/code&gt; and it has two input parameters:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The list of &lt;code&gt;services&lt;/code&gt;; and&lt;/li&gt;
+&lt;li&gt;the &lt;code&gt;listAwsRepos&lt;/code&gt; method from the &lt;code&gt;AwsCodeCommitService&lt;/code&gt; interface.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;doAwsApiCall&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;services&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AwsCodeCommitService&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;listAwsRepos&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;But that function doesn&amp;rsquo;t exist yet, so just ask IntelliJ/Android Studio to create it for you. (We&amp;rsquo;re doing this because the IDE is smarter than us at figuring out the input parameters.)&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/generic_interfaces1.png&#34;
+         alt=&#34;compiler error&#34; width=&#34;50%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If you see this warning, you&amp;#39;re headed in the right direction. &lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;And you&amp;rsquo;ll get something like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/10a7bab01fe4e8292b307955beac2da6.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;So the &lt;code&gt;KFunction1&lt;/code&gt; here is reference to a specific function that can be called. To make a class run that function, you just have to pass the calling class into the function. Yes, that&amp;rsquo;s hard to understand and a little bit backwards, but maybe it makes more sense in code.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/53d6fb84c6ac3eebb6dde3d830bca61b.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;This is almost the same as our first implementation, except for the commented part. What this means is that we can pass in any function from the &lt;code&gt;AwsCodeCommitService&lt;/code&gt; interface, and it will automatically be called inside the &lt;code&gt;doAwsApiCall&lt;/code&gt; function.&lt;/p&gt;
+&lt;p&gt;But this means we have to write this code for each of our interfaces. One for &lt;code&gt;GitHubService&lt;/code&gt;, one for &lt;code&gt;BitBucketService&lt;/code&gt;, and so forth. That&amp;rsquo;s a lot better, but still not good enough. If we wanta single function to handle all of these api calls, then we must answer this question:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Can we write a function that takes &lt;strong&gt;ANY&lt;/strong&gt; interface and call &lt;strong&gt;ANY&lt;/strong&gt; function from that interface, and return &lt;strong&gt;ANY&lt;/strong&gt; result, &lt;strong&gt;and still be type safe&lt;/strong&gt;?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Yes, with Reflection and Generics you can!&lt;/p&gt;
+&lt;h2 id=&#34;kotlin-generics-plus-reflection&#34;&gt;Kotlin Generics Plus Reflection&lt;/h2&gt;
+&lt;p&gt;So, using the great explanation into inline functions and reified Generics in &lt;a class=&#34;link&#34; href=&#34;https://medium.com/kotlin-thursdays/introduction-to-kotlin-generics-reified-generic-parameters-7643f53ba513&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this great guide on Medium&lt;/a&gt; as a basis, I&amp;rsquo;m going to just turn everything into a Generic and see what happens.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/087ee57e4afca3fde8112c3b37dcbf4e.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;All I did was&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Added &lt;code&gt;&amp;lt;reified Service, Result&amp;gt;&lt;/code&gt; to the beginning of the function, to pass in those types&lt;/li&gt;
+&lt;li&gt;Replace any reference to &lt;code&gt;AwsCodeCommitService&lt;/code&gt; with the generic &lt;code&gt;Service&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Replaced any reference to &lt;code&gt;List&amp;lt;AwsRepo&amp;gt;&lt;/code&gt; with the generic &lt;code&gt;Result&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;And it works and accepts literally any &lt;code&gt;interface::method&lt;/code&gt; pair which returns the expected Result type. I wanted to restrict it a bit, so I made sure that &lt;code&gt;Service&lt;/code&gt; extends the &lt;code&gt;RetroService&lt;/code&gt; interface I defined all the way at the top. Now it only accepts the right methods.&lt;/p&gt;
+&lt;p&gt;However&amp;hellip;&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/generic_interfaces2.png&#34;
+         alt=&#34;compiler error&#34; width=&#34;90%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If you see this warning, you&amp;#39;re headed in the right direction. &lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;The &lt;code&gt;GitHubRepos&lt;/code&gt; api call takes a username as an input parameter. So now the IDE is telling you that &lt;code&gt;listGitHubRepos(username)&lt;/code&gt; is a KFunction2. What&amp;rsquo;s that?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;KFunction1 is a function reference with zero input arguments, e.g. &lt;code&gt;listAwsRepos()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;KFunction2 is a function reference with one input argument, e.g. &lt;code&gt;listGitHubRepos(username: String)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So let&amp;rsquo;s create another &lt;code&gt;doApiCall()&lt;/code&gt;, except that it takes kFunction2 as an input.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/499cab2b907298bc03de8d02d19c22c0.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;And this function works. All we had to do was add the &lt;code&gt;Input&lt;/code&gt; Type as a Generic type, and pass the &lt;code&gt;input&lt;/code&gt; into the &lt;code&gt;KFunction2&lt;/code&gt;. This means in other words that we can pass in a list of unknown classes, a function and an input. If any class in that list of unknown classes is the correct type, the right function will be called on that class.&lt;/p&gt;
+&lt;p&gt;The best part is that because of Kotlin&amp;rsquo;s intensely awesome type inference, I never even had to pass in the &lt;code&gt;&amp;lt;Service, Input, Result&amp;gt;&lt;/code&gt; types. It was inferred automatically.&lt;/p&gt;
+&lt;h2 id=&#34;suspend-functions&#34;&gt;Suspend Functions&lt;/h2&gt;
+&lt;p&gt;You may have noticed that little suspend function back in the beginning. I didn&amp;rsquo;t forget about it. It&amp;rsquo;s handled identically, but you have to create a new function for it unfortunately. Something like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/96af861d1096ed8feb8c299d19a623b0.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;As you can see, all I did was replace KFunction1 and KFunction2 with KSuspendFunction1 and KSuspendFunction2, respectively. The reason for this is because the signature for a suspend function and normal function in Kotlin are not the same. Hopefully if you&amp;rsquo;re using suspend functions you already know this though.&lt;/p&gt;
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;I don&amp;rsquo;t even know why anyone would land in this bizarre scenario of needing to iterate through dozens of dynamically changing classes with unpredictable interfaces. But if you do, it&amp;rsquo;s very solveable with the techniques above.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Reflection is great&lt;/li&gt;
+&lt;li&gt;Generics are amazing&lt;/li&gt;
+&lt;li&gt;Kotlin Generics + Reflection + Type Inference is mindblowing&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you can get your mind around higher-order functions, generics, and reflection, you will become way more efficient as a developer. I hope this shows an example why.&lt;/p&gt;
+&lt;h4 id=&#34;follow-up-and-thanks&#34;&gt;Follow-Up and Thanks&lt;/h4&gt;
+&lt;p&gt;I wrote a &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/kfunction_analogues/&#34; &gt;follow-up article&lt;/a&gt; based on some nice feedback I got.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;d also like to thank my colleague, &lt;a class=&#34;link&#34; href=&#34;https://twitter.com/pantsula&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Jannie&lt;/a&gt; at Flat Circle for coming up with this problem for me to solve.&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

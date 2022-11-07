@@ -1,151 +1,1541 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Posts on Jacques Smuts</title>
-    <link>https://jacquessmuts.github.io/post/</link>
-    <description>Recent content in Posts on Jacques Smuts</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Wed, 07 Oct 2020 02:48:01 +0200</lastBuildDate>
+    <channel>
+        <title>Posts on Jacques Smuts</title>
+        <link>https://jacquessmuts.github.io/post/</link>
+        <description>Recent content in Posts on Jacques Smuts</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+        <lastBuildDate>Mon, 07 Nov 2022 11:33:09 +0200</lastBuildDate><atom:link href="https://jacquessmuts.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Use More Named Arguments in Kotlin</title>
+        <link>https://jacquessmuts.github.io/post/compile_time_tests2/</link>
+        <pubDate>Mon, 07 Nov 2022 11:33:09 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/compile_time_tests2/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/compile_test_named_arg.png" alt="Featured image of post Use More Named Arguments in Kotlin" /&gt;&lt;p&gt;Using named arguments in Kotlin causes breaking changes to be caught faster. This article shows you how.&lt;/p&gt;
+&lt;p&gt;This article is a follow-up on &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Part 1 in this series,&lt;/a&gt; wherein I explain why the test pyramid is incomplete, and that you should architect so that breaking changes gets caught at compile-time if possible.&lt;/p&gt;
+&lt;p&gt;Further context: I wrote this in 2020, but crashed out from pandemic-induced stress before I could finish the series. I&amp;rsquo;m now going back to finish it.&lt;/p&gt;
+&lt;h2 id=&#34;what-is-a-named-argument&#34;&gt;What is a named argument?&lt;/h2&gt;
+&lt;p&gt;When you pass an argument to a function or parameter, you can name the argument instead of just passing in the arguments in the right order. This is most powerful when you have optional arguments, but for now, let&amp;rsquo;s assume you have a simple &lt;code&gt;User&lt;/code&gt; class.&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-	<atom:link href="https://jacquessmuts.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+
+fun main() {
+//sampleStart
+  data class User(
+    val name: String,
+    val surname: String,
+    val age: Int = 0
+  )
+
+  // This is how you would normally pass arguments. Name, Surname, Age.
+  val userNormal = User(
+      &amp;#34;Kim&amp;#34;,
+      &amp;#34;Katsuragi&amp;#34;,
+      43
+  )
+
+  // This is how you use named arguments. You put in extra effort to specifically name the arguments you are passing in.
+  val userNamed = User(
+      name = &amp;#34;Klaasje&amp;#34;,
+      surname = &amp;#34;Amandou&amp;#34;,
+      age = 28
+  )
+//sampleEnd
+
+  println(&amp;#34;$userNormal is literally the best.&amp;#34;)
+}
+
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;h2 id=&#34;why-is-a-named-argument&#34;&gt;Why is a named argument?&lt;/h2&gt;
+&lt;p&gt;Named arguments are usually used to differentiate between several optional parameters and pass in only the necessary arguments. That is a great use of them, however I contend that &lt;strong&gt;you should almost always use named arguments.&lt;/strong&gt; Especially if you have more than two arguments.&lt;/p&gt;
+&lt;p&gt;The reason for this can be demonstrated simply. What if a developer was tasked to add a &lt;code&gt;height&lt;/code&gt; field? It&amp;rsquo;d be very easy to make this mistake:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+
+fun main() {
+//sampleStart
+
+  // Added `height`
+  data class User(
+    val name: String,
+    val surname: String,
+    val height: Int, // height added here.
+    val age: Int? = null
+  )
+
+  val userNormal = User(
+      &amp;#34;Kim&amp;#34;,
+      &amp;#34;Katsuragi&amp;#34;,
+      43
+  )
+
+  val userNamed = User(
+      name = &amp;#34;Klaasje&amp;#34;,
+      surname = &amp;#34;Amandou&amp;#34;,
+      age = 28
+  )
+//sampleEnd
+
+  println(&amp;#34;$userNamed is an extremely well written character. I refused to arrest her, despite knowing that she&amp;#39;s manipulative.&amp;#34;)
+}
+
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;If you run the above code, you&amp;rsquo;ll get a compiler error. Note that the error appears (correctly) for the &lt;code&gt;userNamed&lt;/code&gt; variable, but not for &lt;code&gt;userNormal&lt;/code&gt;. Now &lt;code&gt;Kim Katsuragi&lt;/code&gt; has a height of 43 and an age of null.&lt;/p&gt;
+&lt;p&gt;This might seem like a contrived example, because &amp;ldquo;everybody knows that you should put new variables at the end&amp;rdquo;. I disagree with that notion, because it places the burden of knowledge on future unknown developers or circumstances. It&amp;rsquo;s often that developers feel the need to change the order of arguments or variables. They usually don&amp;rsquo;t, for fear of breaking things. However if you always use named arguments, the order of constructor inputs would not be a factor, and refactoring your constructor would carry less risk.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve run into various scenarios where I&amp;rsquo;ve had to change the arguments on a function/constructer where I had to manually go through every single instance where the function was called to make sure it was still being called correctly despite the change. Furthermore, I don&amp;rsquo;t know what unit-test can be written to ensure that all instances of a constructor is being called correctly. However when I switched to named arguments, I knew that the calling code would always keep working if no change was required, and throw a compiler error if a change was required.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Named arguments catches breaking changes from incorrect arguments immediately&lt;/strong&gt;, in a way which would be slower with unit-tests.&lt;/p&gt;
+&lt;p&gt;However this only works if you use named arguments everywhere. It&amp;rsquo;s not forced.&lt;/p&gt;
+&lt;h2 id=&#34;named-arguments-sounds-great-can-i-force-their-use-a-little-bit&#34;&gt;Named Arguments Sounds Great. Can I Force Their Use (a little bit)?&lt;/h2&gt;
+&lt;p&gt;Some people would propose &lt;a class=&#34;link&#34; href=&#34;https://stackoverflow.com/questions/37394266/how-can-i-force-calls-to-some-constructors-functions-to-use-named-arguments&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this hacky workaround&lt;/a&gt; that is as clever as it is unpleasant to implement. Don&amp;rsquo;t do this.&lt;/p&gt;
+&lt;p&gt;Or you can add a lint check to your project which forces you to use named arguments.&lt;/p&gt;
+&lt;p&gt;I tried to write &lt;a class=&#34;link&#34; href=&#34;https://github.com/JacquesSmuts/NamedArgsLint/blob/master/README.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this little library&lt;/a&gt; which does it for you. It forces all functions or constructors with more than two arguments to require named arguments, otherwise it tags it as an error.  Unfortunately, this library doesn&amp;rsquo;t work reliably. I kept struggling with lint, and eventually gave up (see context at the start of this article).&lt;/p&gt;
+&lt;p&gt;However, you can see there is some demand for it in Kotlin itself, &lt;a class=&#34;link&#34; href=&#34;https://youtrack.jetbrains.com/issue/KT-14934&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;here&lt;/a&gt;, as well as in &lt;a class=&#34;link&#34; href=&#34;https://github.com/detekt/detekt/issues/3534&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Detekt&lt;/a&gt;. You can use &lt;a class=&#34;link&#34; href=&#34;https://github.com/chao2zhang/RequireNamedArgument&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this library&lt;/a&gt; to force any one function to have NamedArguments, but you can&amp;rsquo;t enforce it project-wide with specific rulesets easily.&lt;/p&gt;
+&lt;p&gt;Regardless of lint libraries, you should use &lt;a class=&#34;link&#34; href=&#34;https://plugins.jetbrains.com/plugin/10942-kotlin-fill-class&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this IntelliJ plugin&lt;/a&gt; to easily fill arguments or add names to arguments. I use it all of the time.&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Use named arguments. Not everywhere all the time, but use them regularly.&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>The Testing Pyramid Has a Deeper Foundation</title>
+        <link>https://jacquessmuts.github.io/post/compile_time_tests/</link>
+        <pubDate>Wed, 07 Oct 2020 02:48:01 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/compile_time_tests/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/compile_test1.png" alt="Featured image of post The Testing Pyramid Has a Deeper Foundation" /&gt;&lt;p&gt;Kotlin allows us to structure our code around compile-time tests. This post explains how.&lt;/p&gt;
+&lt;h2 id=&#34;four-layered-testing-pyramid&#34;&gt;Four layered testing pyramid&lt;/h2&gt;
+&lt;p&gt;You probably know the testing pyramid. Unit tests run faster and are easier to develop and run, so you should have more of them, compared to your integration tests and end-to-end tests. However if you assume that this pyramid applies to any sort of automated validation of your code, then the testing pyramid should actually look like this:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/compile_test1.png&#34;
+         alt=&#34;Illuminati tested&#34; width=&#34;70%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Testing Pyramid&amp;#43;&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;If you&amp;rsquo;re wondering what Compile Time tests mean, I mean everything that runs during and even before compilation, to provide &amp;ldquo;Compile Time Safety&amp;rdquo;: Static Analysis, Syntax Errors, Linting, Generated Classes, (Gradle) Build Tool Tasks and anything else I might be forgetting. Compile time tests refers to any errors you get that prevent your unit-tests from running in the first place.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m sure I&amp;rsquo;m not the first one to propose this. I looked around and found &lt;a class=&#34;link&#34; href=&#34;https://twitter.com/aarondjents/status/805913874704674816&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;a few&lt;/a&gt; other &lt;a class=&#34;link&#34; href=&#34;https://twitter.com/mrjedmao/status/1085750574996312064&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;similar ideas&lt;/a&gt;, but only really in the JavaScript community. My guess is that since they cannot rely on the compiler by default, they consider the addition of static tests to be part of the testing framework. Java/Kotlin developers, on the other hand, consider type safety to be an assumed but separate step from the testing framework.&lt;/p&gt;
+&lt;h2 id=&#34;fail-fast-verification&#34;&gt;Fail Fast Verification&lt;/h2&gt;
+&lt;p&gt;Leaving the pyramid aside, I knew that the concept had to be much older than 2016. I did some research and found &lt;a class=&#34;link&#34; href=&#34;https://www.sciencedirect.com/science/article/pii/0164121279900049?via%3Dihub&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this amazing paper&lt;/a&gt; by Margaret Hamilton. If you don&amp;rsquo;t know Margaret Hamilton, all you have to know is that she&amp;rsquo;s able to ship bug-free code, like some kind of mad scientist. You need to read the full article, but for our purposes I&amp;rsquo;ll sum up the relevant parts. Her proposal is that a software system should be verified in this order:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Conceptually&lt;/li&gt;
+&lt;li&gt;Statically&lt;/li&gt;
+&lt;li&gt;Dynamically&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The static verification at the time was extremely limited, so they had to build a lot of it themselves. Margaret Hamilton took &amp;ldquo;fail fast&amp;rdquo; to its logical conclusion and did everything in her power to pick up problems before they became problems; first in planning, then in code. She also designed and implemented end-to-end testing systems, but preferred to have the majority of the validation be done before the end-to-end tests ran. Furthermore, her analyses concluded that bugs are less likely to occur if you have modular systems, as well as extensive documentation, specifications and conceptual planning in place before coding starts.&lt;/p&gt;
+&lt;p&gt;So with that background in place, let&amp;rsquo;s get back to the four-layered testing pyramid.&lt;/p&gt;
+&lt;h2 id=&#34;four-layered-testing-pyramid-in-kotlin&#34;&gt;Four layered testing pyramid, in Kotlin&lt;/h2&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/compile_test1.png&#34;
+         alt=&#34;Illuminati confirmed&#34; width=&#34;20%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Testing Pyramid&amp;#43;&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;You should be aware that there are &lt;a class=&#34;link&#34; href=&#34;https://martinfowler.com/articles/practical-test-pyramid.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;some variations to and criticism of&lt;/a&gt; the original testing pyramid, but that it makes a good rule of thumb for architecting your processes and systems. When you search for blogs or literature about how the testing pyramid fits into software development, you will find little-to-zero mention of static analysis or compiler checks. Yet if you&amp;rsquo;re coding in Java/Kotlin your IDE is constantly running automated checks on your code that most people consider to be completely separate from their automated tests. &lt;strong&gt;It is important to consider compile-time tests as just one part of a bigger system of automated software validation.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Considering that every function is tested for spelling and reference, for number of arguments, for return type, and various other checks by the compiler, I think it is fair to say that the number of verifications performed by the compiler exceeds those performed by your unit-tests.&lt;/p&gt;
+&lt;h2 id=&#34;the-implication-on-your-daily-process&#34;&gt;The Implication On Your Daily Process&lt;/h2&gt;
+&lt;p&gt;Test-Driven-Development is meant to teach you to architect your code in such a way that makes it easy to test. First you write a failing test, then you make that test pass. The first step, according to TDD, is to have a failing test that looks something like this:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/compile_test3.png&#34;
+         alt=&#34;normal test&#34; width=&#34;70%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;First Failing Test?&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;But I see this as the first failing test:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/compile_test2.png&#34;
+         alt=&#34;static test&#34; width=&#34;70%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;First Failing Test&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;This seems like a dumb distinction to make, but I believe it to be important. If you change the type of input or the number of arguments for the &lt;code&gt;convertStringToInt&lt;/code&gt; function, your tests don&amp;rsquo;t fail; the compilation fails before your tests can even run. Which means the input-type and input-amount test is performed automatically, but that it is still a verification step that fails properly.&lt;/p&gt;
+&lt;h2 id=&#34;the-implications-on-your-architecture&#34;&gt;The Implications On Your Architecture&lt;/h2&gt;
+&lt;p&gt;Not everyone uses TDD, but everyone should architect their Android projects in such a way that it is easy to unit-test. By going down this route you will hopefully start to implement some of the popular and sensible choices:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Modularization&lt;/li&gt;
+&lt;li&gt;Inversion of Control via &lt;a class=&#34;link&#34; href=&#34;https://www.martinfowler.com/articles/injection.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Dependency Injection&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Decoupling Classes / Dependencies&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://old.reddit.com/r/androiddev/comments/9ifv54/are_kotlin_coroutines_really_going_to_replace/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Functional Reactive Programming&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Pretty much everything written in &lt;a class=&#34;link&#34; href=&#34;https://www.goodreads.com/book/show/44936.Refactoring&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Refactoring by Fowler&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;And various other small techniques that you develop subconsciously as you prioritise around testability.&lt;/p&gt;
+&lt;p&gt;However, what if you prioritise your architecture to go beyond failing fast in unit tests? What if you prioritise things to fail fast like in the 4-layered test-pyramid above? Breaking changes should ideally fail at compile-time. For me, as an Android Developer, this is the ideal. My compile-time is often around a full minute and I&amp;rsquo;d prefer if breaking changes alerted me before I even have to do a full compile, much less run tests.&lt;/p&gt;
+&lt;p&gt;A simple example would be if my &lt;code&gt;convertStringToInt&lt;/code&gt; function required an additional argument. I&amp;rsquo;d get this error:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/compile_test4.png&#34;
+         alt=&#34;what a terrible function I should just use the standard library for this&#34; width=&#34;70%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Perfect test: it failed before it even ran&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;If you want to pick up breaking changes faster, your goal is to &lt;strong&gt;structure your code in a way where breaking changes more often cause compile time errors before they cause test failures.&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;okay-cool-compilation-errors-are-sometimes-better-than-test-failures-so-give-me-some-practical-examples&#34;&gt;&amp;ldquo;Okay, cool. Compilation errors are sometimes better than test failures. So give me some practical examples&amp;rdquo;&lt;/h2&gt;
+&lt;p&gt;This was the theoretical portion. In the follow-ups to this post, I&amp;rsquo;ll give some practical examples, which may include:
+This was the theoretical portion. In the follow-ups to this post, I&amp;rsquo;ll give some practical examples, which may include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using named arguments&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using custom lint-tests&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using &lt;code&gt;when&lt;/code&gt; with enums/sealed classes&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;&amp;lt;&lt;code&gt;reified Type&lt;/code&gt;&amp;gt; Generics instead of &amp;lt;*&amp;gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Labels for &lt;code&gt;this&lt;/code&gt; and scope&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using libraries that generate interfaces&lt;/a&gt; (View Binding, NavigationSafeArgs, Dagger, Apollo)&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using coroutines for asynchronous operations&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using Kotlin Gradle DSL&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO:  &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Adding static analysis tools, like Detekt&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+        </item>
+        <item>
+        <title>Further Reading for Ethical Programming</title>
+        <link>https://jacquessmuts.github.io/post/ethicc_references/</link>
+        <pubDate>Sun, 06 Sep 2020 19:51:12 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/ethicc_references/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/ethicc.png" alt="Featured image of post Further Reading for Ethical Programming" /&gt;&lt;p&gt;This post contains further reading for my recent talk on the Slippery Slope of Unethical Programming&lt;/p&gt;
+&lt;h2 id=&#34;additional-reading&#34;&gt;Additional Reading&lt;/h2&gt;
+&lt;p&gt;Some things that may be relevant or interesting for further reading on this topic. I&amp;rsquo;d love to hear more recommendations if you have any. I am no expert and my talk came mostly from a place of personal experience.&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cc.gatech.edu/~beki/cs4001/Winner.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Do artifacts have politics&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.fastcompany.com/90449853/this-woman-knows-the-secret-to-fixing-big-techs-most-pervasive-problem&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Margaret Hamilton on Software Professionalization&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://medium.com/swlh/the-most-important-word-silicon-valley-doesnt-know-1477d12ffcd0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;The Most Important Word Silicon Valley Doesn&amp;rsquo;t Know&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://youtu.be/WdgjljQSbj0?list=WL&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Why the web is Communist&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://twitter.com/chiefofstuffs/status/1292213923114913792?s=09&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Breaking up the Internet&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.hellsoft.se/break-up-the-app-stores/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Breaking up app stores&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://youtu.be/tUAX0gnZ3Nw&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Games as a Service is Fraud&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;organisations-worth-looking-into-or-joining&#34;&gt;Organisations worth looking into or joining&lt;/h2&gt;
+&lt;p&gt;There are many many many organisations and it&amp;rsquo;s difficult to find comparative information or to know which ones to recommend for whome. These ones LOOK nice but my first-hand experience is extremely limited. This is part of the problem and I would love any further input on this topic.&lt;/p&gt;
+&lt;h4 id=&#34;south-africa&#34;&gt;South Africa&lt;/h4&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://ita.org.za/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;The ITA&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://ictu.org.za/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;The ICTU&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.ieee.org.za/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;The IEEE ZA&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&#34;global&#34;&gt;Global&lt;/h4&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.ajl.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Algorithmic Justice League&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.acm.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Association of Computing Machinery&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.gameworkersunite.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Game Workers Unite&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.computer.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;IEEE Computer Society&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.theiet.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;The IET&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://iww.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Industrial Workers of the World&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.pivotforhumanity.com/noani/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Pivot for Humanity&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://techworkerscoalition.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Tech Workers Coalition&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://jobstars.com/it-professional-associations-organizations/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;More here&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Add Overlays to Your Launcher Icon Using Layer-List</title>
+        <link>https://jacquessmuts.github.io/post/layer_list_as_launcher_icon/</link>
+        <pubDate>Sun, 16 Feb 2020 14:54:38 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/layer_list_as_launcher_icon/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/layerlist3.png" alt="Featured image of post Add Overlays to Your Launcher Icon Using Layer-List" /&gt;&lt;p&gt;You can use a &lt;!-- raw HTML omitted --&gt; drawable to easily differentiate between flavors and variants. This will show you how.&lt;/p&gt;
+&lt;h2 id=&#34;why&#34;&gt;Why?&lt;/h2&gt;
+&lt;p&gt;Ever wanted to have different icons for each flavor and variant in your Android app? Something like a little bug to indicate the debug version of your app, like so:&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/layerlist4.png&#34;
+         alt=&#34;An inordinate fondness for beetles&#34; width=&#34;40%&#34;/&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Sure, but it&amp;rsquo;s effort. And you have to ask a designer to make a bunch of different icons. Or, even worse, you have to create a bunch of different icons yourself. That&amp;rsquo;s wasteful, so instead you should use a layer-list. It has a default icon, and then it can dynamically insert an overlay image on top of your launcher icon, based upon your flavor or build variant. That way, you don&amp;rsquo;t need a bunch of different icons.&lt;/p&gt;
+&lt;h2 id=&#34;how&#34;&gt;How?&lt;/h2&gt;
+&lt;p&gt;Assuming you have &lt;code&gt;mipmap/ic_launcher&lt;/code&gt; icon already, you should&lt;/p&gt;
+&lt;p&gt;1.) Create an &lt;code&gt;ic_launcher_overlaid.xml&lt;/code&gt; file in your &lt;code&gt;main/drawable&lt;/code&gt; folder, with the following content:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/3541b17741c40e3c24453830d0ee102a.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;How does this work? The layer-list puts the &lt;code&gt;launcher_overlay&lt;/code&gt; on top of the normal &lt;code&gt;ic_launcher&lt;/code&gt; image, then puts 100px padding to the top and left, so that the &lt;code&gt;launcher_overlay&lt;/code&gt; sits in the bottom right corner. That might take some adjustment to get things right.&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/layerlist1.png&#34;
+         alt=&#34;Default Launcher Icon&#34; width=&#34;10%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;drawable/ic_launcher.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;2.) update your &lt;code&gt;AndroidManifest.xml&lt;/code&gt; file to point to the new launcher icon.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/fcd8ba8abc4df58909c7c624d53d9127.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;The only thing left is:&lt;/p&gt;
+&lt;p&gt;3.) Create &lt;code&gt;drawable/launcher_overlay&lt;/code&gt; for each variant/flavor you need.&lt;/p&gt;
+&lt;p&gt;You can create a single transparent pixel in &lt;code&gt;main/drawable&lt;/code&gt; as the default. Then add the appropriate images you need in the &lt;code&gt;flavorVariant/drawable&lt;/code&gt; folders. I added this image to my debug folder:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/layerlist2.png&#34;
+         alt=&#34;An inordinate fondness for beetles&#34; width=&#34;10%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Beetle&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;If all goes well, you&amp;rsquo;ll end up with a launcher icon that looks like this:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/layerlist3.png&#34;
+          alt=&#34;An inordinate fondness for beetles&#34; width=&#34;10%&#34;/&gt;
+ &lt;/figure&gt;
+
+&lt;p&gt;If you&amp;rsquo;re wondering about Adaptive Icons, all you have to know is that the adaptive icon references a foreground drawable. In the same way that you can replace the &lt;code&gt;ic_launcher&lt;/code&gt; with a layer-list, you can also replace &lt;code&gt;ic_launcher_foreground&lt;/code&gt; with a layer-list.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;I&amp;rsquo;d like to thank my colleague, Laurie Scheepers, for suggesting we try xml drawables as app icons.&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Getting arbitrary properties from unknown classes with KProperty</title>
+        <link>https://jacquessmuts.github.io/post/kproperty/</link>
+        <pubDate>Thu, 01 Aug 2019 20:29:26 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/kproperty/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/generic_interfaces3.png" alt="Featured image of post Getting arbitrary properties from unknown classes with KProperty" /&gt;&lt;p&gt;The Kproperty class is powerful and useful.&lt;/p&gt;
+&lt;h3 id=&#34;accessing-a-property-normally&#34;&gt;Accessing a property, normally&lt;/h3&gt;
+&lt;p&gt;You have a class, maybe a &lt;code&gt;data class&lt;/code&gt; to retain info about films. Our class might look like this:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-    <item>
-      <title>The Testing Pyramid Has a Deeper Foundation</title>
-      <link>https://jacquessmuts.github.io/post/compile_time_tests/</link>
-      <pubDate>Wed, 07 Oct 2020 02:48:01 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/compile_time_tests/</guid>
-      <description>&lt;p&gt;Kotlin allows us to structure our code around compile-time tests. This post explains how.&lt;/p&gt;</description>
-    </item>
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+
+fun main (args: Array&amp;lt;String&amp;gt;) {
+//sampleStart
+	data class Film(val name: String, val releaseDate: Long, val runtime: Int)
+    val hereditary = Film(&amp;#34;Hereditary&amp;#34;, 1528401600, 127)
+    println(hereditary.name)
+//sampleEnd
+
+	println(&amp;#34;is the best horror film since The Thing&amp;#34;)
+}
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Which is fine for a basic class. However there are a massive amount of different films. And different film types, with different attributes. Horror films have some sort of monster or threat, but drama films don&amp;rsquo;t. Animated films have an animation style, and documentary films have an educational subject matter. A simple solution would be to extend your &lt;code&gt;Film&lt;/code&gt; class to have multiple &lt;code&gt;null&lt;/code&gt;able fields to reflect all of the potential properties of a film. That solution would reflect a database table more accurately and can be a perfectly fine solution.&lt;/p&gt;
+&lt;h2 id=&#34;dynamic-typing-via-interfaces&#34;&gt;Dynamic Typing via Interfaces&lt;/h2&gt;
+&lt;p&gt;But perhaps you have a constraint where a better approach would be to follow the SOLID principles and create some sort of &lt;a class=&#34;link&#34; href=&#34;https://medium.com/@severinperez/avoiding-interface-pollution-with-the-interface-segregation-principle-5d3859c21013&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Clean Code implementation of interfaces&lt;/a&gt; that a data class can extend. A bunch of little interfaces, like so:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-    <item>
-      <title>Further Reading for Ethical Programming</title>
-      <link>https://jacquessmuts.github.io/post/ethicc_references/</link>
-      <pubDate>Sun, 06 Sep 2020 19:51:12 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/ethicc_references/</guid>
-      <description>&lt;p&gt;This post contains further reading for my recent talk on the Slippery Slope of Unethical Programming&lt;/p&gt;</description>
-    </item>
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+
+//sampleStart
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+//sampleEnd
+
+fun main (args: Array&amp;lt;String&amp;gt;) {
+    val divergent = YoungAdultFilm(&amp;#34;Divergent&amp;#34;, 1395172800, 127, 50, &amp;#34;fascism&amp;#34;, 1, true)
+    println(divergent.name)
+   	println(&amp;#34;is not.&amp;#34;)
+}
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Yes, this is a fairly unusual way of doing it, but sometimes it is required due to circumstances outside of your control. Luckily it still has some advantages in type safety. For example, now we are able to do checks to determine whether or not a given class is a certain type and return the property of our choosing. With the magic of Kotlin&amp;rsquo;s aggressive type inference, this code compiles and is typesafe:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-    <item>
-      <title>Add Overlays to Your Launcher Icon Using Layer-List</title>
-      <link>https://jacquessmuts.github.io/post/layer_list_as_launcher_icon/</link>
-      <pubDate>Sun, 16 Feb 2020 14:54:38 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/layer_list_as_launcher_icon/</guid>
-      <description>&lt;p&gt;You can use a &lt;!-- raw HTML omitted --&gt; drawable to easily differentiate between flavors and variants. This will show you how.&lt;/p&gt;</description>
-    </item>
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+
+
+fun main (args: Array&amp;lt;String&amp;gt;) {
+    val midsommar = YoungAdultFilm(&amp;#34;Midsommar&amp;#34;, 1395172800, 127, 0, &amp;#34;Society&amp;#34;, 1, true)
+    val hasLoveTriangles = hasLoveTriangles(midsommar)
+    println(&amp;#34;${midsommar.name} has love triangles? $hasLoveTriangles&amp;#34;)
+}
+//sampleStart
+fun hasLoveTriangles(film: Film): Boolean {
     
-    <item>
-      <title>Getting arbitrary properties from unknown classes with KProperty</title>
-      <link>https://jacquessmuts.github.io/post/kproperty/</link>
-      <pubDate>Thu, 01 Aug 2019 20:29:26 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/kproperty/</guid>
-      <description>&lt;p&gt;The Kproperty class is powerful and useful.&lt;/p&gt;</description>
-    </item>
+    return if (film is Romance) {
+        film.loveTriangles &amp;gt; 0
+    } else {
+        false
+    }
+}
+//sampleEnd
+
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;The film might or might not be a Romance. But the moment we have done a check for &lt;code&gt;film is Romance&lt;/code&gt; then the compiler can infer that the film has the &lt;code&gt;loveTriangles&lt;/code&gt; property.&lt;/p&gt;
+&lt;p&gt;Pretty convenient right?&lt;/p&gt;
+&lt;p&gt;But now for every single property we have to write this out manually. If film is &lt;code&gt;PostApocalyptic&lt;/code&gt;, then get the &lt;code&gt;causeOfSocietalCollapse&lt;/code&gt; property. If the film is &lt;code&gt;Romance&lt;/code&gt;, then get the &lt;code&gt;happyEnding&lt;/code&gt; property. And so forth for every single property of every interface which extends &lt;code&gt;Film&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This all becomes rather tedious. So maybe we should rather write out something Generic, which allows us to check for any arbitrary property. Is this even possible?&lt;/p&gt;
+&lt;h2 id=&#34;generics-saves-the-day-again&#34;&gt;Generics Saves the Day Again&lt;/h2&gt;
+&lt;p&gt;Yes. We can iterate through the properties and find the one which matches a name we specify. This is not an ideal solution because we have to pass in a string. Not very typesafe. And if any variable name changes, that string will no longer match.&lt;/p&gt;
+&lt;p&gt;However, with Kotlin&amp;rsquo;s &lt;code&gt;inline&lt;/code&gt; and &lt;code&gt;reified&lt;/code&gt; keywords, we can do amazing generic work. First you have to have the Kotlin Reflection Library, (as described in my &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/generic_interface_and_methods/&#34; &gt;previous article on Reflection&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;Then you have to read about &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/tutorials/kotlin-for-py/member-references-and-reflection.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Reflection and KProperty&amp;lt;&amp;gt;&lt;/a&gt; and that if you can get access to a property, you can obtain the value of that property by using &lt;code&gt;kproperty.get(instance)&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Then putting all that together then we can write out a fairly simple generic function, like so:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-    <item>
-      <title>Coroutines Introduction Video</title>
-      <link>https://jacquessmuts.github.io/post/coroutines_presentation/</link>
-      <pubDate>Wed, 17 Jul 2019 21:53:05 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/coroutines_presentation/</guid>
-      <description>&lt;p&gt;A video presentation on coroutines, a talk I gave at GDG Cape Town&lt;/p&gt;</description>
-    </item>
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+import kotlin.reflect.KProperty1
+
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+
+
+//sampleStart
+fun main (args: Array&amp;lt;String&amp;gt;) {
+
+    val film = YoungAdultFilm(&amp;#34;The End of Evangelion&amp;#34;, 869342400, 85, 20, &amp;#34;Instrumentality&amp;#34;, 1, true)
+
+    [mark]val hasHappyEnding: Boolean? = getAttribute(film, Romance::happyEnding)[/mark]
+    println(&amp;#34;${film.name} has a happy ending? $hasHappyEnding&amp;#34;)
+}
+
+inline fun &amp;lt;T, reified Interface&amp;gt; getAttribute(input: Film, property: KProperty1&amp;lt;Interface, T&amp;gt;): T? {
+    if (input is Interface) {
+        return property.get(input) as? T
+    }
+    return null
+}
+//sampleEnd
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Now you can just pass in your &lt;code&gt;Interface::Property&lt;/code&gt; reference and you&amp;rsquo;ll know that the right property type will be accessed, that the property is definitely linked to the right interface, and that any future name changes will not result in breaking changes without the IDE telling you.&lt;/p&gt;
+&lt;h4 id=&#34;to-explain-the-function&#34;&gt;To explain the function:&lt;/h4&gt;
+&lt;p&gt;KProperty1 takes as Generic input the interface or class to which it belongs, as well as the required output (&lt;code&gt;T&lt;/code&gt;). In our case we allow any output, but it must be a property of the given &lt;code&gt;&amp;lt;Interface&amp;gt;&lt;/code&gt;. In short, we can theoretically get &lt;em&gt;any attribute&lt;/em&gt; from a given class with casting, but that isn&amp;rsquo;t safe. Instead we use this function, and with the &lt;code&gt;&amp;lt;Interface, T&amp;gt;&lt;/code&gt; we pass in, it is still typesafe and reliable.&lt;/p&gt;
+&lt;p&gt;This looks pretty great so far. If you want to keep going you can turn the getAttribute into an Extension Function or infix function on the Film class. Maybe you find this to be a bit more readable:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-    <item>
-      <title>Using the synchronized keyword in coroutines?</title>
-      <link>https://jacquessmuts.github.io/post/coroutine_sync_mutex/</link>
-      <pubDate>Sun, 02 Jun 2019 09:08:10 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/coroutine_sync_mutex/</guid>
-      <description>&lt;p&gt;Working with coroutines is subtly different from normal locking functions. Introduce some thread-safety with mutex.&lt;/p&gt;</description>
-    </item>
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+import kotlin.reflect.KProperty1
+
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+
+fun main (args: Array&amp;lt;String&amp;gt;) {
+
+    val film = YoungAdultFilm(&amp;#34;The End of Evangelion&amp;#34;, 869342400, 85, 20, &amp;#34;Instrumentality&amp;#34;, 1, true)
+
+//sampleStart
+    val hasHappyEnding = film.getAttribute(Romance::happyEnding) ?: false
+//sampleEnd
     
-    <item>
-      <title>Escaping Callback Hell with Generic SuspendCoroutine Infix Extension Functions</title>
-      <link>https://jacquessmuts.github.io/post/callback_hell/</link>
-      <pubDate>Mon, 20 May 2019 23:12:36 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/callback_hell/</guid>
-      <description>&lt;p&gt;Callback hell happens all the time in Android. Luckily, with coroutines, there&#39;s an easy way out.&lt;/p&gt;</description>
-    </item>
+    println(&amp;#34;${film.name} has a happy ending? $hasHappyEnding&amp;#34;)
+}
+
+inline fun &amp;lt;T, reified Interface&amp;gt;Film.getAttribute(property: KProperty1&amp;lt;Interface, T&amp;gt;): T? {
+    return getFilmAttribute(this, property)
+}
+
+inline fun &amp;lt;T, reified Interface&amp;gt; getFilmAttribute(input: Film, property: KProperty1&amp;lt;Interface, T&amp;gt;): T? {
+    if (input is Interface) {
+        return property.get(input) as? T
+    }
+    return null
+}
+
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;h3 id=&#34;win-win&#34;&gt;Win win?&lt;/h3&gt;
+&lt;p&gt;Well mostly. The disadvantage is that you can&amp;rsquo;t know whether or not any given property is nullable or not. Via this method, everything becomes nullable. To obtain only non-nullable values you have to either do the type-casting manually, or use a default value. You can see me passing &lt;code&gt;false&lt;/code&gt; into the elvis operator above as a default value.&lt;/p&gt;
+&lt;p&gt;Furthermore, there&amp;rsquo;s a performance cost.&lt;/p&gt;
+&lt;h3 id=&#34;reflection-is-slower-but-by-how-much&#34;&gt;Reflection is Slower, But By How Much?&lt;/h3&gt;
+&lt;p&gt;Luckily this one is fairly simple to test. I just access the property several times, and log how long it takes to do that directly or via reflection. The code is here, and you can run it to see the result for yourself:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-    <item>
-      <title>The Problem with Kotlin Kfunction Receiver Functions</title>
-      <link>https://jacquessmuts.github.io/post/kfunction_analogues/</link>
-      <pubDate>Wed, 08 May 2019 17:54:58 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/kfunction_analogues/</guid>
-      <description>&lt;p&gt;KFunction can be written in more than one way. Here&#39;s a list of analogues, plus some criticism of the Receiver Function.&lt;/p&gt;</description>
-    </item>
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+import kotlin.reflect.KProperty1
+import kotlin.system.measureTimeMillis
+
+interface Film {
+    val name: String
+    val releaseDate: Long
+    val runtime: Int
+}
+
+interface PostApocalyptic: Film {
+    val yearsInFuture: Int
+    val causeOfSocietalCollapse: String
+}
+
+interface Romance: Film {
+    val loveTriangles: Int
+    val happyEnding: Boolean
+}
+
+data class YoungAdultFilm(override val name: String,
+                         override val releaseDate: Long,
+                         override val runtime: Int,
+                         override val yearsInFuture: Int,
+                         override val causeOfSocietalCollapse: String,
+                         override val loveTriangles: Int,
+                         override val happyEnding: Boolean
+                         ): Film, PostApocalyptic, Romance
+
+//sampleStart
+val iterations = 1000000000
+fun main (args: Array&amp;lt;String&amp;gt;) {
+
+    val normalTime = measureTimeMillis(::normalDirectAccessTime)
+    println(&amp;#34;It takes $normalTime milliseconds to do $iterations direct property access operations&amp;#34;)
+
+    val manualCastingTime = measureTimeMillis(::manualCastingAccessTime)
+    println(&amp;#34;It takes $manualCastingTime milliseconds to do $iterations manual casting property access operations&amp;#34;)
     
-    <item>
-      <title>Creating and Deploying an Android Library via CircleCI</title>
-      <link>https://jacquessmuts.github.io/post/library_template/</link>
-      <pubDate>Tue, 07 May 2019 22:19:00 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/library_template/</guid>
-      <description>&lt;p&gt;This is the template I use to create new Android libraries with CircleCI support for Continuous Deployment.&lt;/p&gt;</description>
-    </item>
+    val reflectionTime = measureTimeMillis(::reflectionAccessTime)
+    println(&amp;#34;It takes $reflectionTime milliseconds to do $iterations reflected property access operations&amp;#34;)
+   
+}
+//sampleEnd
+
+fun normalDirectAccessTime() {
+   
+    val film = YoungAdultFilm(&amp;#34;The End of Evangelion&amp;#34;, 869342400, 85, 20, &amp;#34;Instrumentality&amp;#34;, 1, true)
+
+    repeat(iterations) {
+        film.happyEnding
+    }
+}
+
+fun manualCastingAccessTime() {
+	val film = YoungAdultFilm(&amp;#34;The End of Evangelion&amp;#34;, 869342400, 85, 20, &amp;#34;Instrumentality&amp;#34;, 1, true)
+
+    repeat(iterations) {
+        getHappyEnding(film)
+    }
+}
+
+fun getHappyEnding(film: Film): Boolean {
+	return if (film is Romance) {
+		film.happyEnding
+	} else {
+		false
+	}
+}
+
+
+fun reflectionAccessTime() {
+   
+    val film = YoungAdultFilm(&amp;#34;The End of Evangelion&amp;#34;, 869342400, 85, 20, &amp;#34;Instrumentality&amp;#34;, 1, true)
+
+    repeat(iterations) {
+        getAttribute(film, Romance::happyEnding) ?: false
+    }
+}
+
+inline fun &amp;lt;T, reified Interface&amp;gt; getAttribute(input: Film, property: KProperty1&amp;lt;Interface, *&amp;gt;): T? {
+    if (input is Interface) {
+        return property.get(input) as? T
+    }
+    return null
+}
+
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;In my case, the reflected property access operation takes on average about 2.5 times longer than the direct access. And the manual casting takes just a smidgeon longer than the normal direct access.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s actually pretty impressive. I was expecting more than 90% decrease in performance for reflection; instead it&amp;rsquo;s only about 60%. This is not ideal if you care about optimizing for billions of operations per second, but acceptable for less intense usecases, such as in user(Android) applications that cater for a single user at a time.&lt;/p&gt;
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;KProperty is an essential class for doing higher-order programming in Kotlin. You can use it to get further information about any given property, or you can use it to obtain properties that you don&amp;rsquo;t normally have access to, as demonstrated above.&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Coroutines Introduction Video</title>
+        <link>https://jacquessmuts.github.io/post/coroutines_presentation/</link>
+        <pubDate>Wed, 17 Jul 2019 21:53:05 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/coroutines_presentation/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/coroutines_video1.png" alt="Featured image of post Coroutines Introduction Video" /&gt;&lt;p&gt;A video presentation on coroutines, a talk I gave at GDG Cape Town&lt;/p&gt;
+&lt;div class=&#34;video-wrapper&#34;&gt;
+    &lt;iframe loading=&#34;lazy&#34; 
+            src=&#34;https://www.youtube.com/embed/qaiO1BHIsgo&#34; 
+            allowfullscreen 
+            title=&#34;YouTube Video&#34;
+    &gt;
+    &lt;/iframe&gt;
+&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>Using the synchronized keyword in coroutines?</title>
+        <link>https://jacquessmuts.github.io/post/coroutine_sync_mutex/</link>
+        <pubDate>Sun, 02 Jun 2019 09:08:10 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/coroutine_sync_mutex/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/coroutine_sync_mutex.png" alt="Featured image of post Using the synchronized keyword in coroutines?" /&gt;&lt;p&gt;Working with coroutines is subtly different from normal locking functions. Introduce some thread-safety with mutex.&lt;/p&gt;
+&lt;h2 id=&#34;thread-safety-normally&#34;&gt;Thread-Safety, normally&lt;/h2&gt;
+&lt;p&gt;So hopefully you&amp;rsquo;re aware of basic thread-safety in Kotlin/Java. Sometimes you have a shared state of some kind that should only be accessed by one thread at a time. If you&amp;rsquo;re coming from Java, you probably use the &lt;code&gt;synchronized(lock)&lt;/code&gt; operator in order to ensure that a shared mutable object can only be accessed one at a time. For some great reading on this topic I suggest &lt;a class=&#34;link&#34; href=&#34;https://proandroiddev.com/synchronization-and-thread-safety-techniques-in-java-and-kotlin-f63506370e6d&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this post on Medium&lt;/a&gt;.&lt;/p&gt;
+&lt;h4 id=&#34;so-imagine-a-scenario-where-we-are-running-a-few-long-running-operations-like-api-calls-but-we-want-to-make-sure-that-we-never-run-more-than-one-such-operation-at-a-time&#34;&gt;So imagine a scenario where we are running a few long-running operations (like API calls), but we want to make sure that we never run more than one such operation at a time.&lt;/h4&gt;
+&lt;p&gt;When I was starting out with Java threading I&amp;rsquo;d probably write something risky like this:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-    <item>
-      <title>Generics &#43; Reflection &#43; Type Inference &#43; Reified Type = Kotlin Magic</title>
-      <link>https://jacquessmuts.github.io/post/generic_interface_and_methods/</link>
-      <pubDate>Wed, 01 May 2019 08:30:00 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/generic_interface_and_methods/</guid>
-      <description>&lt;p&gt;With Kotlin, it&#39;s easier than ever to code with reflection and generics. This post attempts to give one example.&lt;/p&gt;</description>
-    </item>
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+
+fun main() {
+
+    val lockClass = SyncLockClass()
+    for (i in 1..10) {
+        GlobalScope.launch { lockClass.runFunction(i) }
+    }
+
+    Thread.sleep(2000) // We&amp;#39;re sleeping here because otherwise the JVM would terminate before printing the results
+}
+
+class SyncLockClass() {
+	val lock = Any()
+	var latestValue: Int = 0
+
+//sampleStart
+	fun runFunction(input: Int) {
+        println(&amp;#34;start function $input&amp;#34;)
+	    [mark]synchronized(lock) {[/mark]
+	        Thread.sleep(100) // This could also be a long-running calculation or an API call
+	        latestValue = input
+	    }
+	    println(&amp;#34;finished function $input at ${System.currentTimeMillis()}&amp;#34;)
+	}
+//sampleEnd
+
+	companion object {
+		// Put the sync lock inside a companion object if you want to ensure that all instances of this class share a lock
+		// val lock = Any()
+	}
+}
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Press the play button above (assuming you didn&amp;rsquo;t block JavaScript on this page) to see the result. Each function is blocked and waits at the &lt;code&gt;synchronized&lt;/code&gt; keyword for the previous function to finish. This mostly satisfies our initial requirement, but blocks any thread which hits the &lt;code&gt;synchronized&lt;/code&gt; section while it is locked. Notice how once the first few functions are hit, the JVM is blocked from starting new threads until the previous thread finishes. In other words this method works (but is dangerous) if you have lots of threads and are running blocking functions. In Kotlin Coroutines however we run &lt;code&gt;suspending&lt;/code&gt; functions, not blocking functions.&lt;/p&gt;
+&lt;h2 id=&#34;badly-with-coroutines&#34;&gt;Badly, with Coroutines&lt;/h2&gt;
+&lt;p&gt;If you&amp;rsquo;re already using coroutines you should know that a suspending function does not always block a thread. In some circumstances it pauses (suspends) the operation so that other operations can use the CPU.&lt;/p&gt;
+&lt;p&gt;In the example above, I&amp;rsquo;m using coroutines to launch the function, but I&amp;rsquo;m still blocking the thread every time the &lt;code&gt;runFunction()&lt;/code&gt; function is performed, which means I&amp;rsquo;m not really utilizing the full power of Kotlin coroutines. So, what if we replaced the blocking &lt;code&gt;Sleep&lt;/code&gt; function with the suspending &lt;code&gt;delay()&lt;/code&gt; function?&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-    <item>
-      <title>Don&#39;t Pass Around Your Room/Database Entity</title>
-      <link>https://jacquessmuts.github.io/post/modularization_room/</link>
-      <pubDate>Thu, 25 Apr 2019 10:35:54 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/modularization_room/</guid>
-      <description>&lt;p&gt;If you&#39;re thinking of modularizing your Android App and you use Android Room, you should not pass around your Room Entity.&lt;/p&gt;</description>
-    </item>
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
+
+fun main() {
+
+    val lockClass = SyncLockClass()
+
+    for (i in 1..10) {
+        GlobalScope.launch { lockClass.runFunction(i) }
+    }
+
+    Thread.sleep(2000) // We&amp;#39;re sleeping here because otherwise the JVM would terminate before printing the results
+}
+
+class SyncLockClass() {
+	val lock = Any()
+	var latestValue: Int = 0
+
+//sampleStart
+	suspend fun runFunction(input: Int) {
+        println(&amp;#34;start function $input&amp;#34;)
+	    synchronized(lock) {
+	        [mark]delay(100)[/mark] // This could also be a long-running calculation or an API call
+	        latestValue = input
+	    }
+	    println(&amp;#34;finished function $input at ${System.currentTimeMillis()}&amp;#34;)
+	}
+//sampleEnd
+}
+
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Try to run the above code and you&amp;rsquo;ll get an error: &lt;code&gt;The &#39;delay&#39; suspension point is inside a critical section&lt;/code&gt;. What does this mean? You should not delay or suspend or sleep your thread inside of a synchronized() block, as explained somewhat &lt;a class=&#34;link&#34; href=&#34;https://stackoverflow.com/questions/4160413/why-is-sleeping-inside-a-critical-section-a-concurrency-issue&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;in this StackOverflow Thread&lt;/a&gt;. It would ideally display as a warning in my first example as well. A critical section of code (such as in between the &lt;code&gt;synchronized&lt;/code&gt; block) should be as short as possible. It is not for long-running operations because it blocks the thread. But a suspending function does not necessarily block the thread.&lt;/p&gt;
+&lt;p&gt;So how do we solve this issue? Maybe you&amp;rsquo;re an oldschool Java dev and you think to just use ReentrantLock() instead. After all, synchronized is merely a simplified version of ReentrantLock. This is cheating to try and be smarter than the compiler. Don&amp;rsquo;t do this. Run the code below to see why.&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-    <item>
-      <title>Is your modularization making any progress?</title>
-      <link>https://jacquessmuts.github.io/post/modularization/</link>
-      <pubDate>Sat, 20 Apr 2019 21:15:17 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/modularization/</guid>
-      <description>&lt;p&gt;You should modularize your Kotlin Android app, since it&#39;s the best way to enforce &lt;a href=&#34;https://developer.android.com/jetpack/docs/guide#common-principles&#34;&gt;separation of concerns&lt;/a&gt;, but how do you know if you&#39;re doing it right? Here&#39;s some tips to help.&lt;/p&gt;</description>
-    </item>
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
+import java.util.concurrent.locks.ReentrantLock
+
+fun main() {
+
+    val lockClass = SyncLockClass()
+
+	for (i in 1..10) {
+        GlobalScope.launch { lockClass.runFunction(i) }
+    }
+
+    Thread.sleep(2000) // We&amp;#39;re sleeping here because otherwise the JVM would terminate before printing the results
+}
+
+class SyncLockClass() {
+    val reentrantLock = ReentrantLock()
+	var latestValue: Int = 0
+
+//sampleStart
+	suspend fun runFunction(input: Int) {
+        println(&amp;#34;start function $input&amp;#34;)
+        reentrantLock.lock()
+	    [mark]delay(100)[/mark] // This could also be a long-running calculation or an API call
+	    latestValue = input
+	    reentrantLock.unlock()
+	    println(&amp;#34;finished function $input at ${System.currentTimeMillis()}&amp;#34;)
+	}
+//sampleEnd
+}
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;As you can see this is not the results we want at all. The lock breaks, and then it gets ignored. You&amp;rsquo;ll probably have a runtime error in the log as well. So how do we fix this? We use a Mutex.&lt;/p&gt;
+&lt;h2 id=&#34;coroutinessyncmutex&#34;&gt;Coroutines.Sync.Mutex&lt;/h2&gt;
+&lt;p&gt;There are some things we can read online on Mutex. We&amp;rsquo;ve got &lt;a class=&#34;link&#34; href=&#34;https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.sync/-mutex/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;the class documentation&lt;/a&gt;, we have this nice &lt;a class=&#34;link&#34; href=&#34;https://medium.com/@nazarivanchuk/shared-mutable-state-with-coroutines-33a85e903466&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;acricte&lt;/a&gt; which explains how to use the mutex with a shared mutable state, and finally we have the &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/reference/coroutines/shared-mutable-state-and-concurrency.html#mutual-exclusion&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;official kotlin guide&lt;/a&gt;. That last link is probably the best one.&lt;/p&gt;
+&lt;p&gt;The important takeaway is that the Mutex is part of the Coroutines package, which means we know that this mutex takes the suspending nature of coroutines into account. So how would we use it in our example?&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-    <item>
-      <title>How I Made This Website</title>
-      <link>https://jacquessmuts.github.io/post/how_i_made_this/</link>
-      <pubDate>Sat, 20 Apr 2019 10:43:30 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/how_i_made_this/</guid>
-      <description>&lt;p&gt;This details how I made this static github page.&lt;/p&gt;</description>
-    </item>
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+
+fun main() {
+
+    val lockClass = SyncLockClass()
+
+	for (i in 1..10) {
+        GlobalScope.launch { lockClass.runSuspendFunctionWithMutex(i) }
+    }
+
+    Thread.sleep(2000) // We&amp;#39;re sleeping here because otherwise the JVM would terminate before printing the results
+}
+
+class SyncLockClass() {
+	var latestValue: Int = 0
+	val mutex = Mutex()
+
+	//sampleStart
+	suspend fun runSuspendFunctionWithMutex(input: Int) {
+
+    	println(&amp;#34;running suspend function $input&amp;#34;)
+	    [mark]mutex.withLock { [/mark]
+	    	delay(100) // This could also be a long-running calculation or an API call
+	        println(&amp;#34;finished suspend function $input at ${System.currentTimeMillis()}&amp;#34;)
+	        latestValue = input
+	    }
+
+}
+//sampleEnd
+}
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;And now things are working fine. All of the API calls are started as soon as possible and none of the threads are locked. If you look at the timestamps of the logs above you&amp;rsquo;ll see that the events are also returned with the expected 100ms delay in between each one. The only way to have achieved this result using the same techniques as in the first example is to have 10 threads at your disposal. In fact, I can probably increase the amount of coroutines I launch with this method. Let&amp;rsquo;s push it until we break it:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-    <item>
-      <title>Original Site</title>
-      <link>https://jacquessmuts.github.io/post/original-site/</link>
-      <pubDate>Thu, 18 Apr 2019 17:03:47 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/original-site/</guid>
-      <description>&lt;p&gt;My original site is at &lt;a href=&#34;https://jacquessmuts.com&#34;&gt;JacquesSmuts.com&lt;/a&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>References</title>
-      <link>https://jacquessmuts.github.io/post/references/</link>
-      <pubDate>Thu, 10 Jan 2019 19:53:22 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/references/</guid>
-      <description>&lt;p&gt;A list of achievements that are publicly presented&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+
+fun main() {
+
+    val lockClass = SyncLockClass()
+
+    println(&amp;#34;(only printing the first 3, and multiples of 50)&amp;#34;)
+	//sampleStart
+	for (i in 1..4000) {
+        GlobalScope.launch { lockClass.runSuspendFunctionWithMutex(i) }
+    }
+
+    Thread.sleep(8000) // We&amp;#39;re sleeping here because otherwise the JVM would terminate before printing the results
+	//sampleEnd
+}
+
+class SyncLockClass() {
+	var latestValue: Int = 0
+	val mutex = Mutex()
+
+	suspend fun runSuspendFunctionWithMutex(input: Int) {
+
+		if (input &amp;lt; 4 || input % 50 == 0)
+    		println(&amp;#34;running suspend function $input&amp;#34;)
+	    mutex.withLock {
+	    	delay(2) // This could also be a long-running calculation or an API call
+
+			if (input &amp;lt; 4 || input % 50 == 0)
+	        	println(&amp;#34;finished suspend function $input at ${System.currentTimeMillis()}&amp;#34;)
+	        latestValue = input
+	    }
+
+}
+}
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;I didn&amp;rsquo;t manage to break the Kotlin Playground with any amount of coroutines. The environment provided by the Kotlin playground only allows you to run for 10 seconds. The above code maximises that time without breaking anything, or blocking any threads. If you scroll through the logs you&amp;rsquo;ll see that some of the old functions are eventually getting finished while more coroutines are still being launched. This just goes to show how powerful coroutines and suspending functions are.&lt;/p&gt;
+&lt;h2 id=&#34;a-better-way&#34;&gt;A Better way?&lt;/h2&gt;
+&lt;p&gt;Threading and concurrency is a difficult topic. It is exceptionally easy to shoot yourself in the foot, by for example creating a deadlock. I suggest you read &lt;a class=&#34;link&#34; href=&#34;https://medium.com/@elizarov/deadlocks-in-non-hierarchical-csp-e5910d137cc&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this great article by Roman Elizarov&lt;/a&gt; on how to avoid deadlocks in practical coroutines. (Thanks to &lt;a class=&#34;link&#34; href=&#34;https://github.com/spand&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Johannes Jensen&lt;/a&gt; for the suggestion.)&lt;/p&gt;
+&lt;p&gt;Our code sample above works, but it&amp;rsquo;s still dangerous. If one function gets locked or indefinitely suspended for any reason, you end up in a deadlock. Ideally you want to avoid launching a coroutine or entering a suspend function until the conditions are ideal to do so. If you cannot stop a coroutine from being launched when it&amp;rsquo;s not ready, you can at least queue up several suspend functions using the &lt;code&gt;Mutex&lt;/code&gt; class.&lt;/p&gt;
+&lt;p&gt;But since we&amp;rsquo;re queuing things up, maybe it would be better to use something like the &lt;a class=&#34;link&#34; href=&#34;https://docs.oracle.com/javase/8/docs/api/?java/util/concurrent/BlockingQueue.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;BlockingQueue&lt;/a&gt; class in Java? I&amp;rsquo;m still investigating that part, but spoilers: &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/reference/coroutines/channels.html#channel-basics&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Channels&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Coroutines are better than multithreading, but comes with all of the same dangers as normal multithreading. Just because it&amp;rsquo;s easy to use does not mean it&amp;rsquo;s safe. Be careful out there.&lt;/p&gt;
+&lt;p&gt;Can you think of a better way to handle this scenario? Please let me know in the comments below.&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Escaping Callback Hell with Generic SuspendCoroutine Infix Extension Functions</title>
+        <link>https://jacquessmuts.github.io/post/callback-hell/</link>
+        <pubDate>Mon, 20 May 2019 23:12:36 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/callback-hell/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/callback_hell4.png" alt="Featured image of post Escaping Callback Hell with Generic SuspendCoroutine Infix Extension Functions" /&gt;&lt;p&gt;Callback hell happens all the time in Android. Luckily, with coroutines, there&amp;rsquo;s an easy way out.&lt;/p&gt;
+&lt;p&gt;So you&amp;rsquo;re hopefully aware of &lt;a class=&#34;link&#34; href=&#34;http://callbackhell.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;callback hell&lt;/a&gt;, which makes your code difficult to read, and also makes the sequence of events difficult to understand. This is something we want to avoid, but it&amp;rsquo;s not always easy. If you&amp;rsquo;re using any sort of third-party library, (like Firebase) you&amp;rsquo;re probably forced into this pattern regularly. A simple callback would look like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/6cdad47d20e6c4f2a92ebee4f1ff8640.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;As you can see, we&amp;rsquo;re one level into callbacks. At a glance, it would seem like the result would be handled immediately after sending out the &lt;code&gt;saveUsername&lt;/code&gt; function. But it in fact creates an asynchronous task (most likely on the IO thread). Which means the order of events quickly becomes unclear, especially to a new developer climbing on the project. An experienced dev would know that the order of events isn&amp;rsquo;t clear, but it&amp;rsquo;ll take a few minutes to fully comprehend what the actual order is.&lt;/p&gt;
+&lt;p&gt;However, if your operation is suitable for coroutines (such as API calls, disk writes or background processes) we can &amp;ldquo;flatten&amp;rdquo; the callback hell fairly easily.&lt;/p&gt;
+&lt;h3 id=&#34;suspendcoroutine&#34;&gt;SuspendCoroutine&lt;/h3&gt;
+&lt;p&gt;I&amp;rsquo;m assuming you&amp;rsquo;re aware of coroutines and suspendFunctions already. If not, it&amp;rsquo;s time to &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/reference/coroutines-overview.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;start using them&lt;/a&gt;. First, I need to introduce suspendCoroutine. The &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines.experimental/suspend-coroutine.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;official documentation on suspendCoroutine&lt;/a&gt; doesn&amp;rsquo;t make it particularly clear. But &lt;a class=&#34;link&#34; href=&#34;https://stackoverflow.com/questions/50315802/correct-way-to-suspend-coroutine-until-taskt-is-complete&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this StackOverflow answer&lt;/a&gt; provides a good idea of how to use it. So if we were to write a suspendCoroutine version of our function, it would look like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/40462adab3f657da91d25dfdba84ef99.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;As you can see, the saveUsername function has turned into a function which returns the result in the same line, but can only be called from a coroutineContext/suspendFunction. This is perfect for making your code look cleaner and run in sequence with more confidence.&lt;/p&gt;
+&lt;p&gt;However, it requires you to write a suspendCoroutine function for each function you want to flatten in this way. This adds a lot of boilerplate. So is there some way we can use generics to avoid this boilerplate? Of course!&lt;/p&gt;
+&lt;h3 id=&#34;generic-suspendcoroutine&#34;&gt;Generic SuspendCoroutine&lt;/h3&gt;
+&lt;p&gt;If you read my &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/generic_interface_and_methods/&#34; &gt;first article on kotlin generics&lt;/a&gt; you&amp;rsquo;ll know that the IntelliJ IDE is smarter than us, so we&amp;rsquo;ll use it to generate our function. We&amp;rsquo;ll call our function &lt;code&gt;suspendAsync()&lt;/code&gt; and pass in our method, along with the input, and see what happens. Remember you can pass a method reference with &lt;code&gt;instance::method&lt;/code&gt;&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/callback_hell1.png&#34;
+         alt=&#34;compiler error&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If you see this warning, you&amp;#39;re headed in the right direction. &lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Then IntelliJ creates a function which looks like this:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/callback_hell2.png&#34;
+         alt=&#34;compiler result&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Not generic yet. &lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;And through a little bit of Generic reworking, as well as &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/kfunction_analogues/&#34; &gt;my knowledge of KFunction analogues&lt;/a&gt;, I replaced the &lt;code&gt;&amp;lt;String&amp;gt;&lt;/code&gt; input and output types with generic types, resulting in this function:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/8ae63a3da81d38708c0c35a300280a86.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;As you can see, it&amp;rsquo;s about the same as our previous function. The difference is, you can pass in any function which takes a single input and a function callback, and it becomes a one-liner instead of a callback.&lt;/p&gt;
+&lt;p&gt;If you want to pass in two inputs, it&amp;rsquo;s slightly trickier, but still very doable:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/9d1c10544e72c4d88e978ca65c5f07ff.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;And there you have it. You can reduce any qualifying callback with these functions. Other variations can be covered with a few more generic functions. However, it doesn&amp;rsquo;t feel very nice calling a function in this way. First you write &lt;code&gt;suspendAsync&lt;/code&gt;, then you pass in the function you actually want to call? Not the best, because we&amp;rsquo;re used to referencing the function we want to call first.&lt;/p&gt;
+&lt;p&gt;So maybe we can do better?&lt;/p&gt;
+&lt;h3 id=&#34;generic-infix-suspendcoroutine-extension-function&#34;&gt;Generic Infix SuspendCoroutine Extension Function&lt;/h3&gt;
+&lt;p&gt;I like the &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/reference/functions.html#infix-notation&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;infix notation in Kotlin&lt;/a&gt;, though I usually avoid it because it&amp;rsquo;s a little dangerous and it&amp;rsquo;s not easy for new developers to discover it&amp;rsquo;s usage in any given codebase. In this case the increased readability and ease of use may be worth it.&lt;/p&gt;
+&lt;p&gt;So using the same method of letting the IDE generate our function for us, we write out the infix function we want. I call it &lt;code&gt;suspendAndInvokeWith&lt;/code&gt;, because we are invoking a function, turning it into a suspend function, and passing in arguments.&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/callback_hell3.png&#34;
+         alt=&#34;compiler result&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If it wasn&amp;#39;t for compiler suggestions I&amp;#39;d be useless. &lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Which we clean up and genericify a little bit into our result:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/d099eff5e66aa6b1d5de924f87c9e967.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;This feels a lot more natural. You start out by writing the function you would normally write, using the infix notation and passing in your input.&lt;/p&gt;
+&lt;p&gt;Infix functions require only a single input, so if you want to pass in more than one argument into a function, you need to do it by using Pairs or Triples, like so:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/b6b45f506d001005bc8914e0925986cc.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;And there you have it. This won&amp;rsquo;t work on everything, but it&amp;rsquo;s a start to reducing boilerplate.&lt;/p&gt;
+&lt;h3 id=&#34;source&#34;&gt;Source&lt;/h3&gt;
+&lt;p&gt;At &lt;a class=&#34;link&#34; href=&#34;https://flatcircle.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Flat Circle&lt;/a&gt;, we&amp;rsquo;re trying to make our code as readable as possible, and found that using coroutines and avoiding callback hell is a good way to go about doing this. So we built these infix notations (and a few other utility functions) into a little &lt;a class=&#34;link&#34; href=&#34;https://github.com/flatcircle/coroutinehelper&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CoroutineHelper Library&lt;/a&gt; to make our lives easier. Please go ahead and use that library or copy the code to help make your code as readable as possible.&lt;/p&gt;
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;Callback hell isn&amp;rsquo;t the end of the world, but sometimes it can add just a little bit too much confusion to an already complex lifecycle. Hopefully with Coroutines, coupled with the techniques and Generic Utility functions above, you can reduce callback hell a little bit in your code.&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>The Problem with Kotlin Kfunction Receiver Functions</title>
+        <link>https://jacquessmuts.github.io/post/kfunction_analogues/</link>
+        <pubDate>Wed, 08 May 2019 17:54:58 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/kfunction_analogues/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/generic_interfaces3.png" alt="Featured image of post The Problem with Kotlin Kfunction Receiver Functions" /&gt;&lt;p&gt;KFunction can be written in more than one way. Here&amp;rsquo;s a list of analogues, plus some criticism of the Receiver Function.&lt;/p&gt;
+&lt;p&gt;After my &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/generic_interface_and_methods/&#34; &gt;previous article on Reflection&lt;/a&gt; was posted, I got a great comment from @pacoworks:&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;KSuspendFunction does not support that syntax (yet?). So to build up towards understanding KSuspendFunction1, I stuck with KFunction1 and its usage.&lt;br&gt;&lt;br&gt;Normally I use your syntax, but the article was already too long to get into that :P &lt;a href=&#34;https://t.co/nUaDArDA5S&#34;&gt;pic.twitter.com/nUaDArDA5S&lt;/a&gt;&lt;/p&gt;&amp;mdash; Jacques Smuts (@JacquesSmuts) &lt;a href=&#34;https://twitter.com/JacquesSmuts/status/1126057942724296704?ref_src=twsrc%5Etfw&#34;&gt;May 8, 2019&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;I assumed that since the IDE told me that there was a type mismatch, that suspend functions weren&amp;rsquo;t supported.&lt;/p&gt;
+&lt;p&gt;Turns out I was wrong; KSuspendFunction can be shortened. (click that thread to read more)  They&amp;rsquo;re called Receiver Functions and they have since been added to the &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/reference/lambdas.html#function-types&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Kotlin official documentation for higher-order-functions&lt;/a&gt; with a nice explanation.&lt;/p&gt;
+&lt;p&gt;So, in order to help me remember the different ways to reference higher-order functions, I made this grid. It omits the list of passed interfaces for brevity.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/f43755a820658b19f6c5fdd4fdb14eb4.js&#34;&gt;&lt;/script&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;KFunction&lt;/th&gt;
+&lt;th&gt;Analogue&lt;/th&gt;
+&lt;th&gt;ReceiverFunction&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;KFunction1&amp;lt;Interface, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;(Interface) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;Interface.() -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;KFunction2&amp;lt;Interface, Input, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;(Interface, Input) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;Interface.(Input) -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;KFunction3&amp;lt;Interface, In1, In2, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;(Interface, In1, In2) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;Interface.(In1, In2) -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;KSuspendFunction1&amp;lt;Interface, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;suspend (Interface) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;suspend Interface.() -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;KSuspendFunction2&amp;lt;Interface, Input, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;suspend (Interface, Input) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;suspend Interface.(Input) -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;In all 3 cases you have to add &lt;code&gt;implementation &amp;quot;org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion&amp;quot;&lt;/code&gt; in your gradle.&lt;/p&gt;
+&lt;p&gt;However you only have to add the &lt;code&gt;import kotlin.reflect.KFunction1&lt;/code&gt; import at the top of your file if you&amp;rsquo;re using the explicit KFunction syntax.&lt;/p&gt;
+&lt;p&gt;I like the way ReceiverFunction is composed and I would like to use that, however I see a problem with it. If any new developer unused to this syntax works on this code, what should they google to find out more? &lt;code&gt;().-&amp;gt;T&lt;/code&gt; ? It&amp;rsquo;s difficult to work with Reflection and Generics the first time, but if you see &amp;ldquo;KSuspendFunction1&amp;rdquo; you will be able to google it and find references to Reflection to understand what the code is doing.&lt;/p&gt;
+&lt;p&gt;The other thing to note is that if you use the ReceiverFunction notation and pass the wrong type of function, the IDE will always default to referring to the passed function argument as &amp;ldquo;KFunction&amp;rdquo;.&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/kfunction_analogues2.png&#34;
+         alt=&#34;compiler error&#34; width=&#34;90%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;I didn&amp;#39;t call it a KSuspendFunction, but the IDE does. &lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Which means the developer is likely to think that they are passing something entirely different than the required input, unless they know both the KFunction notation and the Receiver Function notation.&lt;/p&gt;
+&lt;p&gt;Since I like the Receiver Function syntax, I&amp;rsquo;m going to add a link to the Kotlin documentation in my code comments wherever I use the ReceiverFunction syntax. &lt;a class=&#34;link&#34; href=&#34;https://stackoverflow.com/questions/45875491/what-is-a-receiver-in-kotlin&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;This explanation on StackOverflow&lt;/a&gt; as well, since it explains the usage of receiver functions a bit better.&lt;/p&gt;
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;Receiver Functions are nice, but there is no simple way for a developer to get to the right documentation from the code or IDE unless they already know what Receiver Functions are, or that they refer to KFunction.
+In order to make it easier for people to understand your code, you need to choose one:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Refer to KFunction explicitly; or&lt;/li&gt;
+&lt;li&gt;Add comments every time you use Higher Order Receiver Functions&lt;/li&gt;
+&lt;/ul&gt;</description>
+        </item>
+        <item>
+        <title>Creating and Deploying an Android Library via CircleCI</title>
+        <link>https://jacquessmuts.github.io/post/library_template/</link>
+        <pubDate>Tue, 07 May 2019 22:19:00 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/library_template/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/library_template3.png" alt="Featured image of post Creating and Deploying an Android Library via CircleCI" /&gt;&lt;p&gt;This is the template I use to create new Android libraries with CircleCI support for Continuous Deployment.&lt;/p&gt;
+&lt;h2 id=&#34;libraries-better-than-util-classes&#34;&gt;Libraries: Better Than Util Classes&lt;/h2&gt;
+&lt;p&gt;I often find myself copying code from other projects. After some discussion with my colleagues we decided to put everything that we re-use into libraries. Even those tiny util functions you usually just copy-paste when you need it. Libraries are better than copy-pasting for several reasons:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;It makes future work easier&lt;/li&gt;
+&lt;li&gt;Writing a library teaches you to think more abstractly about any problem you&amp;rsquo;re trying to solve.&lt;/li&gt;
+&lt;li&gt;Future work can benefit everyone, rather than just the project you&amp;rsquo;re on&lt;/li&gt;
+&lt;li&gt;It forces separation of concerns&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Plus many more reasons, but you probably know this already. So here&amp;rsquo;s the steps I follow to create a library:&lt;/p&gt;
+&lt;h2 id=&#34;how-to-make-a-library&#34;&gt;How to Make a Library&lt;/h2&gt;
+&lt;h4 id=&#34;1-create-a-librarynameexample-project-in-android-studio-and-add-a-libraryname-module&#34;&gt;1. Create a &lt;code&gt;LibraryNameExample&lt;/code&gt; project in Android Studio and add a &lt;code&gt;LibraryName&lt;/code&gt; module.&lt;/h4&gt;
+&lt;p&gt;I followed &lt;a class=&#34;link&#34; href=&#34;https://medium.com/@anujguptawork/how-to-create-your-own-android-library-and-publish-it-750e0f7481bf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this guide&lt;/a&gt; for the first part, but I don&amp;rsquo;t deploy on JitPack. I prefer Bintray for having easier deployment to JCenter(). Being on JCenter gives your library a false sense of official status, which you want.&lt;/p&gt;
+&lt;h4 id=&#34;2-add-the-project-to-githubhttpsgithubcomnew-under-libraryname&#34;&gt;2. Add the project to &lt;a class=&#34;link&#34; href=&#34;https://github.com/new&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;GitHub&lt;/a&gt; under &lt;code&gt;LibraryName&lt;/code&gt;&lt;/h4&gt;
+&lt;h4 id=&#34;3-create-the-repo-on-bintrayhttpsbintraycom-under-libraryname&#34;&gt;3. Create the repo on &lt;a class=&#34;link&#34; href=&#34;https://bintray.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Bintray&lt;/a&gt; under &lt;code&gt;LibraryName&lt;/code&gt;&lt;/h4&gt;
+&lt;h4 id=&#34;4-add-the-bintray-release-dependency-and-settings&#34;&gt;4. Add the bintray-release dependency and settings&lt;/h4&gt;
+&lt;p&gt;I followed &lt;a class=&#34;link&#34; href=&#34;https://medium.com/@anitaa_1990/6-easy-steps-to-upload-your-android-library-to-bintray-jcenter-59e6030c8890&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this guide&lt;/a&gt;, and created my account on bintray as instructed there. However I save my BINTRAY_KEY api key in my CircleCI setup, and access it from the gradle setup for bintray-release, like so:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/a004eec630f299bfa01bb63aabf00474.js&#34;&gt;&lt;/script&gt;
+
+&lt;h4 id=&#34;5-add-the-project-to-circlecihttpscirclecicom&#34;&gt;5. Add the project to &lt;a class=&#34;link&#34; href=&#34;https://circleci.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CircleCI&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;For my CircleCI config.yml file, I literally just copy-paste &lt;a class=&#34;link&#34; href=&#34;https://github.com/JacquesSmuts/RxHelpers/tree/master/.circleci&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;the same file&lt;/a&gt; across all my library projects for the initial setup. This file doesn&amp;rsquo;t run tests or anything right now, but as I&amp;rsquo;m building up my libraries that will change. If it has changed to add features you&amp;rsquo;re not using, &lt;a class=&#34;link&#34; href=&#34;https://github.com/JacquesSmuts/RxHelpers/blob/2a2349a72bea5025c87b05bf3d0b385e7ee1f5b8/.circleci/config.yml#L1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this is the link to the original file at the time of writing.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Also remember to add the environment variable &lt;code&gt;BINTRAY_KEY&lt;/code&gt; to your CircleCI settings, like so:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/library_template1.png&#34;
+         alt=&#34;CircleCI&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Use your own Bintray API key, from Bintray User settings.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;You may also want to set up CircleCI to build only on pull requests. But don&amp;rsquo;t worry, this config won&amp;rsquo;t deploy without your say-so.&lt;/p&gt;
+&lt;h4 id=&#34;6-deploy&#34;&gt;6. Deploy!&lt;/h4&gt;
+&lt;p&gt;Commit to master and make sure CircleCI builds your project. If you copied my CircleCI config file, you should see a workflow that looks like this:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/library_template2.png&#34;
+         alt=&#34;CircleCI&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Hodl&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Click the &amp;ldquo;Hold&amp;rdquo; button and approve the build. If you do, it will deploy to Bintray. If you get any errors, CircleCI should have logs which explain the issue so you can resolve it from there.&lt;/p&gt;
+&lt;h4 id=&#34;7-add-the-repo-to-jcenter&#34;&gt;7. Add The Repo to JCenter()&lt;/h4&gt;
+&lt;p&gt;Once you have a package deployed to Bintray, click the &amp;ldquo;Link to JCenter()&amp;rdquo; button on the package details view on Bintray. It&amp;rsquo;s slightly hidden but it&amp;rsquo;s there somewhere. After a few hours, you should have an approved JCenter() link. You only have to do this once, because every future deployment of this repo will be deployed to JCenter automatically.&lt;/p&gt;
+&lt;h4 id=&#34;8-update-the-readme-with-status-badges&#34;&gt;8. Update the Readme with Status Badges&lt;/h4&gt;
+&lt;p&gt;Create a Readme.md in your repo which explains how to use and download your repo. You&amp;rsquo;ll find the gradle instructions on Bintray, as well as a Status Badge you can paste into your Readme. It will look like this:&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://bintray.com/jacquessmuts/RxHelpers/rxhelpers/_latestVersion&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;img src=&#34;https://api.bintray.com/packages/jacquessmuts/RxHelpers/rxhelpers/images/download.svg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Download&#34;
+	
+	
+&gt; &lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;and it will update automatically every time you deploy a new version, without needing to update your readme. I usually add a status badge for CircleCI as well.&lt;/p&gt;
+&lt;h4 id=&#34;9-share-it&#34;&gt;9. Share It&lt;/h4&gt;
+&lt;p&gt;Congrats, you just deployed your library. Share it with the world. Tweet about it, blog about it, even just share in the comments below. Libraries are amazing.&lt;/p&gt;
+&lt;h2 id=&#34;examples&#34;&gt;Examples&lt;/h2&gt;
+&lt;p&gt;Some libraries I&amp;rsquo;ve made using this method:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/JacquesSmuts/RxHelpers&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;RxHelpers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/flatcircle/ConnectivityHelper&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ConnectivityHelper&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/flatcircle/ViewHelper&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ViewHelper&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/flatcircle/CoroutineHelper&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CoroutineHelper&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/flatcircle/LiveDataHelper&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LiveDataHelper&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+        </item>
+        <item>
+        <title>Generics &#43; Reflection &#43; Type Inference &#43; Reified Type = Kotlin Magic</title>
+        <link>https://jacquessmuts.github.io/post/generic_interface_and_methods/</link>
+        <pubDate>Wed, 01 May 2019 08:30:00 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/generic_interface_and_methods/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/generic_interfaces3.png" alt="Featured image of post Generics &#43; Reflection &#43; Type Inference &#43; Reified Type = Kotlin Magic" /&gt;&lt;p&gt;With Kotlin, it&amp;rsquo;s easier than ever to code with reflection and generics. This post attempts to give one example.&lt;/p&gt;
+&lt;h2 id=&#34;background-an-unlikely-scenario&#34;&gt;Background: An unlikely scenario&lt;/h2&gt;
+&lt;p&gt;I couldn&amp;rsquo;t think of a simpler scenario to demonstrate KFunction and KSuspendFunction working well in tandem with Generics, so please bear with me when I present this unlikely scenario.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s assume you have several different endpoints and you need to differentiate between them easily, even though they can change dynamically. If you&amp;rsquo;re an Android developer, you&amp;rsquo;re probably used to Retrofit and its associated Interfaces. You have several classes that look like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/8374926ea79785b96aec53714d1dd44e.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;Each of these interfaces are used by RetroFit to generate the right api call you can call. And then you have a few classes which may or may not implement these interfaces. So if you have a list of unknown services and you want to get the AWS Repos, you have to iterate through your services, find the AwsService and then make the call. You can do something like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/142f78c848c784119ca76bdc151ea01f.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;But this means that every single time you want to check your GitHubRepos, your AwsRepos, or any other api call, you have to manually write out this entire process from scratch. That&amp;rsquo;s highly inefficient and boilerplatey. Can&amp;rsquo;t you push them all through some central function?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Yes, with Reflection + Generics you can&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;kotlin-reflection&#34;&gt;Kotlin Reflection&lt;/h2&gt;
+&lt;p&gt;So first, you should read the &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/tutorials/kotlin-for-py/member-references-and-reflection.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;official kotlin documentation on reflection&lt;/a&gt;. It&amp;rsquo;s a really good starting point, even if you already know Reflection from other languages. Even better, read &lt;a class=&#34;link&#34; href=&#34;https://medium.com/kotlin-thursdays/introduction-to-kotlin-generics-reified-generic-parameters-7643f53ba513&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this great guide on Medium&lt;/a&gt; about both reflection and generics. But how does this relate to us?&lt;/p&gt;
+&lt;p&gt;We want to pass the AWS Repo function in the AWS interface and get the AWSRepo result. Later we&amp;rsquo;ll make it generic, but first step is just reflection. So let&amp;rsquo;s call that non-existent function. We&amp;rsquo;ll call it &lt;code&gt;doAwsApiCall&lt;/code&gt; and it has two input parameters:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The list of &lt;code&gt;services&lt;/code&gt;; and&lt;/li&gt;
+&lt;li&gt;the &lt;code&gt;listAwsRepos&lt;/code&gt; method from the &lt;code&gt;AwsCodeCommitService&lt;/code&gt; interface.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;doAwsApiCall&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;services&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AwsCodeCommitService&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;listAwsRepos&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;But that function doesn&amp;rsquo;t exist yet, so just ask IntelliJ/Android Studio to create it for you. (We&amp;rsquo;re doing this because the IDE is smarter than us at figuring out the input parameters.)&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/generic_interfaces1.png&#34;
+         alt=&#34;compiler error&#34; width=&#34;50%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If you see this warning, you&amp;#39;re headed in the right direction. &lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;And you&amp;rsquo;ll get something like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/10a7bab01fe4e8292b307955beac2da6.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;So the &lt;code&gt;KFunction1&lt;/code&gt; here is reference to a specific function that can be called. To make a class run that function, you just have to pass the calling class into the function. Yes, that&amp;rsquo;s hard to understand and a little bit backwards, but maybe it makes more sense in code.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/53d6fb84c6ac3eebb6dde3d830bca61b.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;This is almost the same as our first implementation, except for the commented part. What this means is that we can pass in any function from the &lt;code&gt;AwsCodeCommitService&lt;/code&gt; interface, and it will automatically be called inside the &lt;code&gt;doAwsApiCall&lt;/code&gt; function.&lt;/p&gt;
+&lt;p&gt;But this means we have to write this code for each of our interfaces. One for &lt;code&gt;GitHubService&lt;/code&gt;, one for &lt;code&gt;BitBucketService&lt;/code&gt;, and so forth. That&amp;rsquo;s a lot better, but still not good enough. If we wanta single function to handle all of these api calls, then we must answer this question:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Can we write a function that takes &lt;strong&gt;ANY&lt;/strong&gt; interface and call &lt;strong&gt;ANY&lt;/strong&gt; function from that interface, and return &lt;strong&gt;ANY&lt;/strong&gt; result, &lt;strong&gt;and still be type safe&lt;/strong&gt;?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Yes, with Reflection and Generics you can!&lt;/p&gt;
+&lt;h2 id=&#34;kotlin-generics-plus-reflection&#34;&gt;Kotlin Generics Plus Reflection&lt;/h2&gt;
+&lt;p&gt;So, using the great explanation into inline functions and reified Generics in &lt;a class=&#34;link&#34; href=&#34;https://medium.com/kotlin-thursdays/introduction-to-kotlin-generics-reified-generic-parameters-7643f53ba513&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this great guide on Medium&lt;/a&gt; as a basis, I&amp;rsquo;m going to just turn everything into a Generic and see what happens.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/087ee57e4afca3fde8112c3b37dcbf4e.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;All I did was&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Added &lt;code&gt;&amp;lt;reified Service, Result&amp;gt;&lt;/code&gt; to the beginning of the function, to pass in those types&lt;/li&gt;
+&lt;li&gt;Replace any reference to &lt;code&gt;AwsCodeCommitService&lt;/code&gt; with the generic &lt;code&gt;Service&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Replaced any reference to &lt;code&gt;List&amp;lt;AwsRepo&amp;gt;&lt;/code&gt; with the generic &lt;code&gt;Result&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;And it works and accepts literally any &lt;code&gt;interface::method&lt;/code&gt; pair which returns the expected Result type. I wanted to restrict it a bit, so I made sure that &lt;code&gt;Service&lt;/code&gt; extends the &lt;code&gt;RetroService&lt;/code&gt; interface I defined all the way at the top. Now it only accepts the right methods.&lt;/p&gt;
+&lt;p&gt;However&amp;hellip;&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/generic_interfaces2.png&#34;
+         alt=&#34;compiler error&#34; width=&#34;90%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If you see this warning, you&amp;#39;re headed in the right direction. &lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;The &lt;code&gt;GitHubRepos&lt;/code&gt; api call takes a username as an input parameter. So now the IDE is telling you that &lt;code&gt;listGitHubRepos(username)&lt;/code&gt; is a KFunction2. What&amp;rsquo;s that?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;KFunction1 is a function reference with zero input arguments, e.g. &lt;code&gt;listAwsRepos()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;KFunction2 is a function reference with one input argument, e.g. &lt;code&gt;listGitHubRepos(username: String)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So let&amp;rsquo;s create another &lt;code&gt;doApiCall()&lt;/code&gt;, except that it takes kFunction2 as an input.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/499cab2b907298bc03de8d02d19c22c0.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;And this function works. All we had to do was add the &lt;code&gt;Input&lt;/code&gt; Type as a Generic type, and pass the &lt;code&gt;input&lt;/code&gt; into the &lt;code&gt;KFunction2&lt;/code&gt;. This means in other words that we can pass in a list of unknown classes, a function and an input. If any class in that list of unknown classes is the correct type, the right function will be called on that class.&lt;/p&gt;
+&lt;p&gt;The best part is that because of Kotlin&amp;rsquo;s intensely awesome type inference, I never even had to pass in the &lt;code&gt;&amp;lt;Service, Input, Result&amp;gt;&lt;/code&gt; types. It was inferred automatically.&lt;/p&gt;
+&lt;h2 id=&#34;suspend-functions&#34;&gt;Suspend Functions&lt;/h2&gt;
+&lt;p&gt;You may have noticed that little suspend function back in the beginning. I didn&amp;rsquo;t forget about it. It&amp;rsquo;s handled identically, but you have to create a new function for it unfortunately. Something like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/96af861d1096ed8feb8c299d19a623b0.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;As you can see, all I did was replace KFunction1 and KFunction2 with KSuspendFunction1 and KSuspendFunction2, respectively. The reason for this is because the signature for a suspend function and normal function in Kotlin are not the same. Hopefully if you&amp;rsquo;re using suspend functions you already know this though.&lt;/p&gt;
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;I don&amp;rsquo;t even know why anyone would land in this bizarre scenario of needing to iterate through dozens of dynamically changing classes with unpredictable interfaces. But if you do, it&amp;rsquo;s very solveable with the techniques above.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Reflection is great&lt;/li&gt;
+&lt;li&gt;Generics are amazing&lt;/li&gt;
+&lt;li&gt;Kotlin Generics + Reflection + Type Inference is mindblowing&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you can get your mind around higher-order functions, generics, and reflection, you will become way more efficient as a developer. I hope this shows an example why.&lt;/p&gt;
+&lt;h4 id=&#34;follow-up-and-thanks&#34;&gt;Follow-Up and Thanks&lt;/h4&gt;
+&lt;p&gt;I wrote a &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/kfunction_analogues/&#34; &gt;follow-up article&lt;/a&gt; based on some nice feedback I got.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;d also like to thank my colleague, &lt;a class=&#34;link&#34; href=&#34;https://twitter.com/pantsula&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Jannie&lt;/a&gt; at Flat Circle for coming up with this problem for me to solve.&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Don&#39;t Pass Around Your Room/Database Entity</title>
+        <link>https://jacquessmuts.github.io/post/modularization_room/</link>
+        <pubDate>Thu, 25 Apr 2019 10:35:54 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/modularization_room/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/modularization_room1.png" alt="Featured image of post Don&#39;t Pass Around Your Room/Database Entity" /&gt;&lt;p&gt;If you&amp;rsquo;re thinking of modularizing your Android App and you use Android Room, you should not pass around your Room Entity.&lt;/p&gt;
+&lt;h2 id=&#34;room-only-in-your-database-module&#34;&gt;Room: Only In Your Database Module&lt;/h2&gt;
+&lt;p&gt;Room is great, and so is modularization. If you&amp;rsquo;re using Room, you probably have several &lt;a class=&#34;link&#34; href=&#34;https://developer.android.com/training/data-storage/room/defining-data&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Room Entity Objects&lt;/a&gt; that look kinda like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/0fc7ced6f167b435f41882c36e9a80cf.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;Chances are you&amp;rsquo;re passing this model around everywhere. Every time you want to access your &lt;code&gt;User&lt;/code&gt; class, or save it, or display the data to the UI, you use the same &lt;code&gt;User&lt;/code&gt; class, which doubles as your Room &lt;code&gt;Entity&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;For a one-module proof of concept app, this is probably fine. But the moment your app expands and you begin to modularize, you&amp;rsquo;ll run into issues. Specifically, Gradle will tell you that you have &lt;code&gt;unresolved Supertypes&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Supertypes&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;following&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;classes&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cannot&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;be&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;resolved&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Please&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;make&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sure&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;you&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;have&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;required&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dependencies&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;classpath&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;com&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;example&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;persistence&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;AppDatabase&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;unresolved&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;supertypes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;androidx&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;room&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;RoomDatabase&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This happens because you&amp;rsquo;re passing the &lt;code&gt;Entity&lt;/code&gt; from your database module to other modules which don&amp;rsquo;t implement the room compiler. So then you add the room compiler to your other modules. &lt;a class=&#34;link&#34; href=&#34;https://stackoverflow.com/questions/53152796/androidx-room-unresolved-supertypes-roomdatabase&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Just like StackOverflow suggests&lt;/a&gt;.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/af7ffc45a38232998cf48ec0d3722855.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;strong&gt;Don&amp;rsquo;t do this.&lt;/strong&gt; Please. It breaks the core concept of &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Information_hiding&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Information Hiding&lt;/a&gt; as would be required by a project that implements a proper Separation of Concerns.&lt;/p&gt;
+&lt;h3 id=&#34;map-your-entity&#34;&gt;Map Your Entity&lt;/h3&gt;
+&lt;p&gt;Instead, you should have two distinct objects. You should one object that represents the database Entity, and one object for passing around the pure data. Your database module should be literally the only module which imports the Room library. If any other module imports those implementation details of the database module, then you are not &lt;code&gt;Information Hiding&lt;/code&gt; as you should. This is especially true if you may want to change out your Room database for something like &lt;a class=&#34;link&#34; href=&#34;https://github.com/square/sqldelight&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;SqlDelight&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Instead, map your data class to a new &lt;code&gt;Entity&lt;/code&gt;, like so:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/b2419911d125845cdc701166491421e5.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;Perhaps you have some other way of mapping to and from your &lt;code&gt;User&lt;/code&gt; to your &lt;code&gt;UserEntity&lt;/code&gt; class. You may think it&amp;rsquo;d be better if it happened automatically via a Serializer or the like. Normally I&amp;rsquo;d agree that automated serialization is easier in the long term, but this way, any changes to your &lt;code&gt;User&lt;/code&gt; class results in a compiler error in your &lt;code&gt;UserEntity&lt;/code&gt; class, which shows you:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;That your database needs to go up a version; and&lt;/li&gt;
+&lt;li&gt;what migration steps to take, based on what changes the mapper requires.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;I suggest you turn all your database classes into &lt;code&gt;internal&lt;/code&gt; class, &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/modularization/&#34; &gt;as I&amp;rsquo;ve discussed before&lt;/a&gt;. This is a bit of a tedious thing to do sometimes, but you will be super-happy in the long term. Future work and refactoring will be very easy.&lt;/p&gt;
+&lt;p&gt;There is one other thing though.&lt;/p&gt;
+&lt;h3 id=&#34;livedata--room-but-in-another-module&#34;&gt;LiveData + Room, But In Another Module&lt;/h3&gt;
+&lt;p&gt;One of the nice things about LiveData and Room is how easily they interact.&lt;/p&gt;
+&lt;p&gt;But then you have this problem in your Repository&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/modularization_room2.png&#34;
+         alt=&#34;compiler error&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If you see this warning, you&amp;#39;re headed in the right direction.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Turns out you can&amp;rsquo;t use LiveData to hook directly on to your database, because that exposes internal database entities outside the module. You want LiveData but you still want a proper separation of concerns. How? You use the LiveData Transformation function.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/edde89d887a97e2dafe7da164f39ed5d.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;This means you have a direct LiveData pipeline from your ViewModel/View to your database, without actually exposing your internal database components. You get to have your module and access it too.&lt;/p&gt;
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;I showed you why you shouldn&amp;rsquo;t pass around your Room @Entity, and how to separate your modules without losing functionality.&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Is your modularization making any progress?</title>
+        <link>https://jacquessmuts.github.io/post/modularization/</link>
+        <pubDate>Sat, 20 Apr 2019 21:15:17 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/modularization/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/modularization3.png" alt="Featured image of post Is your modularization making any progress?" /&gt;&lt;p&gt;You should modularize your Kotlin Android app, since it&amp;rsquo;s the best way to enforce &lt;a class=&#34;link&#34; href=&#34;https://developer.android.com/jetpack/docs/guide#common-principles&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;separation of concerns&lt;/a&gt;, but how do you know if you&amp;rsquo;re doing it right? Here&amp;rsquo;s some tips to help.&lt;/p&gt;
+&lt;h2 id=&#34;am-i-doing-it-right&#34;&gt;Am I doing it right?&lt;/h2&gt;
+&lt;p&gt;If you&amp;rsquo;re following one of the &lt;a class=&#34;link&#34; href=&#34;https://medium.com/androiddevelopers/a-patchwork-plaid-monolith-to-modularized-app-60235d9f212e&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;great guides&lt;/a&gt; out there, you&amp;rsquo;re probably doing it mostly right, but how do you know? Can you measure a difference? Here&amp;rsquo;s a good way to check. Generate a dependency graph for your app. I used &lt;a class=&#34;link&#34; href=&#34;https://github.com/alexzaitsev/apk-dependency-graph&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;APK Dependency Graph Generator&lt;/a&gt;. All you need to do is compile the apk-dependency project, point it to an apk, and it will generate an interactive graph like the one below.&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/modularization2.png&#34;
+         alt=&#34;a dependency graph&#34; width=&#34;60%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If you click the link below, you should see something like this.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;This graph demonstrates a way to look for ease of refactoring with two nice examples:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The &lt;code&gt;ServerClient&lt;/code&gt; in the bottom right provides a complete separation between the api and the rest of the app. The api calls can therefore be refactored easily.&lt;/li&gt;
+&lt;li&gt;Lots of classes are reliant on the &lt;code&gt;TeaBag&lt;/code&gt; class in the middle. A single change there is likely to cascade outward, making refactoring difficult.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Below, an example of a project which is not easy to refactor, update or even debug:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/modularization3.png&#34;
+         alt=&#34;a dependency graph&#34; width=&#34;60%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;An unnamed legacy project.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;There is no separation of concerns here. This project is in dire need of modularization, but where do you even begin?&lt;/p&gt;
+&lt;h2 id=&#34;where-to-begin&#34;&gt;Where to begin?&lt;/h2&gt;
+&lt;p&gt;I usually follow these steps:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.android.com/studio/projects/android-library&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Create a module&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Identify one or more classes that should not be accessible outside of a specific context&lt;/li&gt;
+&lt;li&gt;Move those classes into the module&lt;/li&gt;
+&lt;li&gt;Add the &lt;code&gt;internal&lt;/code&gt; &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/reference/visibility-modifiers.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;visibility modifier&lt;/a&gt; (or making the class &lt;code&gt;package-private&lt;/code&gt; if you&amp;rsquo;re using Java)&lt;/li&gt;
+&lt;li&gt;Try to compile and get an error&lt;/li&gt;
+&lt;li&gt;Fix this error without removing the &lt;code&gt;internal&lt;/code&gt; keyword. This may involve creating a little bit of boilerplate.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/modularization4.png&#34;
+         alt=&#34;compiler error&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If you see this warning, you&amp;#39;re headed in the right direction.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;A specific example of this would be the database module. I moved my &lt;code&gt;database&lt;/code&gt; class, &lt;code&gt;data model&lt;/code&gt; classes, &lt;code&gt;DAO&lt;/code&gt; classes, and &lt;code&gt;repository&lt;/code&gt; class into the database module. I made everything &lt;code&gt;internal&lt;/code&gt; except for &lt;code&gt;repository&lt;/code&gt;, which provides the API to the database for the rest of the app. After some restructuring and cleanup, I ended up with a nicer class structure.&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/modularization5.png&#34;
+         alt=&#34;a dependency graph&#34; width=&#34;60%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Dependency graph, but after internalizing the database module&lt;/h4&gt;&lt;p&gt;It seems similar to the one above, but with some subtle differences.&lt;/p&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Okay, I have to admit, it doesn&amp;rsquo;t seem like we made that much of a difference. But here&amp;rsquo;s the real benefit:&lt;/p&gt;
+&lt;h2 id=&#34;the-real-benefit&#34;&gt;The real benefit&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;When a new developer works in a non-database module and tries to access the database directly, the compiler will stop them.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The two dependency graphs are similar, except that a moment&amp;rsquo;s thoughtlessness can pull everything into spaghetti in the first instance. I have used the &lt;code&gt;internal&lt;/code&gt; modifier in my database module, which means that a developer would be stopped from breaking a delicate separation of concerns with a single function.&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/modularization6.png&#34;
+         alt=&#34;compiler error 2&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Trying to access the database directly from MainActivity.kt.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;If you run into these errors in a project, you know the project is well modularized.&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;We have looked at two ways in which to analyze the state of your modularization:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/alexzaitsev/apk-dependency-graph&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;APK Dependency Graph Generator&lt;/a&gt;; and&lt;/li&gt;
+&lt;li&gt;The prevalance of the &lt;code&gt;internal&lt;/code&gt; modifier (or lack of &lt;code&gt;public&lt;/code&gt; in Java)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!-- raw HTML omitted --&gt;</description>
+        </item>
+        <item>
+        <title>How I Made This Website</title>
+        <link>https://jacquessmuts.github.io/post/how_i_made_this/</link>
+        <pubDate>Sat, 20 Apr 2019 10:43:30 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/how_i_made_this/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/how_i_made_this1.png" alt="Featured image of post How I Made This Website" /&gt;&lt;p&gt;This details how I made this static github page.&lt;/p&gt;
+&lt;p&gt;First, I installed &lt;a class=&#34;link&#34; href=&#34;https://gohugo.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Hugo&lt;/a&gt; on my local machine and created a site.
+I chose the theme &lt;a class=&#34;link&#34; href=&#34;https://themes.gohugo.io/hugo-nuo/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Hugo-Nuo&lt;/a&gt; because it looked nice and because the author has a github page with regular updates and decent documentation.&lt;/p&gt;
+&lt;p&gt;It was not crashing, so I deployed it to a Github static page using the official &lt;a class=&#34;link&#34; href=&#34;https://gohugo.io/hosting-and-deployment/hosting-on-github/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Hugo Guide&lt;/a&gt; for hosting on Github.&lt;/p&gt;
+&lt;p&gt;Then I wrote this blog post using the standard template by running &lt;code&gt;hugo new post/how_i_made_this.md&lt;/code&gt; and writing the rest in the resulting .md file. I ran deploy.sh (from the Hugo Guide&amp;rsquo;s instructions) and did not see this post.&lt;/p&gt;
+&lt;p&gt;So I removed the &amp;ldquo;draft:true&amp;rdquo; property from this post, felt like an idiot for taking 30min to figure that out, then deployed again.&lt;/p&gt;
+&lt;p&gt;Finally, I realized I had forgotten to set the new domain in my config file after deploying. So I fixed that and now everything seems to be working, I think.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Nick Rout noticed that the &lt;code&gt;quote&lt;/code&gt; styling didn&amp;rsquo;t come out right, so I changed that. It also screwed up my normal code highlighting, but I think it&amp;rsquo;s better to use GitHub gists anyway, and I&amp;rsquo;m too lazy to create my own custom code styling template and shortcode in hugo. I&amp;rsquo;ve had some issues with the code highlighting&amp;rsquo;s limited support for Kotlin so I&amp;rsquo;m basically just pretending it doesn&amp;rsquo;t exist.&lt;/p&gt;
+&lt;p&gt;Nick also noticed that the images stretch badly on mobile. This was because I was setting a constant height to my images, and the width expanded only up until it hit the edge. So I changed all my images to use width=percentage% and now the scaling is right.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;For SEO purposes, I also added my site to GoogleAnalytics Console, and registered my site with Google Search Console to claim ownership of the domain according to google. I should now get pushed up on Google Search results a bit, and also get analytics on how many people visit my site or click through based on search terms, if I understand correctly.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;I added the &lt;a class=&#34;link&#34; href=&#34;https://github.com/sam-ma/hugo-shortcodes&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Kotlin Playgrounds&lt;/a&gt; shortcode as well, in order to make my kotlin more interactive&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m putting further tests in here. For example:&lt;/p&gt;
+&lt;h3 id=&#34;code-highlighting&#34;&gt;Code Highlighting&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;inline&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fun&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;reified&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Any&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;get&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;key&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;):&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;?&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;instance&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FirebaseRemoteConfig&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getInstance&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;when&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;Long&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&amp;gt; &lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;instance&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getLong&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;key&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;?&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&amp;gt; &lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;instance&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getString&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;key&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;?&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;throw&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;IllegalArgumentException&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;the ${T::class} class is not supported yet&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Which you&amp;rsquo;ll notice is incorrectly styled with red thanks to the single-quote styling change I made.&lt;/p&gt;
+&lt;h3 id=&#34;git-gist&#34;&gt;Git Gist&lt;/h3&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/217c77ec0e4d8ec8409ae45c3516ec07.js&#34;&gt;&lt;/script&gt;
+
+&lt;h3 id=&#34;image-with-zooming-and-title&#34;&gt;Image with zooming and title&lt;/h3&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/how_i_made_this2.png&#34;
+         alt=&#34;This is my face&#34; width=&#34;40%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Obviously, this is my face. Click to zoom.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;embedded-youtube&#34;&gt;Embedded Youtube&lt;/h3&gt;
+&lt;div class=&#34;video-wrapper&#34;&gt;
+    &lt;iframe loading=&#34;lazy&#34; 
+            src=&#34;https://www.youtube.com/embed/TdO8hR2QAUs&#34; 
+            allowfullscreen 
+            title=&#34;YouTube Video&#34;
+    &gt;
+    &lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&#34;linking-to-another-post&#34;&gt;Linking to another post&lt;/h3&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/kproperty/&#34; &gt;References&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Original Site</title>
+        <link>https://jacquessmuts.github.io/post/original-site/</link>
+        <pubDate>Thu, 18 Apr 2019 17:03:47 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/original-site/</guid>
+        <description>&lt;p&gt;My original site is at &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;JacquesSmuts.com&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;There isn&amp;rsquo;t a lot there. Since it&amp;rsquo;s WordPress, I&amp;rsquo;ll probably take it down some time and move everything to this site.&lt;/p&gt;
+&lt;p&gt;If I&amp;rsquo;m feeling less lazy, I&amp;rsquo;ll probably host this static page there, or just set jacquessmuts.com to redirect here.&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>References</title>
+        <link>https://jacquessmuts.github.io/post/references/</link>
+        <pubDate>Thu, 10 Jan 2019 19:53:22 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/references/</guid>
+        <description>&lt;p&gt;A list of achievements that are publicly presented&lt;/p&gt;
+&lt;h3 id=&#34;list-of-appearances-and-references-from-new-to-old&#34;&gt;List of appearances and references, from new to old&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;2019-11-30&lt;/em&gt;: Co-organised and ran &lt;a class=&#34;link&#34; href=&#34;https://devfest.co.za/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;DevFest South Africa&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;2019-08-30&lt;/em&gt;: Became head of &lt;a class=&#34;link&#34; href=&#34;https://www.meetup.com/Google-Developer-Group-Cape-Town-Meetup/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;GDG Cape Town&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;2019-07-25&lt;/em&gt;: Spoke at &lt;a class=&#34;link&#34; href=&#34;http://j-sa.co/speaker/jacques-smuts/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;JavaConf 2019&lt;/a&gt; about Coroutines and RxJava with Pamela Hill. Promoted said talk with &lt;a class=&#34;link&#34; href=&#34;https://twitter.com/JacquesSmuts/status/1154769025517477888&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;a funny tweet&lt;/a&gt;. Yes, tweets are legitimate references please @ me.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;2019-05-26&lt;/em&gt;: Callback Hell Article featured in &lt;a class=&#34;link&#34; href=&#34;https://mailchi.mp/kotlinweekly/kotlin-weekly-147&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Kotlin Weekly 147&lt;/a&gt; and &lt;a class=&#34;link&#34; href=&#34;https://androidweekly.net/issues/issue-363&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Android Weekly 363&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;2019-05-14&lt;/em&gt;: Generics Article featured in &lt;a class=&#34;link&#34; href=&#34;https://androidweekly.net/issues/issue-361&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Android Weekly #361&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;2019-05-05&lt;/em&gt;: Room Article featured in &lt;a class=&#34;link&#34; href=&#34;https://androidweekly.net/issues/issue-360&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Android Weekly #360&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;2019-05-05&lt;/em&gt;: Generics Article featured in &lt;a class=&#34;link&#34; href=&#34;https://mailchi.mp/kotlinweekly/kotlin-weekly-144?e=733eda9e83&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Kotlin Weekly #144&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;2018-12-09&lt;/em&gt;: RxJava Presentation featured in &lt;a class=&#34;link&#34; href=&#34;https://androidweekly.net/issues/issue-339&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Android Weekly #339&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;2018-12-07&lt;/em&gt;: Presented &lt;a class=&#34;link&#34; href=&#34;https://www.youtube.com/watch?v=TdO8hR2QAUs&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;RxJava: As Simple and Powerful As I Can Make It&lt;/a&gt; at GDG DevFest Johannesburg 2018&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Callback hell happens all the time in Android. Luckily, with coroutines, there&amp;rsquo;s an easy way out.
+'>
+<title>Escaping Callback Hell with Generic SuspendCoroutine Infix Extension Functions</title>
+
+<link rel='canonical' href='https://jacquessmuts.github.io/post/callback-hell/'>
+
+<link rel="stylesheet" href="https://jacquessmuts.github.io/scss/style.min.8191399262444ab68b72a18c97392f5349be20a1615d77445be51e974c144cff.css"><script src="https://unpkg.com/kotlin-playground@1" data-selector=".kotlin-code"></script><meta property='og:title' content='Escaping Callback Hell with Generic SuspendCoroutine Infix Extension Functions'>
+<meta property='og:description' content='Callback hell happens all the time in Android. Luckily, with coroutines, there&amp;rsquo;s an easy way out.
+'>
+<meta property='og:url' content='https://jacquessmuts.github.io/post/callback-hell/'>
+<meta property='og:site_name' content='Jacques Smuts'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='android' /><meta property='article:tag' content='kotlin' /><meta property='article:tag' content='suspendCoroutine' /><meta property='article:tag' content='coroutines' /><meta property='article:tag' content='callback hell' /><meta property='article:tag' content='infix notation' /><meta property='article:published_time' content='2019-05-20T23:12:36&#43;02:00'/><meta property='article:modified_time' content='2019-05-20T23:12:36&#43;02:00'/><meta property='og:image' content='https://jacquessmuts.github.io/images/callback_hell4.png' />
+<meta name="twitter:title" content="Escaping Callback Hell with Generic SuspendCoroutine Infix Extension Functions">
+<meta name="twitter:description" content="Callback hell happens all the time in Android. Luckily, with coroutines, there&amp;rsquo;s an easy way out.
+"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://jacquessmuts.github.io/images/callback_hell4.png' />
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-139178159-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="https://jacquessmuts.github.io/">
+                
+                    
+                    
+                    
+                        
+                        <img src="https://jacquessmuts.github.io/img/avatar_hu5fa628c318f4ac500f361023abcb481d_32022_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="https://jacquessmuts.github.io/">Jacques Smuts</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='https://jacquessmuts.github.io/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://jacquessmuts.github.io/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://jacquessmuts.github.io/page/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links and References</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://jacquessmuts.github.io/page/famous/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>I&#39;m Famous, Mom!</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://jacquessmuts.github.io/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="https://jacquessmuts.github.io/post/callback-hell/">
+                
+                    <img src="https://jacquessmuts.github.io/images/callback_hell4.png" loading="lazy" alt="Featured image of post Escaping Callback Hell with Generic SuspendCoroutine Infix Extension Functions" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="https://jacquessmuts.github.io/categories/kotlin/" >
+                Kotlin
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="https://jacquessmuts.github.io/post/callback-hell/">Escaping Callback Hell with Generic SuspendCoroutine Infix Extension Functions</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">May 20, 2019</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    5 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>Callback hell happens all the time in Android. Luckily, with coroutines, there&rsquo;s an easy way out.</p>
+<p>So you&rsquo;re hopefully aware of <a class="link" href="http://callbackhell.com/"  target="_blank" rel="noopener"
+    >callback hell</a>, which makes your code difficult to read, and also makes the sequence of events difficult to understand. This is something we want to avoid, but it&rsquo;s not always easy. If you&rsquo;re using any sort of third-party library, (like Firebase) you&rsquo;re probably forced into this pattern regularly. A simple callback would look like this:</p>
+<script type="application/javascript" src="https://gist.github.com/JacquesSmuts/6cdad47d20e6c4f2a92ebee4f1ff8640.js"></script>
+
+<p>As you can see, we&rsquo;re one level into callbacks. At a glance, it would seem like the result would be handled immediately after sending out the <code>saveUsername</code> function. But it in fact creates an asynchronous task (most likely on the IO thread). Which means the order of events quickly becomes unclear, especially to a new developer climbing on the project. An experienced dev would know that the order of events isn&rsquo;t clear, but it&rsquo;ll take a few minutes to fully comprehend what the actual order is.</p>
+<p>However, if your operation is suitable for coroutines (such as API calls, disk writes or background processes) we can &ldquo;flatten&rdquo; the callback hell fairly easily.</p>
+<h3 id="suspendcoroutine">SuspendCoroutine</h3>
+<p>I&rsquo;m assuming you&rsquo;re aware of coroutines and suspendFunctions already. If not, it&rsquo;s time to <a class="link" href="https://kotlinlang.org/docs/reference/coroutines-overview.html"  target="_blank" rel="noopener"
+    >start using them</a>. First, I need to introduce suspendCoroutine. The <a class="link" href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines.experimental/suspend-coroutine.html"  target="_blank" rel="noopener"
+    >official documentation on suspendCoroutine</a> doesn&rsquo;t make it particularly clear. But <a class="link" href="https://stackoverflow.com/questions/50315802/correct-way-to-suspend-coroutine-until-taskt-is-complete"  target="_blank" rel="noopener"
+    >this StackOverflow answer</a> provides a good idea of how to use it. So if we were to write a suspendCoroutine version of our function, it would look like this:</p>
+<script type="application/javascript" src="https://gist.github.com/JacquesSmuts/40462adab3f657da91d25dfdba84ef99.js"></script>
+
+<p>As you can see, the saveUsername function has turned into a function which returns the result in the same line, but can only be called from a coroutineContext/suspendFunction. This is perfect for making your code look cleaner and run in sequence with more confidence.</p>
+<p>However, it requires you to write a suspendCoroutine function for each function you want to flatten in this way. This adds a lot of boilerplate. So is there some way we can use generics to avoid this boilerplate? Of course!</p>
+<h3 id="generic-suspendcoroutine">Generic SuspendCoroutine</h3>
+<p>If you read my <a class="link" href="https://jacquessmuts.github.io/post/generic_interface_and_methods/" >first article on kotlin generics</a> you&rsquo;ll know that the IntelliJ IDE is smarter than us, so we&rsquo;ll use it to generate our function. We&rsquo;ll call our function <code>suspendAsync()</code> and pass in our method, along with the input, and see what happens. Remember you can pass a method reference with <code>instance::method</code></p>
+<figure class="zoomable"><img src="https://jacquessmuts.github.io/images/callback_hell1.png"
+         alt="compiler error" width="80%"/><figcaption>
+            <h4>If you see this warning, you&#39;re headed in the right direction. </h4>
+        </figcaption>
+</figure>
+
+<p>Then IntelliJ creates a function which looks like this:</p>
+<figure class="zoomable"><img src="https://jacquessmuts.github.io/images/callback_hell2.png"
+         alt="compiler result" width="80%"/><figcaption>
+            <h4>Not generic yet. </h4>
+        </figcaption>
+</figure>
+
+<p>And through a little bit of Generic reworking, as well as <a class="link" href="https://jacquessmuts.github.io/post/kfunction_analogues/" >my knowledge of KFunction analogues</a>, I replaced the <code>&lt;String&gt;</code> input and output types with generic types, resulting in this function:</p>
+<script type="application/javascript" src="https://gist.github.com/JacquesSmuts/8ae63a3da81d38708c0c35a300280a86.js"></script>
+
+<p>As you can see, it&rsquo;s about the same as our previous function. The difference is, you can pass in any function which takes a single input and a function callback, and it becomes a one-liner instead of a callback.</p>
+<p>If you want to pass in two inputs, it&rsquo;s slightly trickier, but still very doable:</p>
+<script type="application/javascript" src="https://gist.github.com/JacquesSmuts/9d1c10544e72c4d88e978ca65c5f07ff.js"></script>
+
+<p>And there you have it. You can reduce any qualifying callback with these functions. Other variations can be covered with a few more generic functions. However, it doesn&rsquo;t feel very nice calling a function in this way. First you write <code>suspendAsync</code>, then you pass in the function you actually want to call? Not the best, because we&rsquo;re used to referencing the function we want to call first.</p>
+<p>So maybe we can do better?</p>
+<h3 id="generic-infix-suspendcoroutine-extension-function">Generic Infix SuspendCoroutine Extension Function</h3>
+<p>I like the <a class="link" href="https://kotlinlang.org/docs/reference/functions.html#infix-notation"  target="_blank" rel="noopener"
+    >infix notation in Kotlin</a>, though I usually avoid it because it&rsquo;s a little dangerous and it&rsquo;s not easy for new developers to discover it&rsquo;s usage in any given codebase. In this case the increased readability and ease of use may be worth it.</p>
+<p>So using the same method of letting the IDE generate our function for us, we write out the infix function we want. I call it <code>suspendAndInvokeWith</code>, because we are invoking a function, turning it into a suspend function, and passing in arguments.</p>
+<figure class="zoomable"><img src="https://jacquessmuts.github.io/images/callback_hell3.png"
+         alt="compiler result" width="80%"/><figcaption>
+            <h4>If it wasn&#39;t for compiler suggestions I&#39;d be useless. </h4>
+        </figcaption>
+</figure>
+
+<p>Which we clean up and genericify a little bit into our result:</p>
+<script type="application/javascript" src="https://gist.github.com/JacquesSmuts/d099eff5e66aa6b1d5de924f87c9e967.js"></script>
+
+<p>This feels a lot more natural. You start out by writing the function you would normally write, using the infix notation and passing in your input.</p>
+<p>Infix functions require only a single input, so if you want to pass in more than one argument into a function, you need to do it by using Pairs or Triples, like so:</p>
+<script type="application/javascript" src="https://gist.github.com/JacquesSmuts/b6b45f506d001005bc8914e0925986cc.js"></script>
+
+<p>And there you have it. This won&rsquo;t work on everything, but it&rsquo;s a start to reducing boilerplate.</p>
+<h3 id="source">Source</h3>
+<p>At <a class="link" href="https://flatcircle.io/"  target="_blank" rel="noopener"
+    >Flat Circle</a>, we&rsquo;re trying to make our code as readable as possible, and found that using coroutines and avoiding callback hell is a good way to go about doing this. So we built these infix notations (and a few other utility functions) into a little <a class="link" href="https://github.com/flatcircle/coroutinehelper"  target="_blank" rel="noopener"
+    >CoroutineHelper Library</a> to make our lives easier. Please go ahead and use that library or copy the code to help make your code as readable as possible.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>Callback hell isn&rsquo;t the end of the world, but sometimes it can add just a little bit too much confusion to an already complex lifecycle. Hopefully with Coroutines, coupled with the techniques and Generic Utility functions above, you can reduce callback hell a little bit in your code.</p>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="https://jacquessmuts.github.io/tags/android/">android</a>
+        
+            <a href="https://jacquessmuts.github.io/tags/kotlin/">kotlin</a>
+        
+            <a href="https://jacquessmuts.github.io/tags/suspendcoroutine/">suspendCoroutine</a>
+        
+            <a href="https://jacquessmuts.github.io/tags/coroutines/">coroutines</a>
+        
+            <a href="https://jacquessmuts.github.io/tags/callback-hell/">callback hell</a>
+        
+            <a href="https://jacquessmuts.github.io/tags/infix-notation/">infix notation</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="https://jacquessmuts.github.io/post/kfunction_analogues/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://jacquessmuts.github.io/images/generic_interfaces3.png" loading="lazy" data-key="" data-hash="/images/generic_interfaces3.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">The Problem with Kotlin Kfunction Receiver Functions</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://jacquessmuts.github.io/post/library_template/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://jacquessmuts.github.io/images/library_template3.png" loading="lazy" data-key="" data-hash="/images/library_template3.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Creating and Deploying an Android Library via CircleCI</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://jacquessmuts.github.io/post/generic_interface_and_methods/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://jacquessmuts.github.io/images/generic_interfaces3.png" loading="lazy" data-key="" data-hash="/images/generic_interfaces3.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Generics &#43; Reflection &#43; Type Inference &#43; Reified Type = Kotlin Magic</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://jacquessmuts.github.io/post/modularization/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://jacquessmuts.github.io/images/modularization3.png" loading="lazy" data-key="" data-hash="/images/modularization3.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Is your modularization making any progress?</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="https://jacquessmuts.github.io/post/original-site/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Original Site</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2022 Jacques Smuts
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="https://jacquessmuts.github.io/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,25 +1,86 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Receiver Function on Jacques Smuts</title>
-    <link>https://jacquessmuts.github.io/tags/receiver-function/</link>
-    <description>Recent content in Receiver Function on Jacques Smuts</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Wed, 08 May 2019 17:54:58 +0200</lastBuildDate>
-    
-	<atom:link href="https://jacquessmuts.github.io/tags/receiver-function/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>The Problem with Kotlin Kfunction Receiver Functions</title>
-      <link>https://jacquessmuts.github.io/post/kfunction_analogues/</link>
-      <pubDate>Wed, 08 May 2019 17:54:58 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/kfunction_analogues/</guid>
-      <description>&lt;p&gt;KFunction can be written in more than one way. Here&#39;s a list of analogues, plus some criticism of the Receiver Function.&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+    <channel>
+        <title>Receiver Function on Jacques Smuts</title>
+        <link>https://jacquessmuts.github.io/tags/receiver-function/</link>
+        <description>Recent content in Receiver Function on Jacques Smuts</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+        <lastBuildDate>Wed, 08 May 2019 17:54:58 +0200</lastBuildDate><atom:link href="https://jacquessmuts.github.io/tags/receiver-function/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>The Problem with Kotlin Kfunction Receiver Functions</title>
+        <link>https://jacquessmuts.github.io/post/kfunction_analogues/</link>
+        <pubDate>Wed, 08 May 2019 17:54:58 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/kfunction_analogues/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/generic_interfaces3.png" alt="Featured image of post The Problem with Kotlin Kfunction Receiver Functions" /&gt;&lt;p&gt;KFunction can be written in more than one way. Here&amp;rsquo;s a list of analogues, plus some criticism of the Receiver Function.&lt;/p&gt;
+&lt;p&gt;After my &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/generic_interface_and_methods/&#34; &gt;previous article on Reflection&lt;/a&gt; was posted, I got a great comment from @pacoworks:&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;KSuspendFunction does not support that syntax (yet?). So to build up towards understanding KSuspendFunction1, I stuck with KFunction1 and its usage.&lt;br&gt;&lt;br&gt;Normally I use your syntax, but the article was already too long to get into that :P &lt;a href=&#34;https://t.co/nUaDArDA5S&#34;&gt;pic.twitter.com/nUaDArDA5S&lt;/a&gt;&lt;/p&gt;&amp;mdash; Jacques Smuts (@JacquesSmuts) &lt;a href=&#34;https://twitter.com/JacquesSmuts/status/1126057942724296704?ref_src=twsrc%5Etfw&#34;&gt;May 8, 2019&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;I assumed that since the IDE told me that there was a type mismatch, that suspend functions weren&amp;rsquo;t supported.&lt;/p&gt;
+&lt;p&gt;Turns out I was wrong; KSuspendFunction can be shortened. (click that thread to read more)  They&amp;rsquo;re called Receiver Functions and they have since been added to the &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/reference/lambdas.html#function-types&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Kotlin official documentation for higher-order-functions&lt;/a&gt; with a nice explanation.&lt;/p&gt;
+&lt;p&gt;So, in order to help me remember the different ways to reference higher-order functions, I made this grid. It omits the list of passed interfaces for brevity.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/f43755a820658b19f6c5fdd4fdb14eb4.js&#34;&gt;&lt;/script&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;KFunction&lt;/th&gt;
+&lt;th&gt;Analogue&lt;/th&gt;
+&lt;th&gt;ReceiverFunction&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;KFunction1&amp;lt;Interface, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;(Interface) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;Interface.() -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;KFunction2&amp;lt;Interface, Input, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;(Interface, Input) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;Interface.(Input) -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;KFunction3&amp;lt;Interface, In1, In2, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;(Interface, In1, In2) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;Interface.(In1, In2) -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;KSuspendFunction1&amp;lt;Interface, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;suspend (Interface) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;suspend Interface.() -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;KSuspendFunction2&amp;lt;Interface, Input, Result&amp;gt;&lt;/td&gt;
+&lt;td&gt;suspend (Interface, Input) -&amp;gt; Result&lt;/td&gt;
+&lt;td&gt;suspend Interface.(Input) -&amp;gt; Result&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;In all 3 cases you have to add &lt;code&gt;implementation &amp;quot;org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion&amp;quot;&lt;/code&gt; in your gradle.&lt;/p&gt;
+&lt;p&gt;However you only have to add the &lt;code&gt;import kotlin.reflect.KFunction1&lt;/code&gt; import at the top of your file if you&amp;rsquo;re using the explicit KFunction syntax.&lt;/p&gt;
+&lt;p&gt;I like the way ReceiverFunction is composed and I would like to use that, however I see a problem with it. If any new developer unused to this syntax works on this code, what should they google to find out more? &lt;code&gt;().-&amp;gt;T&lt;/code&gt; ? It&amp;rsquo;s difficult to work with Reflection and Generics the first time, but if you see &amp;ldquo;KSuspendFunction1&amp;rdquo; you will be able to google it and find references to Reflection to understand what the code is doing.&lt;/p&gt;
+&lt;p&gt;The other thing to note is that if you use the ReceiverFunction notation and pass the wrong type of function, the IDE will always default to referring to the passed function argument as &amp;ldquo;KFunction&amp;rdquo;.&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/kfunction_analogues2.png&#34;
+         alt=&#34;compiler error&#34; width=&#34;90%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;I didn&amp;#39;t call it a KSuspendFunction, but the IDE does. &lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Which means the developer is likely to think that they are passing something entirely different than the required input, unless they know both the KFunction notation and the Receiver Function notation.&lt;/p&gt;
+&lt;p&gt;Since I like the Receiver Function syntax, I&amp;rsquo;m going to add a link to the Kotlin documentation in my code comments wherever I use the ReceiverFunction syntax. &lt;a class=&#34;link&#34; href=&#34;https://stackoverflow.com/questions/45875491/what-is-a-receiver-in-kotlin&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;This explanation on StackOverflow&lt;/a&gt; as well, since it explains the usage of receiver functions a bit better.&lt;/p&gt;
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;Receiver Functions are nice, but there is no simple way for a developer to get to the right documentation from the code or IDE unless they already know what Receiver Functions are, or that they refer to KFunction.
+In order to make it easier for people to understand your code, you need to choose one:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Refer to KFunction explicitly; or&lt;/li&gt;
+&lt;li&gt;Add comments every time you use Higher Order Receiver Functions&lt;/li&gt;
+&lt;/ul&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

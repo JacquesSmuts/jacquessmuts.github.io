@@ -1,25 +1,59 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Layer-List as launcher on Jacques Smuts</title>
-    <link>https://jacquessmuts.github.io/tags/layer-list-as-launcher/</link>
-    <description>Recent content in Layer-List as launcher on Jacques Smuts</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Sun, 16 Feb 2020 14:54:38 +0200</lastBuildDate>
-    
-	<atom:link href="https://jacquessmuts.github.io/tags/layer-list-as-launcher/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>Add Overlays to Your Launcher Icon Using Layer-List</title>
-      <link>https://jacquessmuts.github.io/post/layer_list_as_launcher_icon/</link>
-      <pubDate>Sun, 16 Feb 2020 14:54:38 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/layer_list_as_launcher_icon/</guid>
-      <description>&lt;p&gt;You can use a &lt;!-- raw HTML omitted --&gt; drawable to easily differentiate between flavors and variants. This will show you how.&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+    <channel>
+        <title>Layer-List as launcher on Jacques Smuts</title>
+        <link>https://jacquessmuts.github.io/tags/layer-list-as-launcher/</link>
+        <description>Recent content in Layer-List as launcher on Jacques Smuts</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+        <lastBuildDate>Sun, 16 Feb 2020 14:54:38 +0200</lastBuildDate><atom:link href="https://jacquessmuts.github.io/tags/layer-list-as-launcher/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Add Overlays to Your Launcher Icon Using Layer-List</title>
+        <link>https://jacquessmuts.github.io/post/layer_list_as_launcher_icon/</link>
+        <pubDate>Sun, 16 Feb 2020 14:54:38 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/layer_list_as_launcher_icon/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/layerlist3.png" alt="Featured image of post Add Overlays to Your Launcher Icon Using Layer-List" /&gt;&lt;p&gt;You can use a &lt;!-- raw HTML omitted --&gt; drawable to easily differentiate between flavors and variants. This will show you how.&lt;/p&gt;
+&lt;h2 id=&#34;why&#34;&gt;Why?&lt;/h2&gt;
+&lt;p&gt;Ever wanted to have different icons for each flavor and variant in your Android app? Something like a little bug to indicate the debug version of your app, like so:&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/layerlist4.png&#34;
+         alt=&#34;An inordinate fondness for beetles&#34; width=&#34;40%&#34;/&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Sure, but it&amp;rsquo;s effort. And you have to ask a designer to make a bunch of different icons. Or, even worse, you have to create a bunch of different icons yourself. That&amp;rsquo;s wasteful, so instead you should use a layer-list. It has a default icon, and then it can dynamically insert an overlay image on top of your launcher icon, based upon your flavor or build variant. That way, you don&amp;rsquo;t need a bunch of different icons.&lt;/p&gt;
+&lt;h2 id=&#34;how&#34;&gt;How?&lt;/h2&gt;
+&lt;p&gt;Assuming you have &lt;code&gt;mipmap/ic_launcher&lt;/code&gt; icon already, you should&lt;/p&gt;
+&lt;p&gt;1.) Create an &lt;code&gt;ic_launcher_overlaid.xml&lt;/code&gt; file in your &lt;code&gt;main/drawable&lt;/code&gt; folder, with the following content:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/3541b17741c40e3c24453830d0ee102a.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;How does this work? The layer-list puts the &lt;code&gt;launcher_overlay&lt;/code&gt; on top of the normal &lt;code&gt;ic_launcher&lt;/code&gt; image, then puts 100px padding to the top and left, so that the &lt;code&gt;launcher_overlay&lt;/code&gt; sits in the bottom right corner. That might take some adjustment to get things right.&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/layerlist1.png&#34;
+         alt=&#34;Default Launcher Icon&#34; width=&#34;10%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;drawable/ic_launcher.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;2.) update your &lt;code&gt;AndroidManifest.xml&lt;/code&gt; file to point to the new launcher icon.&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/fcd8ba8abc4df58909c7c624d53d9127.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;The only thing left is:&lt;/p&gt;
+&lt;p&gt;3.) Create &lt;code&gt;drawable/launcher_overlay&lt;/code&gt; for each variant/flavor you need.&lt;/p&gt;
+&lt;p&gt;You can create a single transparent pixel in &lt;code&gt;main/drawable&lt;/code&gt; as the default. Then add the appropriate images you need in the &lt;code&gt;flavorVariant/drawable&lt;/code&gt; folders. I added this image to my debug folder:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/layerlist2.png&#34;
+         alt=&#34;An inordinate fondness for beetles&#34; width=&#34;10%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Beetle&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;If all goes well, you&amp;rsquo;ll end up with a launcher icon that looks like this:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/layerlist3.png&#34;
+          alt=&#34;An inordinate fondness for beetles&#34; width=&#34;10%&#34;/&gt;
+ &lt;/figure&gt;
+
+&lt;p&gt;If you&amp;rsquo;re wondering about Adaptive Icons, all you have to know is that the adaptive icon references a foreground drawable. In the same way that you can replace the &lt;code&gt;ic_launcher&lt;/code&gt; with a layer-list, you can also replace &lt;code&gt;ic_launcher_foreground&lt;/code&gt; with a layer-list.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;I&amp;rsquo;d like to thank my colleague, Laurie Scheepers, for suggesting we try xml drawables as app icons.&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

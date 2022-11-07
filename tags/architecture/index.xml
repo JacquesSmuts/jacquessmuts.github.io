@@ -1,25 +1,217 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Architecture on Jacques Smuts</title>
-    <link>https://jacquessmuts.github.io/tags/architecture/</link>
-    <description>Recent content in Architecture on Jacques Smuts</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Wed, 07 Oct 2020 02:48:01 +0200</lastBuildDate>
+    <channel>
+        <title>architecture on Jacques Smuts</title>
+        <link>https://jacquessmuts.github.io/tags/architecture/</link>
+        <description>Recent content in architecture on Jacques Smuts</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+        <lastBuildDate>Mon, 07 Nov 2022 11:33:09 +0200</lastBuildDate><atom:link href="https://jacquessmuts.github.io/tags/architecture/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Use More Named Arguments in Kotlin</title>
+        <link>https://jacquessmuts.github.io/post/compile_time_tests2/</link>
+        <pubDate>Mon, 07 Nov 2022 11:33:09 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/compile_time_tests2/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/compile_test_named_arg.png" alt="Featured image of post Use More Named Arguments in Kotlin" /&gt;&lt;p&gt;Using named arguments in Kotlin causes breaking changes to be caught faster. This article shows you how.&lt;/p&gt;
+&lt;p&gt;This article is a follow-up on &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Part 1 in this series,&lt;/a&gt; wherein I explain why the test pyramid is incomplete, and that you should architect so that breaking changes gets caught at compile-time if possible.&lt;/p&gt;
+&lt;p&gt;Further context: I wrote this in 2020, but crashed out from pandemic-induced stress before I could finish the series. I&amp;rsquo;m now going back to finish it.&lt;/p&gt;
+&lt;h2 id=&#34;what-is-a-named-argument&#34;&gt;What is a named argument?&lt;/h2&gt;
+&lt;p&gt;When you pass an argument to a function or parameter, you can name the argument instead of just passing in the arguments in the right order. This is most powerful when you have optional arguments, but for now, let&amp;rsquo;s assume you have a simple &lt;code&gt;User&lt;/code&gt; class.&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-	<atom:link href="https://jacquessmuts.github.io/tags/architecture/index.xml" rel="self" type="application/rss+xml" />
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+
+fun main() {
+//sampleStart
+  data class User(
+    val name: String,
+    val surname: String,
+    val age: Int = 0
+  )
+
+  // This is how you would normally pass arguments. Name, Surname, Age.
+  val userNormal = User(
+      &amp;#34;Kim&amp;#34;,
+      &amp;#34;Katsuragi&amp;#34;,
+      43
+  )
+
+  // This is how you use named arguments. You put in extra effort to specifically name the arguments you are passing in.
+  val userNamed = User(
+      name = &amp;#34;Klaasje&amp;#34;,
+      surname = &amp;#34;Amandou&amp;#34;,
+      age = 28
+  )
+//sampleEnd
+
+  println(&amp;#34;$userNormal is literally the best.&amp;#34;)
+}
+
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;h2 id=&#34;why-is-a-named-argument&#34;&gt;Why is a named argument?&lt;/h2&gt;
+&lt;p&gt;Named arguments are usually used to differentiate between several optional parameters and pass in only the necessary arguments. That is a great use of them, however I contend that &lt;strong&gt;you should almost always use named arguments.&lt;/strong&gt; Especially if you have more than two arguments.&lt;/p&gt;
+&lt;p&gt;The reason for this can be demonstrated simply. What if a developer was tasked to add a &lt;code&gt;height&lt;/code&gt; field? It&amp;rsquo;d be very easy to make this mistake:&lt;/p&gt;
+&lt;div class=&#34;kotlin-code&#34;
+     
+        data-target-platform=&#34;java&#34;
     
-    
-    <item>
-      <title>The Testing Pyramid Has a Deeper Foundation</title>
-      <link>https://jacquessmuts.github.io/post/compile_time_tests/</link>
-      <pubDate>Wed, 07 Oct 2020 02:48:01 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/compile_time_tests/</guid>
-      <description>&lt;p&gt;Kotlin allows us to structure our code around compile-time tests. This post explains how.&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+     &gt;
+    &lt;pre&gt;
+        &lt;code class=&#34;hljs language-kotlin&#34;&gt;
+        
+
+fun main() {
+//sampleStart
+
+  // Added `height`
+  data class User(
+    val name: String,
+    val surname: String,
+    val height: Int, // height added here.
+    val age: Int? = null
+  )
+
+  val userNormal = User(
+      &amp;#34;Kim&amp;#34;,
+      &amp;#34;Katsuragi&amp;#34;,
+      43
+  )
+
+  val userNamed = User(
+      name = &amp;#34;Klaasje&amp;#34;,
+      surname = &amp;#34;Amandou&amp;#34;,
+      age = 28
+  )
+//sampleEnd
+
+  println(&amp;#34;$userNamed is an extremely well written character. I refused to arrest her, despite knowing that she&amp;#39;s manipulative.&amp;#34;)
+}
+
+
+        &lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;If you run the above code, you&amp;rsquo;ll get a compiler error. Note that the error appears (correctly) for the &lt;code&gt;userNamed&lt;/code&gt; variable, but not for &lt;code&gt;userNormal&lt;/code&gt;. Now &lt;code&gt;Kim Katsuragi&lt;/code&gt; has a height of 43 and an age of null.&lt;/p&gt;
+&lt;p&gt;This might seem like a contrived example, because &amp;ldquo;everybody knows that you should put new variables at the end&amp;rdquo;. I disagree with that notion, because it places the burden of knowledge on future unknown developers or circumstances. It&amp;rsquo;s often that developers feel the need to change the order of arguments or variables. They usually don&amp;rsquo;t, for fear of breaking things. However if you always use named arguments, the order of constructor inputs would not be a factor, and refactoring your constructor would carry less risk.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve run into various scenarios where I&amp;rsquo;ve had to change the arguments on a function/constructer where I had to manually go through every single instance where the function was called to make sure it was still being called correctly despite the change. Furthermore, I don&amp;rsquo;t know what unit-test can be written to ensure that all instances of a constructor is being called correctly. However when I switched to named arguments, I knew that the calling code would always keep working if no change was required, and throw a compiler error if a change was required.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Named arguments catches breaking changes from incorrect arguments immediately&lt;/strong&gt;, in a way which would be slower with unit-tests.&lt;/p&gt;
+&lt;p&gt;However this only works if you use named arguments everywhere. It&amp;rsquo;s not forced.&lt;/p&gt;
+&lt;h2 id=&#34;named-arguments-sounds-great-can-i-force-their-use-a-little-bit&#34;&gt;Named Arguments Sounds Great. Can I Force Their Use (a little bit)?&lt;/h2&gt;
+&lt;p&gt;Some people would propose &lt;a class=&#34;link&#34; href=&#34;https://stackoverflow.com/questions/37394266/how-can-i-force-calls-to-some-constructors-functions-to-use-named-arguments&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this hacky workaround&lt;/a&gt; that is as clever as it is unpleasant to implement. Don&amp;rsquo;t do this.&lt;/p&gt;
+&lt;p&gt;Or you can add a lint check to your project which forces you to use named arguments.&lt;/p&gt;
+&lt;p&gt;I tried to write &lt;a class=&#34;link&#34; href=&#34;https://github.com/JacquesSmuts/NamedArgsLint/blob/master/README.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this little library&lt;/a&gt; which does it for you. It forces all functions or constructors with more than two arguments to require named arguments, otherwise it tags it as an error.  Unfortunately, this library doesn&amp;rsquo;t work reliably. I kept struggling with lint, and eventually gave up (see context at the start of this article).&lt;/p&gt;
+&lt;p&gt;However, you can see there is some demand for it in Kotlin itself, &lt;a class=&#34;link&#34; href=&#34;https://youtrack.jetbrains.com/issue/KT-14934&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;here&lt;/a&gt;, as well as in &lt;a class=&#34;link&#34; href=&#34;https://github.com/detekt/detekt/issues/3534&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Detekt&lt;/a&gt;. You can use &lt;a class=&#34;link&#34; href=&#34;https://github.com/chao2zhang/RequireNamedArgument&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this library&lt;/a&gt; to force any one function to have NamedArguments, but you can&amp;rsquo;t enforce it project-wide with specific rulesets easily.&lt;/p&gt;
+&lt;p&gt;Regardless of lint libraries, you should use &lt;a class=&#34;link&#34; href=&#34;https://plugins.jetbrains.com/plugin/10942-kotlin-fill-class&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this IntelliJ plugin&lt;/a&gt; to easily fill arguments or add names to arguments. I use it all of the time.&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Use named arguments. Not everywhere all the time, but use them regularly.&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>The Testing Pyramid Has a Deeper Foundation</title>
+        <link>https://jacquessmuts.github.io/post/compile_time_tests/</link>
+        <pubDate>Wed, 07 Oct 2020 02:48:01 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/compile_time_tests/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/compile_test1.png" alt="Featured image of post The Testing Pyramid Has a Deeper Foundation" /&gt;&lt;p&gt;Kotlin allows us to structure our code around compile-time tests. This post explains how.&lt;/p&gt;
+&lt;h2 id=&#34;four-layered-testing-pyramid&#34;&gt;Four layered testing pyramid&lt;/h2&gt;
+&lt;p&gt;You probably know the testing pyramid. Unit tests run faster and are easier to develop and run, so you should have more of them, compared to your integration tests and end-to-end tests. However if you assume that this pyramid applies to any sort of automated validation of your code, then the testing pyramid should actually look like this:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/compile_test1.png&#34;
+         alt=&#34;Illuminati tested&#34; width=&#34;70%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Testing Pyramid&amp;#43;&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;If you&amp;rsquo;re wondering what Compile Time tests mean, I mean everything that runs during and even before compilation, to provide &amp;ldquo;Compile Time Safety&amp;rdquo;: Static Analysis, Syntax Errors, Linting, Generated Classes, (Gradle) Build Tool Tasks and anything else I might be forgetting. Compile time tests refers to any errors you get that prevent your unit-tests from running in the first place.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m sure I&amp;rsquo;m not the first one to propose this. I looked around and found &lt;a class=&#34;link&#34; href=&#34;https://twitter.com/aarondjents/status/805913874704674816&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;a few&lt;/a&gt; other &lt;a class=&#34;link&#34; href=&#34;https://twitter.com/mrjedmao/status/1085750574996312064&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;similar ideas&lt;/a&gt;, but only really in the JavaScript community. My guess is that since they cannot rely on the compiler by default, they consider the addition of static tests to be part of the testing framework. Java/Kotlin developers, on the other hand, consider type safety to be an assumed but separate step from the testing framework.&lt;/p&gt;
+&lt;h2 id=&#34;fail-fast-verification&#34;&gt;Fail Fast Verification&lt;/h2&gt;
+&lt;p&gt;Leaving the pyramid aside, I knew that the concept had to be much older than 2016. I did some research and found &lt;a class=&#34;link&#34; href=&#34;https://www.sciencedirect.com/science/article/pii/0164121279900049?via%3Dihub&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this amazing paper&lt;/a&gt; by Margaret Hamilton. If you don&amp;rsquo;t know Margaret Hamilton, all you have to know is that she&amp;rsquo;s able to ship bug-free code, like some kind of mad scientist. You need to read the full article, but for our purposes I&amp;rsquo;ll sum up the relevant parts. Her proposal is that a software system should be verified in this order:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Conceptually&lt;/li&gt;
+&lt;li&gt;Statically&lt;/li&gt;
+&lt;li&gt;Dynamically&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The static verification at the time was extremely limited, so they had to build a lot of it themselves. Margaret Hamilton took &amp;ldquo;fail fast&amp;rdquo; to its logical conclusion and did everything in her power to pick up problems before they became problems; first in planning, then in code. She also designed and implemented end-to-end testing systems, but preferred to have the majority of the validation be done before the end-to-end tests ran. Furthermore, her analyses concluded that bugs are less likely to occur if you have modular systems, as well as extensive documentation, specifications and conceptual planning in place before coding starts.&lt;/p&gt;
+&lt;p&gt;So with that background in place, let&amp;rsquo;s get back to the four-layered testing pyramid.&lt;/p&gt;
+&lt;h2 id=&#34;four-layered-testing-pyramid-in-kotlin&#34;&gt;Four layered testing pyramid, in Kotlin&lt;/h2&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/compile_test1.png&#34;
+         alt=&#34;Illuminati confirmed&#34; width=&#34;20%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Testing Pyramid&amp;#43;&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;You should be aware that there are &lt;a class=&#34;link&#34; href=&#34;https://martinfowler.com/articles/practical-test-pyramid.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;some variations to and criticism of&lt;/a&gt; the original testing pyramid, but that it makes a good rule of thumb for architecting your processes and systems. When you search for blogs or literature about how the testing pyramid fits into software development, you will find little-to-zero mention of static analysis or compiler checks. Yet if you&amp;rsquo;re coding in Java/Kotlin your IDE is constantly running automated checks on your code that most people consider to be completely separate from their automated tests. &lt;strong&gt;It is important to consider compile-time tests as just one part of a bigger system of automated software validation.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Considering that every function is tested for spelling and reference, for number of arguments, for return type, and various other checks by the compiler, I think it is fair to say that the number of verifications performed by the compiler exceeds those performed by your unit-tests.&lt;/p&gt;
+&lt;h2 id=&#34;the-implication-on-your-daily-process&#34;&gt;The Implication On Your Daily Process&lt;/h2&gt;
+&lt;p&gt;Test-Driven-Development is meant to teach you to architect your code in such a way that makes it easy to test. First you write a failing test, then you make that test pass. The first step, according to TDD, is to have a failing test that looks something like this:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/compile_test3.png&#34;
+         alt=&#34;normal test&#34; width=&#34;70%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;First Failing Test?&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;But I see this as the first failing test:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/compile_test2.png&#34;
+         alt=&#34;static test&#34; width=&#34;70%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;First Failing Test&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;This seems like a dumb distinction to make, but I believe it to be important. If you change the type of input or the number of arguments for the &lt;code&gt;convertStringToInt&lt;/code&gt; function, your tests don&amp;rsquo;t fail; the compilation fails before your tests can even run. Which means the input-type and input-amount test is performed automatically, but that it is still a verification step that fails properly.&lt;/p&gt;
+&lt;h2 id=&#34;the-implications-on-your-architecture&#34;&gt;The Implications On Your Architecture&lt;/h2&gt;
+&lt;p&gt;Not everyone uses TDD, but everyone should architect their Android projects in such a way that it is easy to unit-test. By going down this route you will hopefully start to implement some of the popular and sensible choices:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Modularization&lt;/li&gt;
+&lt;li&gt;Inversion of Control via &lt;a class=&#34;link&#34; href=&#34;https://www.martinfowler.com/articles/injection.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Dependency Injection&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Decoupling Classes / Dependencies&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://old.reddit.com/r/androiddev/comments/9ifv54/are_kotlin_coroutines_really_going_to_replace/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Functional Reactive Programming&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Pretty much everything written in &lt;a class=&#34;link&#34; href=&#34;https://www.goodreads.com/book/show/44936.Refactoring&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Refactoring by Fowler&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;And various other small techniques that you develop subconsciously as you prioritise around testability.&lt;/p&gt;
+&lt;p&gt;However, what if you prioritise your architecture to go beyond failing fast in unit tests? What if you prioritise things to fail fast like in the 4-layered test-pyramid above? Breaking changes should ideally fail at compile-time. For me, as an Android Developer, this is the ideal. My compile-time is often around a full minute and I&amp;rsquo;d prefer if breaking changes alerted me before I even have to do a full compile, much less run tests.&lt;/p&gt;
+&lt;p&gt;A simple example would be if my &lt;code&gt;convertStringToInt&lt;/code&gt; function required an additional argument. I&amp;rsquo;d get this error:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/compile_test4.png&#34;
+         alt=&#34;what a terrible function I should just use the standard library for this&#34; width=&#34;70%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Perfect test: it failed before it even ran&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;If you want to pick up breaking changes faster, your goal is to &lt;strong&gt;structure your code in a way where breaking changes more often cause compile time errors before they cause test failures.&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;okay-cool-compilation-errors-are-sometimes-better-than-test-failures-so-give-me-some-practical-examples&#34;&gt;&amp;ldquo;Okay, cool. Compilation errors are sometimes better than test failures. So give me some practical examples&amp;rdquo;&lt;/h2&gt;
+&lt;p&gt;This was the theoretical portion. In the follow-ups to this post, I&amp;rsquo;ll give some practical examples, which may include:
+This was the theoretical portion. In the follow-ups to this post, I&amp;rsquo;ll give some practical examples, which may include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using named arguments&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using custom lint-tests&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using &lt;code&gt;when&lt;/code&gt; with enums/sealed classes&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;&amp;lt;&lt;code&gt;reified Type&lt;/code&gt;&amp;gt; Generics instead of &amp;lt;*&amp;gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Labels for &lt;code&gt;this&lt;/code&gt; and scope&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using libraries that generate interfaces&lt;/a&gt; (View Binding, NavigationSafeArgs, Dagger, Apollo)&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using coroutines for asynchronous operations&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using Kotlin Gradle DSL&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;//TODO:  &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Adding static analysis tools, like Detekt&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

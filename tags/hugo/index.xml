@@ -1,25 +1,88 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>hugo on Jacques Smuts</title>
-    <link>https://jacquessmuts.github.io/tags/hugo/</link>
-    <description>Recent content in hugo on Jacques Smuts</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Sat, 20 Apr 2019 10:43:30 +0200</lastBuildDate>
-    
-	<atom:link href="https://jacquessmuts.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>How I Made This Website</title>
-      <link>https://jacquessmuts.github.io/post/how_i_made_this/</link>
-      <pubDate>Sat, 20 Apr 2019 10:43:30 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/how_i_made_this/</guid>
-      <description>&lt;p&gt;This details how I made this static github page.&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+    <channel>
+        <title>hugo on Jacques Smuts</title>
+        <link>https://jacquessmuts.github.io/tags/hugo/</link>
+        <description>Recent content in hugo on Jacques Smuts</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+        <lastBuildDate>Sat, 20 Apr 2019 10:43:30 +0200</lastBuildDate><atom:link href="https://jacquessmuts.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>How I Made This Website</title>
+        <link>https://jacquessmuts.github.io/post/how_i_made_this/</link>
+        <pubDate>Sat, 20 Apr 2019 10:43:30 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/how_i_made_this/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/how_i_made_this1.png" alt="Featured image of post How I Made This Website" /&gt;&lt;p&gt;This details how I made this static github page.&lt;/p&gt;
+&lt;p&gt;First, I installed &lt;a class=&#34;link&#34; href=&#34;https://gohugo.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Hugo&lt;/a&gt; on my local machine and created a site.
+I chose the theme &lt;a class=&#34;link&#34; href=&#34;https://themes.gohugo.io/hugo-nuo/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Hugo-Nuo&lt;/a&gt; because it looked nice and because the author has a github page with regular updates and decent documentation.&lt;/p&gt;
+&lt;p&gt;It was not crashing, so I deployed it to a Github static page using the official &lt;a class=&#34;link&#34; href=&#34;https://gohugo.io/hosting-and-deployment/hosting-on-github/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Hugo Guide&lt;/a&gt; for hosting on Github.&lt;/p&gt;
+&lt;p&gt;Then I wrote this blog post using the standard template by running &lt;code&gt;hugo new post/how_i_made_this.md&lt;/code&gt; and writing the rest in the resulting .md file. I ran deploy.sh (from the Hugo Guide&amp;rsquo;s instructions) and did not see this post.&lt;/p&gt;
+&lt;p&gt;So I removed the &amp;ldquo;draft:true&amp;rdquo; property from this post, felt like an idiot for taking 30min to figure that out, then deployed again.&lt;/p&gt;
+&lt;p&gt;Finally, I realized I had forgotten to set the new domain in my config file after deploying. So I fixed that and now everything seems to be working, I think.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Nick Rout noticed that the &lt;code&gt;quote&lt;/code&gt; styling didn&amp;rsquo;t come out right, so I changed that. It also screwed up my normal code highlighting, but I think it&amp;rsquo;s better to use GitHub gists anyway, and I&amp;rsquo;m too lazy to create my own custom code styling template and shortcode in hugo. I&amp;rsquo;ve had some issues with the code highlighting&amp;rsquo;s limited support for Kotlin so I&amp;rsquo;m basically just pretending it doesn&amp;rsquo;t exist.&lt;/p&gt;
+&lt;p&gt;Nick also noticed that the images stretch badly on mobile. This was because I was setting a constant height to my images, and the width expanded only up until it hit the edge. So I changed all my images to use width=percentage% and now the scaling is right.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;For SEO purposes, I also added my site to GoogleAnalytics Console, and registered my site with Google Search Console to claim ownership of the domain according to google. I should now get pushed up on Google Search results a bit, and also get analytics on how many people visit my site or click through based on search terms, if I understand correctly.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;I added the &lt;a class=&#34;link&#34; href=&#34;https://github.com/sam-ma/hugo-shortcodes&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Kotlin Playgrounds&lt;/a&gt; shortcode as well, in order to make my kotlin more interactive&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m putting further tests in here. For example:&lt;/p&gt;
+&lt;h3 id=&#34;code-highlighting&#34;&gt;Code Highlighting&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;inline&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fun&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;reified&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Any&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;get&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;key&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;):&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;?&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;instance&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FirebaseRemoteConfig&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getInstance&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;when&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;Long&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&amp;gt; &lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;instance&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getLong&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;key&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;?&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;-&amp;gt; &lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;instance&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getString&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;key&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;?&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;throw&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;IllegalArgumentException&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;the ${T::class} class is not supported yet&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Which you&amp;rsquo;ll notice is incorrectly styled with red thanks to the single-quote styling change I made.&lt;/p&gt;
+&lt;h3 id=&#34;git-gist&#34;&gt;Git Gist&lt;/h3&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/217c77ec0e4d8ec8409ae45c3516ec07.js&#34;&gt;&lt;/script&gt;
+
+&lt;h3 id=&#34;image-with-zooming-and-title&#34;&gt;Image with zooming and title&lt;/h3&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/how_i_made_this2.png&#34;
+         alt=&#34;This is my face&#34; width=&#34;40%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Obviously, this is my face. Click to zoom.&lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;embedded-youtube&#34;&gt;Embedded Youtube&lt;/h3&gt;
+&lt;div class=&#34;video-wrapper&#34;&gt;
+    &lt;iframe loading=&#34;lazy&#34; 
+            src=&#34;https://www.youtube.com/embed/TdO8hR2QAUs&#34; 
+            allowfullscreen 
+            title=&#34;YouTube Video&#34;
+    &gt;
+    &lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&#34;linking-to-another-post&#34;&gt;Linking to another post&lt;/h3&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/kproperty/&#34; &gt;References&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

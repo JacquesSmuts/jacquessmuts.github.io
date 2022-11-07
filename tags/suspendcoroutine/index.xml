@@ -1,25 +1,83 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>suspendCoroutine on Jacques Smuts</title>
-    <link>https://jacquessmuts.github.io/tags/suspendcoroutine/</link>
-    <description>Recent content in suspendCoroutine on Jacques Smuts</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-    <lastBuildDate>Mon, 20 May 2019 23:12:36 +0200</lastBuildDate>
-    
-	<atom:link href="https://jacquessmuts.github.io/tags/suspendcoroutine/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>Escaping Callback Hell with Generic SuspendCoroutine Infix Extension Functions</title>
-      <link>https://jacquessmuts.github.io/post/callback_hell/</link>
-      <pubDate>Mon, 20 May 2019 23:12:36 +0200</pubDate>
-      
-      <guid>https://jacquessmuts.github.io/post/callback_hell/</guid>
-      <description>&lt;p&gt;Callback hell happens all the time in Android. Luckily, with coroutines, there&#39;s an easy way out.&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+    <channel>
+        <title>suspendCoroutine on Jacques Smuts</title>
+        <link>https://jacquessmuts.github.io/tags/suspendcoroutine/</link>
+        <description>Recent content in suspendCoroutine on Jacques Smuts</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+        <lastBuildDate>Mon, 20 May 2019 23:12:36 +0200</lastBuildDate><atom:link href="https://jacquessmuts.github.io/tags/suspendcoroutine/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Escaping Callback Hell with Generic SuspendCoroutine Infix Extension Functions</title>
+        <link>https://jacquessmuts.github.io/post/callback-hell/</link>
+        <pubDate>Mon, 20 May 2019 23:12:36 +0200</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/callback-hell/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/callback_hell4.png" alt="Featured image of post Escaping Callback Hell with Generic SuspendCoroutine Infix Extension Functions" /&gt;&lt;p&gt;Callback hell happens all the time in Android. Luckily, with coroutines, there&amp;rsquo;s an easy way out.&lt;/p&gt;
+&lt;p&gt;So you&amp;rsquo;re hopefully aware of &lt;a class=&#34;link&#34; href=&#34;http://callbackhell.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;callback hell&lt;/a&gt;, which makes your code difficult to read, and also makes the sequence of events difficult to understand. This is something we want to avoid, but it&amp;rsquo;s not always easy. If you&amp;rsquo;re using any sort of third-party library, (like Firebase) you&amp;rsquo;re probably forced into this pattern regularly. A simple callback would look like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/6cdad47d20e6c4f2a92ebee4f1ff8640.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;As you can see, we&amp;rsquo;re one level into callbacks. At a glance, it would seem like the result would be handled immediately after sending out the &lt;code&gt;saveUsername&lt;/code&gt; function. But it in fact creates an asynchronous task (most likely on the IO thread). Which means the order of events quickly becomes unclear, especially to a new developer climbing on the project. An experienced dev would know that the order of events isn&amp;rsquo;t clear, but it&amp;rsquo;ll take a few minutes to fully comprehend what the actual order is.&lt;/p&gt;
+&lt;p&gt;However, if your operation is suitable for coroutines (such as API calls, disk writes or background processes) we can &amp;ldquo;flatten&amp;rdquo; the callback hell fairly easily.&lt;/p&gt;
+&lt;h3 id=&#34;suspendcoroutine&#34;&gt;SuspendCoroutine&lt;/h3&gt;
+&lt;p&gt;I&amp;rsquo;m assuming you&amp;rsquo;re aware of coroutines and suspendFunctions already. If not, it&amp;rsquo;s time to &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/reference/coroutines-overview.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;start using them&lt;/a&gt;. First, I need to introduce suspendCoroutine. The &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines.experimental/suspend-coroutine.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;official documentation on suspendCoroutine&lt;/a&gt; doesn&amp;rsquo;t make it particularly clear. But &lt;a class=&#34;link&#34; href=&#34;https://stackoverflow.com/questions/50315802/correct-way-to-suspend-coroutine-until-taskt-is-complete&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this StackOverflow answer&lt;/a&gt; provides a good idea of how to use it. So if we were to write a suspendCoroutine version of our function, it would look like this:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/40462adab3f657da91d25dfdba84ef99.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;As you can see, the saveUsername function has turned into a function which returns the result in the same line, but can only be called from a coroutineContext/suspendFunction. This is perfect for making your code look cleaner and run in sequence with more confidence.&lt;/p&gt;
+&lt;p&gt;However, it requires you to write a suspendCoroutine function for each function you want to flatten in this way. This adds a lot of boilerplate. So is there some way we can use generics to avoid this boilerplate? Of course!&lt;/p&gt;
+&lt;h3 id=&#34;generic-suspendcoroutine&#34;&gt;Generic SuspendCoroutine&lt;/h3&gt;
+&lt;p&gt;If you read my &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/generic_interface_and_methods/&#34; &gt;first article on kotlin generics&lt;/a&gt; you&amp;rsquo;ll know that the IntelliJ IDE is smarter than us, so we&amp;rsquo;ll use it to generate our function. We&amp;rsquo;ll call our function &lt;code&gt;suspendAsync()&lt;/code&gt; and pass in our method, along with the input, and see what happens. Remember you can pass a method reference with &lt;code&gt;instance::method&lt;/code&gt;&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/callback_hell1.png&#34;
+         alt=&#34;compiler error&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If you see this warning, you&amp;#39;re headed in the right direction. &lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Then IntelliJ creates a function which looks like this:&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/callback_hell2.png&#34;
+         alt=&#34;compiler result&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;Not generic yet. &lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;And through a little bit of Generic reworking, as well as &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/kfunction_analogues/&#34; &gt;my knowledge of KFunction analogues&lt;/a&gt;, I replaced the &lt;code&gt;&amp;lt;String&amp;gt;&lt;/code&gt; input and output types with generic types, resulting in this function:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/8ae63a3da81d38708c0c35a300280a86.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;As you can see, it&amp;rsquo;s about the same as our previous function. The difference is, you can pass in any function which takes a single input and a function callback, and it becomes a one-liner instead of a callback.&lt;/p&gt;
+&lt;p&gt;If you want to pass in two inputs, it&amp;rsquo;s slightly trickier, but still very doable:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/9d1c10544e72c4d88e978ca65c5f07ff.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;And there you have it. You can reduce any qualifying callback with these functions. Other variations can be covered with a few more generic functions. However, it doesn&amp;rsquo;t feel very nice calling a function in this way. First you write &lt;code&gt;suspendAsync&lt;/code&gt;, then you pass in the function you actually want to call? Not the best, because we&amp;rsquo;re used to referencing the function we want to call first.&lt;/p&gt;
+&lt;p&gt;So maybe we can do better?&lt;/p&gt;
+&lt;h3 id=&#34;generic-infix-suspendcoroutine-extension-function&#34;&gt;Generic Infix SuspendCoroutine Extension Function&lt;/h3&gt;
+&lt;p&gt;I like the &lt;a class=&#34;link&#34; href=&#34;https://kotlinlang.org/docs/reference/functions.html#infix-notation&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;infix notation in Kotlin&lt;/a&gt;, though I usually avoid it because it&amp;rsquo;s a little dangerous and it&amp;rsquo;s not easy for new developers to discover it&amp;rsquo;s usage in any given codebase. In this case the increased readability and ease of use may be worth it.&lt;/p&gt;
+&lt;p&gt;So using the same method of letting the IDE generate our function for us, we write out the infix function we want. I call it &lt;code&gt;suspendAndInvokeWith&lt;/code&gt;, because we are invoking a function, turning it into a suspend function, and passing in arguments.&lt;/p&gt;
+&lt;figure class=&#34;zoomable&#34;&gt;&lt;img src=&#34;https://jacquessmuts.github.io/images/callback_hell3.png&#34;
+         alt=&#34;compiler result&#34; width=&#34;80%&#34;/&gt;&lt;figcaption&gt;
+            &lt;h4&gt;If it wasn&amp;#39;t for compiler suggestions I&amp;#39;d be useless. &lt;/h4&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Which we clean up and genericify a little bit into our result:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/d099eff5e66aa6b1d5de924f87c9e967.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;This feels a lot more natural. You start out by writing the function you would normally write, using the infix notation and passing in your input.&lt;/p&gt;
+&lt;p&gt;Infix functions require only a single input, so if you want to pass in more than one argument into a function, you need to do it by using Pairs or Triples, like so:&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/JacquesSmuts/b6b45f506d001005bc8914e0925986cc.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;And there you have it. This won&amp;rsquo;t work on everything, but it&amp;rsquo;s a start to reducing boilerplate.&lt;/p&gt;
+&lt;h3 id=&#34;source&#34;&gt;Source&lt;/h3&gt;
+&lt;p&gt;At &lt;a class=&#34;link&#34; href=&#34;https://flatcircle.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Flat Circle&lt;/a&gt;, we&amp;rsquo;re trying to make our code as readable as possible, and found that using coroutines and avoiding callback hell is a good way to go about doing this. So we built these infix notations (and a few other utility functions) into a little &lt;a class=&#34;link&#34; href=&#34;https://github.com/flatcircle/coroutinehelper&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CoroutineHelper Library&lt;/a&gt; to make our lives easier. Please go ahead and use that library or copy the code to help make your code as readable as possible.&lt;/p&gt;
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;Callback hell isn&amp;rsquo;t the end of the world, but sometimes it can add just a little bit too much confusion to an already complex lifecycle. Hopefully with Coroutines, coupled with the techniques and Generic Utility functions above, you can reduce callback hell a little bit in your code.&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
 </rss>
