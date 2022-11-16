@@ -201,7 +201,7 @@ fun main() {
 &lt;p&gt;This was the theoretical portion. In the follow-ups to this post, I&amp;rsquo;ll give some practical examples, which may include:
 This was the theoretical portion. In the follow-ups to this post, I&amp;rsquo;ll give some practical examples, which may include:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using named arguments&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using named arguments&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using custom lint-tests&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;Using &lt;code&gt;when&lt;/code&gt; with enums/sealed classes&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;//TODO: &lt;a class=&#34;link&#34; href=&#34;https://jacquessmuts.github.io/post/compile_time_tests/&#34; &gt;&amp;lt;&lt;code&gt;reified Type&lt;/code&gt;&amp;gt; Generics instead of &amp;lt;*&amp;gt;&lt;/a&gt;&lt;/li&gt;

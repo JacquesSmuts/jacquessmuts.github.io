@@ -29,6 +29,22 @@ image:&lt;/p&gt;
 &lt;h2 id=&#34;color-000-1&#34;&gt;style:
 background: &amp;ldquo;#de12e2&amp;rdquo;
 color: &amp;ldquo;#000&amp;rdquo;&lt;/h2&gt;
+&lt;hr&gt;
+&lt;p&gt;title: KMP
+description: Posts in a series about compile time safety
+image:&lt;/p&gt;
+&lt;h1 id=&#34;badge-style-2&#34;&gt;Badge style&lt;/h1&gt;
+&lt;h2 id=&#34;color-000-2&#34;&gt;style:
+background: &amp;ldquo;##7f52f&amp;rdquo;
+color: &amp;ldquo;#000&amp;rdquo;&lt;/h2&gt;
+&lt;hr&gt;
+&lt;p&gt;title: Mastodon
+description: Posts in a series about compile time safety
+image:&lt;/p&gt;
+&lt;h1 id=&#34;badge-style-3&#34;&gt;Badge style&lt;/h1&gt;
+&lt;h2 id=&#34;color-000-3&#34;&gt;style:
+background: &amp;ldquo;##7f52f&amp;rdquo;
+color: &amp;ldquo;#000&amp;rdquo;&lt;/h2&gt;
 </description>
         </item>
         <item>
