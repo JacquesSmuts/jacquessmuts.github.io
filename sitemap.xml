@@ -3,27 +3,39 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://jacquessmuts.github.io/</loc>
-    <lastmod>2022-11-07T11:33:09+02:00</lastmod>
+    <lastmod>2022-11-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://jacquessmuts.github.io/categories/android/</loc>
-    <lastmod>2022-11-07T11:33:09+02:00</lastmod>
+    <lastmod>2022-11-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://jacquessmuts.github.io/tags/architecture/</loc>
-    <lastmod>2022-11-07T11:33:09+02:00</lastmod>
+    <lastmod>2022-11-21T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jacquessmuts.github.io/tags/bad-internet/</loc>
+    <lastmod>2022-11-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://jacquessmuts.github.io/categories/</loc>
-    <lastmod>2022-11-07T11:33:09+02:00</lastmod>
+    <lastmod>2022-11-21T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jacquessmuts.github.io/post/2022/bad-internet/</loc>
+    <lastmod>2022-11-21T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jacquessmuts.github.io/tags/old-phones/</loc>
+    <lastmod>2022-11-21T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jacquessmuts.github.io/post/</loc>
+    <lastmod>2022-11-21T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jacquessmuts.github.io/categories/presentations/</loc>
+    <lastmod>2022-11-21T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jacquessmuts.github.io/tags/</loc>
+    <lastmod>2022-11-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://jacquessmuts.github.io/categories/compile-time-safety/</loc>
     <lastmod>2022-11-07T11:33:09+02:00</lastmod>
   </url><url>
     <loc>https://jacquessmuts.github.io/tags/named-parameters/</loc>
-    <lastmod>2022-11-07T11:33:09+02:00</lastmod>
-  </url><url>
-    <loc>https://jacquessmuts.github.io/post/</loc>
-    <lastmod>2022-11-07T11:33:09+02:00</lastmod>
-  </url><url>
-    <loc>https://jacquessmuts.github.io/tags/</loc>
     <lastmod>2022-11-07T11:33:09+02:00</lastmod>
   </url><url>
     <loc>https://jacquessmuts.github.io/post/compile_time_tests2/</loc>
@@ -54,9 +66,6 @@
     <lastmod>2020-09-06T19:51:12+02:00</lastmod>
   </url><url>
     <loc>https://jacquessmuts.github.io/post/ethicc_references/</loc>
-    <lastmod>2020-09-06T19:51:12+02:00</lastmod>
-  </url><url>
-    <loc>https://jacquessmuts.github.io/categories/presentations/</loc>
     <lastmod>2020-09-06T19:51:12+02:00</lastmod>
   </url><url>
     <loc>https://jacquessmuts.github.io/post/layer_list_as_launcher_icon/</loc>

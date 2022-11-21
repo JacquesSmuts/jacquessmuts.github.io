@@ -7,7 +7,57 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
-        <lastBuildDate>Mon, 07 Nov 2022 11:33:09 +0200</lastBuildDate><atom:link href="https://jacquessmuts.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 21 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://jacquessmuts.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Further Reading for Bad Internet, Old Phones</title>
+        <link>https://jacquessmuts.github.io/post/2022/bad-internet/</link>
+        <pubDate>Mon, 21 Nov 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://jacquessmuts.github.io/post/2022/bad-internet/</guid>
+        <description>&lt;img src="https://jacquessmuts.github.io/images/bad_internet_header.png" alt="Featured image of post Further Reading for Bad Internet, Old Phones" /&gt;&lt;h2 id=&#34;placeholder&#34;&gt;Placeholder&lt;/h2&gt;
+&lt;p&gt;This is a placeholder for when my presentation gets published as a video.&lt;/p&gt;
+&lt;h2 id=&#34;tldw&#34;&gt;TL;DW&lt;/h2&gt;
+&lt;p&gt;The point of my talk is that all the best practices that apply under normal circumstances are doubly necessary under difficult circumstances, such as building for bad internet, old phones, small screens, or technically inexperienced users.&lt;/p&gt;
+&lt;p&gt;There is no shortcut to learning best practices, but here are some good sources for further reading.&lt;/p&gt;
+&lt;h2 id=&#34;google-tips&#34;&gt;Google Tips&lt;/h2&gt;
+&lt;p&gt;I feel that &lt;a class=&#34;link&#34; href=&#34;https://developer.android.com/topic/architecture/recommendations&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this Google Architecture Recommendation Guide&lt;/a&gt; is right now the best starting point for building the architecture that allows you to more easily adapt for low connectivity and old phones.&lt;/p&gt;
+&lt;p&gt;Once you have the basic architecture set up, the Google &lt;a class=&#34;link&#34; href=&#34;https://developer.android.com/docs/quality-guidelines/build-for-billions/connectivity&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Build for Billions Guide&lt;/a&gt; and the &lt;a class=&#34;link&#34; href=&#34;https://developer.android.com/topic/performance&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Google Performance Guidelines&lt;/a&gt; both have a myriad of great tips.&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://medium.com/androiddevelopers/inspecting-performance-95b76477a3d7&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;This recent article&lt;/a&gt; by Ben Weiss, as well as &lt;a class=&#34;link&#34; href=&#34;https://android-developers.googleblog.com/2022/09/optimize-for-android-go-lessons-from-google-apps-part-1.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;this series of articles&lt;/a&gt; by Niharika Arora on optimizing for Android Go, are both good supplements to the above.&lt;/p&gt;
+&lt;h2 id=&#34;other-reading&#34;&gt;Other Reading&lt;/h2&gt;
+&lt;p&gt;The Http client standard is &lt;a class=&#34;link&#34; href=&#34;https://www.rfc-editor.org/rfc/rfc9110.html#name-idempotent-methods&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;hosted here&lt;/a&gt;, with a direct link to how they define idempotent methods.&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://medium.com/inloopx/okhttp-is-quietly-retrying-requests-is-your-api-ready-19489ef35ace&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;This medium article&lt;/a&gt; has a good warning about how OkHttp default retry works.&lt;/p&gt;
+&lt;h2 id=&#34;video&#34;&gt;Video&lt;/h2&gt;
+&lt;p&gt;&lt;div class=&#34;video-wrapper&#34;&gt;
+    &lt;iframe loading=&#34;lazy&#34; 
+            src=&#34;https://www.youtube.com/embed/jaZ2gLMGUsM&#34; 
+            allowfullscreen 
+            title=&#34;YouTube Video&#34;
+    &gt;
+    &lt;/iframe&gt;
+&lt;/div&gt;
+
+This video explains the complex logic behind offline-first apps, in an extremely simple and straightforward way. I consider offline first architecture to be the most important first step towards supporting low connectivity environments. However, it is part of a larger &lt;a class=&#34;link&#34; href=&#34;https://www.youtube.com/playlist?list=PLWz5rJ2EKKc_L3n1j4ajHjJ6QccFUvW1u&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;series of videos on modern android development&lt;/a&gt; which I also recommend.&lt;/p&gt;
+&lt;h2 id=&#34;also&#34;&gt;Also&lt;/h2&gt;
+&lt;div class=&#34;video-wrapper&#34;&gt;
+    &lt;iframe loading=&#34;lazy&#34; 
+            src=&#34;https://www.youtube.com/embed/aAzW12BcvGk&#34; 
+            allowfullscreen 
+            title=&#34;YouTube Video&#34;
+    &gt;
+    &lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This video helped me a lot to build the skills to understand and implement a lot of the above, and I just like recommending it because it&amp;rsquo;s a timeless and important presentation.&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>Use More Named Arguments in Kotlin</title>
         <link>https://jacquessmuts.github.io/post/compile_time_tests2/</link>
         <pubDate>Mon, 07 Nov 2022 11:33:09 +0200</pubDate>
