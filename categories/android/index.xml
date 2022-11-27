@@ -16,7 +16,7 @@
         <description>&lt;img src="https://jacquessmuts.github.io/images/bad_internet_header.png" alt="Featured image of post Further Reading for Bad Internet, Old Phones" /&gt;&lt;h2 id=&#34;slides&#34;&gt;Slides&lt;/h2&gt;
 
 
-&lt;iframe src=&#34;https://slides.com/jacquessmuts/deck/embed?style=hidden&#34; width=&#34;640&#34; height=&#34;360&#34; title=&#34;bob&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+&lt;iframe src=&#34;https://slides.com/jacquessmuts/deck/embed?style=hidden&#34; width=&#34;1280&#34; height=&#34;720&#34; title=&#34;bob&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
 
 &lt;h2 id=&#34;tldw&#34;&gt;TL;DW&lt;/h2&gt;
 &lt;p&gt;The point of my talk is that all the best practices that apply under normal circumstances are doubly necessary under difficult circumstances, such as building for bad internet, old phones, small screens, or technically inexperienced users.&lt;/p&gt;
